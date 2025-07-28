@@ -1,0 +1,250 @@
+// Package cli provides the preset command for the eniGOma CLI.
+//
+// Copyright (c) 2025 David Duarte
+// Licensed under the MIT License
+package cli
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/spf13/cobra"
+)
+
+var presetCmd = &cobra.Command{
+	Use:   "preset",
+	Short: "List and describe available Enigma machine presets",
+	Long: `List and describe available Enigma machine presets.
+
+Presets provide quick configuration templates for common use cases,
+from historical accuracy to high security applications.
+
+Examples:
+  eniGOma preset --list
+  eniGOma preset --describe classic
+  eniGOma preset --describe all
+  eniGOma preset --export classic --output classic-config.json`,
+	RunE: runPreset,
+}
+
+func init() {
+	presetCmd.Flags().BoolP("list", "l", false, "List all available presets")
+	presetCmd.Flags().StringP("describe", "d", "", "Describe a specific preset (or 'all' for all presets)")
+	presetCmd.Flags().StringP("export", "e", "", "Export preset configuration to file")
+	presetCmd.Flags().StringP("output", "o", "", "Output file for exported configuration")
+	presetCmd.Flags().BoolP("verbose", "v", false, "Show detailed information")
+}
+
+func runPreset(cmd *cobra.Command, args []string) error {
+	setupVerbose(cmd)
+
+	list, _ := cmd.Flags().GetBool("list")
+	describe, _ := cmd.Flags().GetString("describe")
+	export, _ := cmd.Flags().GetString("export")
+
+	// Default action if no flags specified
+	if !list && describe == "" && export == "" {
+		list = true
+	}
+
+	if list {
+		return listPresets(cmd)
+	}
+
+	if describe != "" {
+		return describePresets(describe, cmd)
+	}
+
+	if export != "" {
+		return exportPreset(export, cmd)
+	}
+
+	return nil
+}
+
+func listPresets(cmd *cobra.Command) error {
+	fmt.Println("Available Enigma Machine Presets:")
+	fmt.Println()
+
+	presets := getAvailablePresets()
+	for _, preset := range presets {
+		fmt.Printf("  %-12s - %s\n", preset.Name, preset.Description)
+	}
+
+	fmt.Println()
+	fmt.Println("Use 'eniGOma preset --describe <name>' for detailed information.")
+	fmt.Println("Use 'eniGOma preset --export <name>' to generate configuration files.")
+
+	return nil
+}
+
+func describePresets(presetName string, cmd *cobra.Command) error {
+	verbose, _ := cmd.Flags().GetBool("verbose")
+
+	if strings.ToLower(presetName) == "all" {
+		presets := getAvailablePresets()
+		for i, preset := range presets {
+			if i > 0 {
+				fmt.Println("\n" + strings.Repeat("-", 60))
+			}
+			describePreset(preset, verbose)
+		}
+		return nil
+	}
+
+	preset := findPreset(presetName)
+	if preset == nil {
+		return fmt.Errorf("unknown preset: %s. Use --list to see available presets", presetName)
+	}
+
+	describePreset(*preset, verbose)
+	return nil
+}
+
+func describePreset(preset PresetInfo, verbose bool) {
+	fmt.Printf("Preset: %s\n", preset.Name)
+	fmt.Printf("Description: %s\n", preset.Description)
+	fmt.Printf("Use Case: %s\n", preset.UseCase)
+	fmt.Printf("Security Level: %s\n", preset.SecurityLevel)
+	fmt.Printf("Default Alphabet: %s (%d characters)\n", preset.AlphabetName, preset.AlphabetSize)
+	fmt.Printf("Rotors: %d\n", preset.RotorCount)
+	fmt.Printf("Plugboard Pairs: %d\n", preset.PlugboardPairs)
+
+	if verbose {
+		fmt.Printf("\nDetailed Configuration:\n")
+		fmt.Printf("  Historical Accuracy: %s\n", boolToYesNo(preset.HistoricalAccuracy))
+		fmt.Printf("  Recommended For: %s\n", preset.RecommendedFor)
+		fmt.Printf("  Complexity Rating: %s/5\n", preset.ComplexityRating)
+
+		if preset.Notes != "" {
+			fmt.Printf("\nNotes: %s\n", preset.Notes)
+		}
+
+		fmt.Printf("\nExample Usage:\n")
+		fmt.Printf("  eniGOma encrypt --text \"Hello World\" --preset %s\n", preset.Name)
+		fmt.Printf("  eniGOma keygen --preset %s --output %s-key.json\n", preset.Name, preset.Name)
+	}
+
+	fmt.Println()
+}
+
+func exportPreset(presetName string, cmd *cobra.Command) error {
+	// Create machine with preset
+	machine, err := createMachineFromPreset(presetName)
+	if err != nil {
+		return fmt.Errorf("failed to create machine from preset: %v", err)
+	}
+
+	// Get configuration as JSON
+	jsonData, err := machine.SaveSettingsToJSON()
+	if err != nil {
+		return fmt.Errorf("failed to serialize configuration: %v", err)
+	}
+
+	// Output configuration
+	outputFile, _ := cmd.Flags().GetString("output")
+	if outputFile == "" {
+		fmt.Print(jsonData)
+	} else {
+		err := writeStringToFile(jsonData, outputFile)
+		if err != nil {
+			return fmt.Errorf("failed to write configuration to file: %v", err)
+		}
+		fmt.Printf("Preset '%s' configuration saved to: %s\n", presetName, outputFile)
+	}
+
+	return nil
+}
+
+type PresetInfo struct {
+	Name               string
+	Description        string
+	UseCase            string
+	SecurityLevel      string
+	AlphabetName       string
+	AlphabetSize       int
+	RotorCount         int
+	PlugboardPairs     int
+	HistoricalAccuracy bool
+	RecommendedFor     string
+	ComplexityRating   string
+	Notes              string
+}
+
+func getAvailablePresets() []PresetInfo {
+	return []PresetInfo{
+		{
+			Name:               "classic",
+			Description:        "Historical M3 Enigma simulation",
+			UseCase:            "Educational, historical simulation",
+			SecurityLevel:      "Low",
+			AlphabetName:       "Latin Uppercase",
+			AlphabetSize:       26,
+			RotorCount:         3,
+			PlugboardPairs:     2,
+			HistoricalAccuracy: true,
+			RecommendedFor:     "Learning Enigma mechanics, historical projects",
+			ComplexityRating:   "2",
+			Notes:              "Matches historical Wehrmacht M3 configuration",
+		},
+		{
+			Name:               "simple",
+			Description:        "Basic Enigma with standard settings",
+			UseCase:            "General purpose, moderate security",
+			SecurityLevel:      "Medium",
+			AlphabetName:       "Latin Uppercase",
+			AlphabetSize:       26,
+			RotorCount:         5,
+			PlugboardPairs:     8,
+			HistoricalAccuracy: false,
+			RecommendedFor:     "General encryption, file protection",
+			ComplexityRating:   "3",
+			Notes:              "Good balance of security and performance",
+		},
+		{
+			Name:               "high",
+			Description:        "High-security configuration",
+			UseCase:            "Sensitive data, strong obfuscation",
+			SecurityLevel:      "High",
+			AlphabetName:       "Latin Uppercase",
+			AlphabetSize:       26,
+			RotorCount:         8,
+			PlugboardPairs:     15,
+			HistoricalAccuracy: false,
+			RecommendedFor:     "Document protection, secure communication",
+			ComplexityRating:   "4",
+			Notes:              "Significantly more secure than historical machines",
+		},
+		{
+			Name:               "extreme",
+			Description:        "Maximum security configuration",
+			UseCase:            "Maximum complexity, research",
+			SecurityLevel:      "Extreme",
+			AlphabetName:       "Latin Uppercase",
+			AlphabetSize:       26,
+			RotorCount:         12,
+			PlugboardPairs:     20,
+			HistoricalAccuracy: false,
+			RecommendedFor:     "Research, maximum obfuscation needs",
+			ComplexityRating:   "5",
+			Notes:              "Extremely large keyspace, slower but most secure",
+		},
+	}
+}
+
+func findPreset(name string) *PresetInfo {
+	presets := getAvailablePresets()
+	for _, preset := range presets {
+		if strings.ToLower(preset.Name) == strings.ToLower(name) {
+			return &preset
+		}
+	}
+	return nil
+}
+
+func boolToYesNo(b bool) string {
+	if b {
+		return "Yes"
+	}
+	return "No"
+}

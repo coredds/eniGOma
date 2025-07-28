@@ -21,9 +21,9 @@ func TestVersion(t *testing.T) {
 		t.Errorf("Version format invalid: %s (should be X.Y.Z)", version)
 	}
 
-	// Check that it's version 0.2.0
-	if version != "0.2.0" {
-		t.Errorf("Expected version 0.2.0, got %s", version)
+	// Check that it's version 0.2.1
+	if version != "0.2.1" {
+		t.Errorf("Expected version 0.2.1, got %s", version)
 	}
 }
 

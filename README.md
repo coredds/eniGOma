@@ -90,6 +90,123 @@ func main() {
 }
 ```
 
+### Command Line Interface
+
+eniGOma includes a powerful CLI for encryption, decryption, and key management:
+
+```bash
+# Install the CLI
+go install github.com/coredds/eniGOma/cmd/eniGOma@latest
+
+# Basic encryption with preset
+eniGOma encrypt --text "HELLOWORLD" --preset classic
+
+# Decrypt the result
+eniGOma decrypt --text "ENCRYPTED_OUTPUT" --preset classic
+
+# Generate a random key configuration
+eniGOma keygen --security high --output my-key.json
+
+# Encrypt with custom configuration
+eniGOma encrypt --text "Secret Message" --config my-key.json
+
+# List available presets
+eniGOma preset --list
+
+# Get detailed preset information
+eniGOma preset --describe classic --verbose
+
+# Encrypt with Unicode support
+eniGOma encrypt --text "Hello World!" --alphabet portuguese --security medium
+
+# Validate a configuration file
+eniGOma config --validate my-key.json --detailed
+```
+
+#### CLI Commands
+
+- **`encrypt`** - Encrypt text or files using an Enigma machine
+- **`decrypt`** - Decrypt text or files using an Enigma machine  
+- **`keygen`** - Generate random Enigma machine configurations
+- **`preset`** - List and describe available machine presets
+- **`config`** - Manage and validate configuration files
+
+#### Available Presets
+
+| Preset   | Security | Rotors | Plugboard | Use Case |
+|----------|----------|---------|-----------|----------|
+| `classic` | Low     | 3       | 2         | Historical simulation, learning |
+| `simple`  | Medium  | 5       | 8         | General purpose encryption |
+| `high`    | High    | 8       | 15        | Strong obfuscation |
+| `extreme` | Extreme | 12      | 20        | Maximum complexity |
+
+#### CLI Examples
+
+```bash
+# Quick encryption with different security levels
+eniGOma encrypt --text "TOP SECRET" --preset high
+eniGOma encrypt --text "CONFIDENTIAL" --security extreme --alphabet latin
+
+# File encryption/decryption
+eniGOma encrypt --file document.txt --output encrypted.txt --preset classic
+eniGOma decrypt --file encrypted.txt --config my-key.json
+
+# Key generation with statistics
+eniGOma keygen --preset extreme --describe --stats --output extreme-key.json
+
+# Configuration management
+eniGOma config --show my-key.json --detailed
+eniGOma config --test my-key.json --text "TEST MESSAGE"
+eniGOma config --convert old-config.json --output new-config.json
+
+# Working with different alphabets
+eniGOma encrypt --text "Olá Mundo!" --alphabet portuguese --security medium
+eniGOma encrypt --text "Γεια σας!" --alphabet greek --security high
+eniGOma encrypt --text "Привет мир!" --alphabet cyrillic --security low
+
+# Advanced configuration
+eniGOma encrypt --text "ADVANCED" --rotors 5,10,15 --alphabet latin --security high
+```
+
+### Library Usage
+
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+    
+    "github.com/coredds/eniGOma"
+    "github.com/coredds/eniGOma/pkg/enigma"
+)
+
+func main() {
+    // Create a classic Enigma machine
+    machine, err := enigma.NewEnigmaClassic()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    message := "HELLO WORLD"
+    
+    // Encrypt
+    encrypted, err := machine.Encrypt(message)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Encrypted: %s\n", encrypted)
+
+    // Reset to initial state and decrypt
+    machine.Reset()
+    decrypted, err := machine.Decrypt(encrypted)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Decrypted: %s\n", decrypted)
+}
+```
+
 ### Unicode Support
 
 ```go
