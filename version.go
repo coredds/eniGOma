@@ -5,7 +5,7 @@
 package eniGOma
 
 // Version represents the current version of the eniGOma library.
-const Version = "0.2.0"
+const Version = "0.2.1"
 
 // GetVersion returns the current version of the eniGOma library.
 func GetVersion() string {
