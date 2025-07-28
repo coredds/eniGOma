@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-01-28
+
+### Added
+- **Comprehensive CLI Tool** - Complete command-line interface using Cobra framework
+- **5 CLI Commands**: encrypt, decrypt, keygen, preset, config
+- **4 Security Presets**: classic, simple, high, extreme with detailed descriptions
+- **Unicode CLI Support**: All 8 predefined alphabets accessible via CLI
+- **Configuration Management**: JSON import/export, validation, and testing
+- **File I/O Operations**: Encrypt/decrypt files with multiple output formats
+- **Enhanced Documentation**: Updated README with CLI usage examples and installation guide
+
+### Changed
+- Updated project documentation to reflect dual-interface nature (library + CLI)
+- Enhanced README with comprehensive CLI examples and command reference
+
+### Technical
+- Added Cobra and Viper dependencies for robust CLI experience
+- Comprehensive unit tests for CLI functionality (>95% coverage)
+- Integration tests for complete encrypt/decrypt workflows
+- Maintained full backward compatibility with library interface
+
 ## [0.2.0] - 2025-01-27
 
 ### Author

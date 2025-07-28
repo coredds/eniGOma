@@ -54,4 +54,10 @@ docs/_build/
 # eniGOma specific
 *.log
 debug_*
-test_* 
+test_*
+
+# eniGOma CLI binaries (avoid committing compiled binaries)
+eniGOma
+eniGOma.exe
+cmd/eniGOma/eniGOma
+cmd/eniGOma/eniGOma.exe 
