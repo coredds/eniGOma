@@ -60,4 +60,8 @@ test_*
 eniGOma
 eniGOma.exe
 cmd/eniGOma/eniGOma
-cmd/eniGOma/eniGOma.exe 
+cmd/eniGOma/eniGOma.exe
+
+# Release artifacts (built locally for manual GitHub release upload)
+releases/
+release-notes.md 
