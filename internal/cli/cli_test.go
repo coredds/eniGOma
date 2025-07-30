@@ -331,7 +331,7 @@ func TestConfigCommand(t *testing.T) {
 		"rotor_specs": [{
 			"id": "TestRotor",
 			"forward_mapping": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
-			"notches": ["Q"],
+			"notches": [81],
 			"position": 0,
 			"ring_setting": 0
 		}],
@@ -430,7 +430,7 @@ func TestEncryptDecryptRoundTrip(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	originalText := "HELLO WORLD TEST MESSAGE"
+	originalText := "HELLOWORLDTESTMESSAGE"
 
 	// Step 1: Generate a key
 	keyFile := filepath.Join(tempDir, "test-key.json")
