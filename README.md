@@ -110,6 +110,10 @@ eniGOma keygen --security high --output my-key.json
 # Encrypt with custom configuration
 eniGOma encrypt --text "Secret Message" --config my-key.json
 
+# Use example configurations
+eniGOma encrypt --text "Confidential" --config examples/security-levels/high-security.json
+eniGOma encrypt --text "Olá mundo!" --config examples/languages/portuguese-basic.json
+
 # List available presets
 eniGOma preset --list
 
@@ -338,7 +342,26 @@ The library includes:
 
 ## Examples
 
-See the `cmd/example/` directory for complete examples:
+### 📁 Configuration Examples
+
+The [`examples/`](./examples/) directory contains comprehensive configuration examples organized by category:
+
+- **[`security-levels/`](./examples/security-levels/)** - From basic to extreme security configurations
+- **[`languages/`](./examples/languages/)** - Portuguese, Greek, and mixed character set examples  
+- **[`use-cases/`](./examples/use-cases/)** - Document protection, secure communication, historical simulation
+- **[`configurations/`](./examples/configurations/)** - Advanced custom configuration examples
+
+```bash
+# Use an example configuration
+eniGOma encrypt --text "Hello World" --config examples/security-levels/high-security.json
+
+# Generate your own from examples
+eniGOma keygen --security high --output my-config.json
+```
+
+### 🔧 Code Examples
+
+See the `cmd/example/` directory for complete code examples:
 
 - Basic encryption/decryption
 - Unicode alphabet usage

@@ -116,6 +116,42 @@ jsonData, err := settings.MarshalJSON()
 newMachine, err := enigma.NewFromJSON(jsonData)
 ```
 
+## Example Configurations
+
+The [`examples/`](./examples/) directory contains ready-to-use configuration files:
+
+### Portuguese Examples
+```bash
+# Use the Portuguese configuration example
+eniGOma encrypt --text "Bom dia, Brasil!" --config examples/languages/portuguese-basic.json
+
+# Generate your own Portuguese configuration
+eniGOma keygen --alphabet portuguese --security medium --output my-portuguese.json
+```
+
+### Other Language Examples
+```bash
+# Greek text encryption
+eniGOma encrypt --text "Γεια σας!" --config examples/languages/greek-simple.json
+
+# Mixed character sets
+eniGOma encrypt --text "Password123!" --config examples/languages/mixed-alphabet-extreme.json
+```
+
+### Security Examples
+```bash
+# Document protection
+eniGOma encrypt --file document.txt --config examples/use-cases/document-protection.json
+
+# High security communication
+eniGOma encrypt --text "TOP SECRET" --config examples/security-levels/extreme-key.json
+
+# Historical simulation
+eniGOma encrypt --text "ENIGMA MACHINE" --config examples/use-cases/historical-simulation.json
+```
+
+Browse all examples: [`examples/README.md`](./examples/README.md)
+
 ---
 
 🇧🇷 **Brazilian Portuguese is now a first-class citizen in eniGOma!** 🇧🇷 

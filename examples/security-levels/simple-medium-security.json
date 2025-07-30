@@ -1,0 +1,87 @@
+{
+  "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "rotor_specs": [
+    {
+      "id": "R1",
+      "forward_mapping": "SCZDRLEVMYQGKHPATOXIUBFWNJ",
+      "notches": [
+        68,
+        84,
+        74
+      ],
+      "position": 12,
+      "ring_setting": 24
+    },
+    {
+      "id": "R2",
+      "forward_mapping": "PENFLJTXQUHRMSGOIZDWAYKVBC",
+      "notches": [
+        78
+      ],
+      "position": 1,
+      "ring_setting": 3
+    },
+    {
+      "id": "R3",
+      "forward_mapping": "YPAEQUOGBFDMZLKIJVWHNRTCSX",
+      "notches": [
+        65,
+        79,
+        70
+      ],
+      "position": 24,
+      "ring_setting": 2
+    },
+    {
+      "id": "R4",
+      "forward_mapping": "HCUNSORVYXZQFKIAMTELGWPDJB",
+      "notches": [
+        82,
+        84,
+        81
+      ],
+      "position": 23,
+      "ring_setting": 3
+    },
+    {
+      "id": "R5",
+      "forward_mapping": "FDLTEAQKNWIZPCORBMJXGVSUHY",
+      "notches": [
+        79,
+        82,
+        75
+      ],
+      "position": 8,
+      "ring_setting": 2
+    }
+  ],
+  "reflector_spec": {
+    "id": "UKW",
+    "mapping": "BALIVNPJDHQCSFYGKWMXZERTOU"
+  },
+  "plugboard_pairs": {
+    "B": "M",
+    "D": "Z",
+    "E": "F",
+    "F": "E",
+    "G": "P",
+    "I": "Q",
+    "J": "X",
+    "K": "R",
+    "M": "B",
+    "O": "Y",
+    "P": "G",
+    "Q": "I",
+    "R": "K",
+    "X": "J",
+    "Y": "O",
+    "Z": "D"
+  },
+  "current_rotor_positions": [
+    12,
+    1,
+    24,
+    23,
+    8
+  ]
+}

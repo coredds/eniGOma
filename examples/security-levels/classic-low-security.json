@@ -1,0 +1,49 @@
+{
+  "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "rotor_specs": [
+    {
+      "id": "R1",
+      "forward_mapping": "VSPTURAXQWEOBZMLFNIGJKYCDH",
+      "notches": [
+        80
+      ],
+      "position": 2,
+      "ring_setting": 16
+    },
+    {
+      "id": "R2",
+      "forward_mapping": "ODZNTVAYSHFCMJLQKXWPIERGUB",
+      "notches": [
+        67
+      ],
+      "position": 24,
+      "ring_setting": 16
+    },
+    {
+      "id": "R3",
+      "forward_mapping": "ZCDUJRBLOPTVHQYIXGFWKESMNA",
+      "notches": [
+        86,
+        65,
+        85
+      ],
+      "position": 11,
+      "ring_setting": 5
+    }
+  ],
+  "reflector_spec": {
+    "id": "UKW",
+    "mapping": "CNAORXVJPHSWYBDIUEKZQGLFMT"
+  },
+  "plugboard_pairs": {
+    "E": "R",
+    "R": "E",
+    "U": "V",
+    "V": "U"
+  },
+  "current_rotor_positions": [
+    2,
+    24,
+    11
+  ]
+}

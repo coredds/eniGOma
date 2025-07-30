@@ -1,0 +1,129 @@
+{
+  "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "rotor_specs": [
+    {
+      "id": "R1",
+      "forward_mapping": "SZBDUCXIFEAGHOMVWPRJKYQLTN",
+      "notches": [
+        68
+      ],
+      "position": 19,
+      "ring_setting": 17
+    },
+    {
+      "id": "R2",
+      "forward_mapping": "GVXENJMPILWOFQZDBTUHYKRCAS",
+      "notches": [
+        70,
+        78,
+        88
+      ],
+      "position": 4,
+      "ring_setting": 0
+    },
+    {
+      "id": "R3",
+      "forward_mapping": "OTHGAPWNVBMLKSCZUIJFXQDRYE",
+      "notches": [
+        88,
+        69
+      ],
+      "position": 6,
+      "ring_setting": 23
+    },
+    {
+      "id": "R4",
+      "forward_mapping": "DYUGWIVSTQHMXEZCLAFKBJPONR",
+      "notches": [
+        75,
+        72,
+        81
+      ],
+      "position": 18,
+      "ring_setting": 7
+    },
+    {
+      "id": "R5",
+      "forward_mapping": "ALKBOEMHRWVCXNYDZSUGJPFQIT",
+      "notches": [
+        66,
+        78,
+        83
+      ],
+      "position": 24,
+      "ring_setting": 24
+    },
+    {
+      "id": "R6",
+      "forward_mapping": "REGUYVNLAPJZKIXWMCTDOHQFBS",
+      "notches": [
+        89,
+        69
+      ],
+      "position": 20,
+      "ring_setting": 6
+    },
+    {
+      "id": "R7",
+      "forward_mapping": "QPLNGHZEXJKDSMYUOIWVATFCBR",
+      "notches": [
+        75
+      ],
+      "position": 19,
+      "ring_setting": 18
+    },
+    {
+      "id": "R8",
+      "forward_mapping": "MXLHCYRKVNBQIFTJSGWDPUOAEZ",
+      "notches": [
+        70,
+        73,
+        87
+      ],
+      "position": 12,
+      "ring_setting": 20
+    }
+  ],
+  "reflector_spec": {
+    "id": "UKW",
+    "mapping": "HYJVTKOAPCFSWQGINXLEZDMRBU"
+  },
+  "plugboard_pairs": {
+    "A": "C",
+    "B": "L",
+    "C": "A",
+    "D": "S",
+    "E": "H",
+    "F": "I",
+    "G": "R",
+    "H": "E",
+    "I": "F",
+    "J": "P",
+    "K": "O",
+    "L": "B",
+    "M": "Y",
+    "N": "Q",
+    "O": "K",
+    "P": "J",
+    "Q": "N",
+    "R": "G",
+    "S": "D",
+    "T": "W",
+    "U": "V",
+    "V": "U",
+    "W": "T",
+    "X": "Z",
+    "Y": "M",
+    "Z": "X"
+  },
+  "current_rotor_positions": [
+    19,
+    4,
+    6,
+    18,
+    24,
+    20,
+    19,
+    12
+  ]
+}
