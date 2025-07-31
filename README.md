@@ -93,39 +93,15 @@ func main() {
 
 ### Command Line Interface
 
-eniGOma includes a powerful CLI for encryption, decryption, and key management:
+eniGOma includes a powerful CLI with **configuration-first workflow** for secure encryption, decryption, and key management. **New in v0.3.0**: Auto-config support ensures you can always decrypt your data!
 
 ```bash
 # Install the CLI
 go install github.com/coredds/eniGOma/cmd/eniGOma@latest
 
-# Basic encryption with preset
-eniGOma encrypt --text "HELLOWORLD" --preset classic
-
-# Decrypt the result
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --preset classic
-
-# Generate a random key configuration
-eniGOma keygen --security high --output my-key.json
-
-# Encrypt with custom configuration
-eniGOma encrypt --text "Secret Message" --config my-key.json
-
-# Use example configurations
-eniGOma encrypt --text "Confidential" --config examples/security-levels/high-security.json
-eniGOma encrypt --text "Olá mundo!" --config examples/languages/portuguese-basic.json
-
-# List available presets
-eniGOma preset --list
-
-# Get detailed preset information
-eniGOma preset --describe classic --verbose
-
-# Encrypt with Unicode support
-eniGOma encrypt --text "Hello World!" --alphabet portuguese --security medium
-
-# Validate a configuration file
-eniGOma config --validate my-key.json --detailed
+# Quick start with auto-config (recommended for new users)
+eniGOma encrypt --text "Hello World!" --auto-config my-key.json
+eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 ```
 
 #### CLI Commands
@@ -145,35 +121,38 @@ eniGOma config --validate my-key.json --detailed
 | `high`    | High    | 8       | 15        | Strong obfuscation |
 | `extreme` | Extreme | 12      | 20        | Maximum complexity |
 
-#### CLI Examples
+#### Comprehensive CLI Examples
 
 ```bash
-# 🔑 Step 1: Generate a configuration file (required)
-eniGOma keygen --output my-key.json
-
-# 🔒 Step 2: Encrypt using the configuration
-eniGOma encrypt --text "Hello World!" --config my-key.json
-
-# 🔓 Step 3: Decrypt using the same configuration  
+# Method 1: Auto-generate config during encryption (RECOMMENDED)
+eniGOma encrypt --text "Hello World!" --auto-config my-key.json
 eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
-# ⚡ Quick workflow: Auto-generate config during encryption
-eniGOma encrypt --text "Hello World!" --auto-config my-key.json
-eniGOma encrypt --text "Olá Mundo! Café é ótimo!" --auto-config portuguese-key.json  
-eniGOma encrypt --text "Mixed: English Русский 日本語!" --auto-config unicode-key.json
+# Method 2: Generate config first, then encrypt
+eniGOma keygen --security high --output my-key.json
+eniGOma encrypt --text "Secret Message" --config my-key.json
+eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
-# 📁 File encryption/decryption workflow
-eniGOma encrypt --file document.txt --config my-key.json --output encrypted.txt
+# Method 3: Use presets with saved configurations
+eniGOma encrypt --text "TOP SECRET" --preset high --save-config classified.json
+eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config classified.json
+
+# Unicode and multi-language support with auto-detection
+eniGOma encrypt --text "Olá Mundo! Café é ótimo!" --auto-config portuguese-key.json
+eniGOma encrypt --text "Mixed: English Русский 日本語!" --auto-config unicode-key.json
+eniGOma encrypt --text "Test unicode: 🙂" --auto-config emoji-key.json --verbose
+
+# File encryption/decryption workflows
+eniGOma encrypt --file document.txt --auto-config my-key.json --output encrypted.txt
 eniGOma decrypt --file encrypted.txt --config my-key.json --output decrypted.txt
 
-# 🎯 Using presets with saved configurations
-eniGOma encrypt --text "TOP SECRET" --preset high --save-config high-security.json
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config high-security.json
-
-# 📊 Configuration management
+# Advanced configuration management
 eniGOma config --show my-key.json --detailed
+eniGOma config --validate my-key.json
 eniGOma config --test my-key.json --text "TEST MESSAGE"
 eniGOma keygen --preset extreme --describe --stats --output extreme-key.json
+eniGOma preset --list
+eniGOma preset --describe classic --verbose
 ```
 
 ## 🔑 Configuration-First Approach
