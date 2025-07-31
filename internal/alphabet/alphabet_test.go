@@ -53,7 +53,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestAlphabet_RuneToIndex(t *testing.T) {
-	alphabet, err := New([]rune{'C', 'A', 'B'}) // Will be sorted to A, B, C
+	alphabet, err := New([]rune{'C', 'A', 'B'}) // Preserves original order: C, A, B
 	if err != nil {
 		t.Fatalf("Failed to create alphabet: %v", err)
 	}
@@ -64,9 +64,9 @@ func TestAlphabet_RuneToIndex(t *testing.T) {
 		wantIndex int
 		wantError bool
 	}{
-		{"first character", 'A', 0, false},
-		{"middle character", 'B', 1, false},
-		{"last character", 'C', 2, false},
+		{"first character", 'C', 0, false},
+		{"middle character", 'A', 1, false},
+		{"last character", 'B', 2, false},
 		{"not in alphabet", 'D', 0, true},
 	}
 
@@ -91,7 +91,7 @@ func TestAlphabet_RuneToIndex(t *testing.T) {
 }
 
 func TestAlphabet_IndexToRune(t *testing.T) {
-	alphabet, err := New([]rune{'C', 'A', 'B'}) // Will be sorted to A, B, C
+	alphabet, err := New([]rune{'C', 'A', 'B'}) // Preserves original order: C, A, B
 	if err != nil {
 		t.Fatalf("Failed to create alphabet: %v", err)
 	}
@@ -102,9 +102,9 @@ func TestAlphabet_IndexToRune(t *testing.T) {
 		wantRune  rune
 		wantError bool
 	}{
-		{"first index", 0, 'A', false},
-		{"middle index", 1, 'B', false},
-		{"last index", 2, 'C', false},
+		{"first index", 0, 'C', false},
+		{"middle index", 1, 'A', false},
+		{"last index", 2, 'B', false},
 		{"negative index", -1, 0, true},
 		{"index too large", 3, 0, true},
 	}
@@ -195,7 +195,7 @@ func TestAlphabet_ValidateString(t *testing.T) {
 }
 
 func TestAlphabet_StringToIndices(t *testing.T) {
-	alphabet, err := New([]rune{'C', 'A', 'B'}) // Sorted to A, B, C
+	alphabet, err := New([]rune{'C', 'A', 'B'}) // Preserves original order: C, A, B
 	if err != nil {
 		t.Fatalf("Failed to create alphabet: %v", err)
 	}
@@ -206,8 +206,8 @@ func TestAlphabet_StringToIndices(t *testing.T) {
 		want    []int
 		wantErr bool
 	}{
-		{"simple conversion", "ABC", []int{0, 1, 2}, false},
-		{"repeated characters", "AAB", []int{0, 0, 1}, false},
+		{"simple conversion", "CAB", []int{0, 1, 2}, false},
+		{"repeated characters", "CCA", []int{0, 0, 1}, false},
 		{"empty string", "", []int{}, false},
 		{"invalid character", "ABD", nil, true},
 	}
@@ -239,7 +239,7 @@ func TestAlphabet_StringToIndices(t *testing.T) {
 }
 
 func TestAlphabet_IndicesToString(t *testing.T) {
-	alphabet, err := New([]rune{'C', 'A', 'B'}) // Sorted to A, B, C
+	alphabet, err := New([]rune{'C', 'A', 'B'}) // Preserves original order: C, A, B
 	if err != nil {
 		t.Fatalf("Failed to create alphabet: %v", err)
 	}
@@ -250,8 +250,8 @@ func TestAlphabet_IndicesToString(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		{"simple conversion", []int{0, 1, 2}, "ABC", false},
-		{"repeated indices", []int{0, 0, 1}, "AAB", false},
+		{"simple conversion", []int{0, 1, 2}, "CAB", false},
+		{"repeated indices", []int{0, 0, 1}, "CCA", false},
 		{"empty slice", []int{}, "", false},
 		{"invalid index", []int{0, 1, 5}, "", true},
 		{"negative index", []int{-1}, "", true},
@@ -307,13 +307,13 @@ func TestAlphabet_Runes(t *testing.T) {
 	}
 
 	runes := alphabet.Runes()
-	
-	// Should be sorted
-	expected := []rune{'A', 'B', 'C'}
+
+	// Should preserve original order
+	expected := []rune{'C', 'A', 'B'}
 	if len(runes) != len(expected) {
 		t.Errorf("Runes() length = %d, want %d", len(runes), len(expected))
 	}
-	
+
 	for i, r := range runes {
 		if r != expected[i] {
 			t.Errorf("Runes()[%d] = %c, want %c", i, r, expected[i])
@@ -326,4 +326,4 @@ func TestAlphabet_Runes(t *testing.T) {
 	if newRunes[0] == 'X' {
 		t.Errorf("Runes() should return a copy, but modification affected original")
 	}
-} 
+}

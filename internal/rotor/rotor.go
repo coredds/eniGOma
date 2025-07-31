@@ -48,9 +48,10 @@ func NewRotor(id string, alph *alphabet.Alphabet, forwardMapping string, notches
 	}
 
 	size := alph.Size()
-	if len(forwardMapping) != size {
+	forwardMappingRunes := []rune(forwardMapping)
+	if len(forwardMappingRunes) != size {
 		return nil, fmt.Errorf("forward mapping length (%d) must match alphabet size (%d)",
-			len(forwardMapping), size)
+			len(forwardMappingRunes), size)
 	}
 
 	// Convert forward mapping string to indices
@@ -58,7 +59,7 @@ func NewRotor(id string, alph *alphabet.Alphabet, forwardMapping string, notches
 	backwardMap := make([]int, size)
 	used := make([]bool, size)
 
-	for i, r := range forwardMapping {
+	for i, r := range forwardMappingRunes {
 		outputIdx, err := alph.RuneToIndex(r)
 		if err != nil {
 			return nil, fmt.Errorf("invalid character in forward mapping at position %d: %v", i, err)

@@ -21,9 +21,9 @@ func TestVersion(t *testing.T) {
 		t.Errorf("Version format invalid: %s (should be X.Y.Z)", version)
 	}
 
-	// Check that it's version 0.2.2
-	if version != "0.2.2" {
-		t.Errorf("Expected version 0.2.2, got %s", version)
+	// Check that it's version 0.3.0
+	if version != "0.3.0" {
+		t.Errorf("Expected version 0.3.0, got %s", version)
 	}
 }
 
@@ -32,8 +32,8 @@ func TestVersionConstant(t *testing.T) {
 		t.Error("Version constant is empty")
 	}
 
-	// Version should start with "0.2"
-	if !strings.HasPrefix(Version, "0.2") {
-		t.Errorf("Version should start with '0.2', got %s", Version)
+	// Version should start with "0.3"
+	if !strings.HasPrefix(Version, "0.3") {
+		t.Errorf("Version should start with '0.3', got %s", Version)
 	}
 }

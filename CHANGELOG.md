@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-01-30
+
+### 🌟 Major Features Added
+- **Smart Auto-Alphabet Detection** - Automatically detects optimal character set from input text
+- **Universal Unicode Support** - Encrypt any text in any language without alphabet selection
+- **Mixed-Language Text Support** - Handle text combining multiple languages (e.g., "Hello! Привет! 日本語!")
+- **Emoji & Symbol Support** - Full support for Unicode symbols, emojis, and special characters
+
+### Added
+- `alphabet.AutoDetectFromText()` function with configurable options
+- Auto-detection as default CLI behavior (`--alphabet auto` is now default)
+- Automatic even-size padding for reflector compatibility
+- Safety limits for auto-detected alphabets (max 1000 characters)
+- Verbose mode showing detected alphabet statistics
+- Support for any Unicode character set including CJK, symbols, and emojis
+
+### Changed
+- **Breaking**: CLI default changed from `--alphabet latin` to `--alphabet auto`
+- CLI examples updated to showcase auto-detection workflow
+- Help text updated to reflect simplified usage patterns
+- Documentation extensively updated with auto-detection examples
+
+### Enhanced
+- Backwards compatibility maintained - all existing alphabet flags still work
+- Performance optimizations for large Unicode character sets
+- Deterministic alphabet ordering for consistent behavior
+- Comprehensive test coverage for auto-detection functionality
+
+### Technical
+- Added auto-detection unit tests covering various Unicode scenarios
+- Updated CLI tests to verify auto-detection behavior
+- Enhanced documentation with migration guide and best practices
+- Maintained 100% backwards compatibility with existing code
+
 ## [0.2.1] - 2025-01-28
 
 ### Added

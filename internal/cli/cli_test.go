@@ -108,7 +108,7 @@ func TestEncryptCommand(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Failed to create temp file: %v", err)
 				}
-				_, err = tmpFile.WriteString("HELLO WORLD")
+				_, err = tmpFile.WriteString("HELLOWORLD")
 				if err != nil {
 					t.Fatalf("Failed to write to temp file: %v", err)
 				}
@@ -510,16 +510,144 @@ func createTestRootCmd() *cobra.Command {
 		Version: "0.2.1",
 	}
 
+	// Create fresh command instances to avoid state pollution
+	freshEncryptCmd := createFreshEncryptCmd()
+	freshDecryptCmd := createFreshDecryptCmd()
+	freshKeygenCmd := createFreshKeygenCmd()
+	freshPresetCmd := createFreshPresetCmd()
+	freshConfigCmd := createFreshConfigCmd()
+
 	// Add subcommands
-	testRootCmd.AddCommand(encryptCmd)
-	testRootCmd.AddCommand(decryptCmd)
-	testRootCmd.AddCommand(keygenCmd)
-	testRootCmd.AddCommand(presetCmd)
-	testRootCmd.AddCommand(configCmd)
+	testRootCmd.AddCommand(freshEncryptCmd)
+	testRootCmd.AddCommand(freshDecryptCmd)
+	testRootCmd.AddCommand(freshKeygenCmd)
+	testRootCmd.AddCommand(freshPresetCmd)
+	testRootCmd.AddCommand(freshConfigCmd)
 
 	// Global flags
 	testRootCmd.PersistentFlags().BoolP("verbose", "v", false, "Enable verbose output")
 	testRootCmd.PersistentFlags().StringP("config", "c", "", "Configuration file path")
 
 	return testRootCmd
+}
+
+// Helper functions to create fresh command instances
+func createFreshEncryptCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "encrypt",
+		Short: "Encrypt text or files using an Enigma machine",
+		RunE:  runEncrypt,
+	}
+
+	// Input options
+	cmd.Flags().StringP("text", "t", "", "Text to encrypt")
+	cmd.Flags().StringP("file", "f", "", "File to encrypt")
+	cmd.Flags().StringP("output", "o", "", "Output file (default: stdout)")
+
+	// Machine configuration
+	cmd.Flags().StringP("preset", "p", "", "Use a preset configuration (classic, simple, high, extreme)")
+	cmd.Flags().StringP("alphabet", "a", "latin", "Alphabet to use (latin, greek, cyrillic, portuguese, ascii, alphanumeric)")
+	cmd.Flags().StringP("security", "s", "medium", "Security level (low, medium, high, extreme)")
+
+	// Advanced options
+	cmd.Flags().StringSliceP("rotors", "r", nil, "Rotor positions (e.g., 1,5,12)")
+	cmd.Flags().StringSliceP("plugboard", "", nil, "Plugboard pairs (e.g., A:Z,B:Y)")
+	cmd.Flags().BoolP("reset", "", false, "Reset machine to initial state before encryption")
+
+	// Output formatting
+	cmd.Flags().StringP("format", "", "text", "Output format (text, hex, base64)")
+	cmd.Flags().BoolP("preserve-case", "", false, "Preserve original case (when possible)")
+
+	return cmd
+}
+
+func createFreshDecryptCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "decrypt",
+		Short: "Decrypt text or files using an Enigma machine",
+		RunE:  runDecrypt,
+	}
+
+	// Input options
+	cmd.Flags().StringP("text", "t", "", "Text to decrypt")
+	cmd.Flags().StringP("file", "f", "", "File to decrypt")
+	cmd.Flags().StringP("output", "o", "", "Output file (default: stdout)")
+
+	// Machine configuration
+	cmd.Flags().StringP("preset", "p", "", "Use a preset configuration (classic, simple, high, extreme)")
+	cmd.Flags().StringP("alphabet", "a", "latin", "Alphabet to use (latin, greek, cyrillic, portuguese, ascii, alphanumeric)")
+	cmd.Flags().StringP("security", "s", "medium", "Security level (low, medium, high, extreme)")
+
+	// Advanced options
+	cmd.Flags().StringSliceP("rotors", "r", nil, "Rotor positions (e.g., 1,5,12)")
+	cmd.Flags().StringSliceP("plugboard", "", nil, "Plugboard pairs (e.g., A:Z,B:Y)")
+	cmd.Flags().BoolP("reset", "", false, "Reset machine to initial state before decryption")
+
+	// Input format
+	cmd.Flags().StringP("format", "", "text", "Input format (text, hex, base64)")
+
+	return cmd
+}
+
+func createFreshKeygenCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "keygen",
+		Short: "Generate random Enigma machine configurations",
+		RunE:  runKeygen,
+	}
+
+	// Machine configuration
+	cmd.Flags().StringP("preset", "p", "", "Base preset to modify (classic, simple, low, medium, high, extreme)")
+	cmd.Flags().StringP("alphabet", "a", "latin", "Alphabet to use (latin, greek, cyrillic, portuguese, ascii, alphanumeric)")
+	cmd.Flags().StringP("security", "s", "medium", "Security level (low, medium, high, extreme)")
+
+	// Output options
+	cmd.Flags().StringP("output", "o", "", "Output file for the configuration (default: stdout)")
+	cmd.Flags().StringP("save-to", "", "", "Save configuration to file (alias for --output)")
+	cmd.Flags().StringP("format", "f", "json", "Output format (json, yaml)")
+
+	// Advanced options
+	cmd.Flags().IntP("rotors", "r", 0, "Number of rotors (overrides security level)")
+	cmd.Flags().IntP("plugboard-pairs", "", 0, "Number of plugboard pairs (overrides security level)")
+	cmd.Flags().BoolP("random-positions", "", true, "Generate random rotor positions")
+
+	// Information options
+	cmd.Flags().BoolP("describe", "d", false, "Show description of generated configuration")
+	cmd.Flags().BoolP("stats", "", false, "Show statistics about the configuration")
+
+	return cmd
+}
+
+func createFreshPresetCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "preset",
+		Short: "List and describe available Enigma machine presets",
+		RunE:  runPreset,
+	}
+
+	cmd.Flags().BoolP("list", "l", false, "List all available presets")
+	cmd.Flags().StringP("describe", "d", "", "Describe a specific preset (or 'all' for all presets)")
+	cmd.Flags().StringP("export", "e", "", "Export preset configuration to file")
+	cmd.Flags().StringP("output", "o", "", "Output file for exported configuration")
+	cmd.Flags().BoolP("verbose", "v", false, "Show detailed information")
+
+	return cmd
+}
+
+func createFreshConfigCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "config",
+		Short: "Manage Enigma machine configuration files",
+		RunE:  runConfig,
+	}
+
+	cmd.Flags().StringP("validate", "", "", "Validate a configuration file")
+	cmd.Flags().StringP("show", "s", "", "Show configuration details")
+	cmd.Flags().StringP("test", "t", "", "Test configuration with sample text")
+	cmd.Flags().StringP("text", "", "HELLOWORLD", "Text to use for testing")
+	cmd.Flags().StringP("convert", "", "", "Convert/update configuration format")
+	cmd.Flags().StringP("output", "o", "", "Output file for converted configuration")
+	cmd.Flags().BoolP("detailed", "d", false, "Show detailed information")
+
+	return cmd
 }

@@ -68,7 +68,7 @@ func runConfig(cmd *cobra.Command, args []string) error {
 }
 
 func validateConfig(configFile string, cmd *cobra.Command) error {
-	fmt.Printf("Validating configuration file: %s\n", configFile)
+	fmt.Fprintf(cmd.OutOrStdout(), "Validating configuration file: %s\n", configFile)
 
 	// Try to read and parse the configuration
 	data, err := os.ReadFile(configFile)
@@ -79,16 +79,16 @@ func validateConfig(configFile string, cmd *cobra.Command) error {
 	// Try to create machine from configuration
 	machine, err := enigma.NewFromJSON(string(data))
 	if err != nil {
-		fmt.Printf("❌ Configuration is INVALID: %v\n", err)
+		fmt.Fprintf(cmd.OutOrStdout(), "❌ Configuration is INVALID: %v\n", err)
 		return nil
 	}
 
 	// Additional validation
-	fmt.Printf("✅ Configuration is VALID\n")
-	fmt.Printf("   Alphabet Size: %d characters\n", machine.GetAlphabetSize())
-	fmt.Printf("   Rotors: %d\n", machine.GetRotorCount())
-	fmt.Printf("   Plugboard Pairs: %d\n", machine.GetPlugboardPairCount())
-	fmt.Printf("   Current Rotor Positions: %v\n", machine.GetCurrentRotorPositions())
+	fmt.Fprintf(cmd.OutOrStdout(), "✅ Configuration is VALID\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "   Alphabet Size: %d characters\n", machine.GetAlphabetSize())
+	fmt.Fprintf(cmd.OutOrStdout(), "   Rotors: %d\n", machine.GetRotorCount())
+	fmt.Fprintf(cmd.OutOrStdout(), "   Plugboard Pairs: %d\n", machine.GetPlugboardPairCount())
+	fmt.Fprintf(cmd.OutOrStdout(), "   Current Rotor Positions: %v\n", machine.GetCurrentRotorPositions())
 
 	return nil
 }
@@ -109,16 +109,16 @@ func showConfig(configFile string, cmd *cobra.Command) error {
 	}
 
 	// Show basic information
-	fmt.Printf("Configuration File: %s\n", configFile)
-	fmt.Printf("==========================================\n")
-	fmt.Printf("Alphabet Size: %d characters\n", machine.GetAlphabetSize())
-	fmt.Printf("Rotors: %d\n", machine.GetRotorCount())
-	fmt.Printf("Plugboard Pairs: %d\n", machine.GetPlugboardPairCount())
-	fmt.Printf("Current Rotor Positions: %v\n", machine.GetCurrentRotorPositions())
+	fmt.Fprintf(cmd.OutOrStdout(), "Configuration File: %s\n", configFile)
+	fmt.Fprintf(cmd.OutOrStdout(), "==========================================\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "Alphabet Size: %d characters\n", machine.GetAlphabetSize())
+	fmt.Fprintf(cmd.OutOrStdout(), "Rotors: %d\n", machine.GetRotorCount())
+	fmt.Fprintf(cmd.OutOrStdout(), "Plugboard Pairs: %d\n", machine.GetPlugboardPairCount())
+	fmt.Fprintf(cmd.OutOrStdout(), "Current Rotor Positions: %v\n", machine.GetCurrentRotorPositions())
 
 	if detailed {
-		fmt.Printf("\nDetailed Settings:\n")
-		fmt.Printf("------------------\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "\nDetailed Settings:\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "------------------\n")
 
 		// Get full settings
 		settings, err := machine.GetSettings()
@@ -126,23 +126,23 @@ func showConfig(configFile string, cmd *cobra.Command) error {
 			return fmt.Errorf("failed to get detailed settings: %v", err)
 		}
 
-		fmt.Printf("Alphabet: %s\n", string(settings.Alphabet))
-		fmt.Printf("Rotor Count: %d\n", len(settings.RotorSpecs))
+		fmt.Fprintf(cmd.OutOrStdout(), "Alphabet: %s\n", string(settings.Alphabet))
+		fmt.Fprintf(cmd.OutOrStdout(), "Rotor Count: %d\n", len(settings.RotorSpecs))
 
 		for i, rotor := range settings.RotorSpecs {
-			fmt.Printf("  Rotor %d: ID=%s, Position=%d, Ring=%d\n",
+			fmt.Fprintf(cmd.OutOrStdout(), "  Rotor %d: ID=%s, Position=%d, Ring=%d\n",
 				i+1, rotor.ID, rotor.Position, rotor.RingSetting)
 		}
 
-		fmt.Printf("Reflector: ID=%s\n", settings.ReflectorSpec.ID)
-		fmt.Printf("Plugboard Pairs: %d\n", len(settings.PlugboardPairs))
+		fmt.Fprintf(cmd.OutOrStdout(), "Reflector: ID=%s\n", settings.ReflectorSpec.ID)
+		fmt.Fprintf(cmd.OutOrStdout(), "Plugboard Pairs: %d\n", len(settings.PlugboardPairs))
 
 		if len(settings.PlugboardPairs) > 0 {
-			fmt.Printf("  Pairs: ")
+			fmt.Fprintf(cmd.OutOrStdout(), "  Pairs: ")
 			for k, v := range settings.PlugboardPairs {
-				fmt.Printf("%c↔%c ", k, v)
+				fmt.Fprintf(cmd.OutOrStdout(), "%c↔%c ", k, v)
 			}
-			fmt.Printf("\n")
+			fmt.Fprintf(cmd.OutOrStdout(), "\n")
 		}
 	}
 
@@ -152,9 +152,9 @@ func showConfig(configFile string, cmd *cobra.Command) error {
 func testConfig(configFile string, cmd *cobra.Command) error {
 	testText, _ := cmd.Flags().GetString("text")
 
-	fmt.Printf("Testing configuration: %s\n", configFile)
-	fmt.Printf("Test text: %s\n", testText)
-	fmt.Printf("========================\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "Testing configuration: %s\n", configFile)
+	fmt.Fprintf(cmd.OutOrStdout(), "Test text: %s\n", testText)
+	fmt.Fprintf(cmd.OutOrStdout(), "========================\n")
 
 	// Create machine from configuration
 	machine, err := createMachineFromConfig(configFile)
@@ -168,7 +168,7 @@ func testConfig(configFile string, cmd *cobra.Command) error {
 		return fmt.Errorf("encryption test failed: %v", err)
 	}
 
-	fmt.Printf("Encrypted: %s\n", encrypted)
+	fmt.Fprintf(cmd.OutOrStdout(), "Encrypted: %s\n", encrypted)
 
 	// Reset machine and test decryption
 	if err := machine.Reset(); err != nil {
@@ -180,15 +180,15 @@ func testConfig(configFile string, cmd *cobra.Command) error {
 		return fmt.Errorf("decryption test failed: %v", err)
 	}
 
-	fmt.Printf("Decrypted: %s\n", decrypted)
+	fmt.Fprintf(cmd.OutOrStdout(), "Decrypted: %s\n", decrypted)
 
 	// Verify round-trip
 	if testText == decrypted {
-		fmt.Printf("✅ Round-trip test PASSED\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "✅ Round-trip test PASSED\n")
 	} else {
-		fmt.Printf("❌ Round-trip test FAILED\n")
-		fmt.Printf("   Expected: %s\n", testText)
-		fmt.Printf("   Got:      %s\n", decrypted)
+		fmt.Fprintf(cmd.OutOrStdout(), "❌ Round-trip test FAILED\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "   Expected: %s\n", testText)
+		fmt.Fprintf(cmd.OutOrStdout(), "   Got:      %s\n", decrypted)
 	}
 
 	return nil
@@ -201,7 +201,7 @@ func convertConfig(configFile string, cmd *cobra.Command) error {
 		return fmt.Errorf("output file required for conversion (use --output)")
 	}
 
-	fmt.Printf("Converting configuration: %s → %s\n", configFile, outputFile)
+	fmt.Fprintf(cmd.OutOrStdout(), "Converting configuration: %s → %s\n", configFile, outputFile)
 
 	// Read and validate input configuration
 	machine, err := createMachineFromConfig(configFile)
@@ -221,7 +221,7 @@ func convertConfig(configFile string, cmd *cobra.Command) error {
 		return fmt.Errorf("failed to write converted configuration: %v", err)
 	}
 
-	fmt.Printf("✅ Configuration converted successfully\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "✅ Configuration converted successfully\n")
 
 	return nil
 }

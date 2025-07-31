@@ -63,12 +63,12 @@ func runPreset(cmd *cobra.Command, args []string) error {
 }
 
 func listPresets(cmd *cobra.Command) error {
-	fmt.Println("Available Enigma Machine Presets:")
-	fmt.Println()
+	fmt.Fprintln(cmd.OutOrStdout(), "Available Enigma Machine Presets:")
+	fmt.Fprintln(cmd.OutOrStdout())
 
 	presets := getAvailablePresets()
 	for _, preset := range presets {
-		fmt.Printf("  %-12s - %s\n", preset.Name, preset.Description)
+		fmt.Fprintf(cmd.OutOrStdout(), "  %-12s - %s\n", preset.Name, preset.Description)
 	}
 
 	fmt.Println()
@@ -85,9 +85,9 @@ func describePresets(presetName string, cmd *cobra.Command) error {
 		presets := getAvailablePresets()
 		for i, preset := range presets {
 			if i > 0 {
-				fmt.Println("\n" + strings.Repeat("-", 60))
+				fmt.Fprintln(cmd.OutOrStdout(), "\n"+strings.Repeat("-", 60))
 			}
-			describePreset(preset, verbose)
+			describePreset(preset, verbose, cmd)
 		}
 		return nil
 	}
@@ -97,35 +97,35 @@ func describePresets(presetName string, cmd *cobra.Command) error {
 		return fmt.Errorf("unknown preset: %s. Use --list to see available presets", presetName)
 	}
 
-	describePreset(*preset, verbose)
+	describePreset(*preset, verbose, cmd)
 	return nil
 }
 
-func describePreset(preset PresetInfo, verbose bool) {
-	fmt.Printf("Preset: %s\n", preset.Name)
-	fmt.Printf("Description: %s\n", preset.Description)
-	fmt.Printf("Use Case: %s\n", preset.UseCase)
-	fmt.Printf("Security Level: %s\n", preset.SecurityLevel)
-	fmt.Printf("Default Alphabet: %s (%d characters)\n", preset.AlphabetName, preset.AlphabetSize)
-	fmt.Printf("Rotors: %d\n", preset.RotorCount)
-	fmt.Printf("Plugboard Pairs: %d\n", preset.PlugboardPairs)
+func describePreset(preset PresetInfo, verbose bool, cmd *cobra.Command) {
+	fmt.Fprintf(cmd.OutOrStdout(), "Preset: %s\n", preset.Name)
+	fmt.Fprintf(cmd.OutOrStdout(), "Description: %s\n", preset.Description)
+	fmt.Fprintf(cmd.OutOrStdout(), "Use Case: %s\n", preset.UseCase)
+	fmt.Fprintf(cmd.OutOrStdout(), "Security Level: %s\n", preset.SecurityLevel)
+	fmt.Fprintf(cmd.OutOrStdout(), "Default Alphabet: %s (%d characters)\n", preset.AlphabetName, preset.AlphabetSize)
+	fmt.Fprintf(cmd.OutOrStdout(), "Rotors: %d\n", preset.RotorCount)
+	fmt.Fprintf(cmd.OutOrStdout(), "Plugboard Pairs: %d\n", preset.PlugboardPairs)
 
 	if verbose {
-		fmt.Printf("\nDetailed Configuration:\n")
-		fmt.Printf("  Historical Accuracy: %s\n", boolToYesNo(preset.HistoricalAccuracy))
-		fmt.Printf("  Recommended For: %s\n", preset.RecommendedFor)
-		fmt.Printf("  Complexity Rating: %s/5\n", preset.ComplexityRating)
+		fmt.Fprintf(cmd.OutOrStdout(), "\nDetailed Configuration:\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "  Historical Accuracy: %s\n", boolToYesNo(preset.HistoricalAccuracy))
+		fmt.Fprintf(cmd.OutOrStdout(), "  Recommended For: %s\n", preset.RecommendedFor)
+		fmt.Fprintf(cmd.OutOrStdout(), "  Complexity Rating: %s/5\n", preset.ComplexityRating)
 
 		if preset.Notes != "" {
-			fmt.Printf("\nNotes: %s\n", preset.Notes)
+			fmt.Fprintf(cmd.OutOrStdout(), "\nNotes: %s\n", preset.Notes)
 		}
 
-		fmt.Printf("\nExample Usage:\n")
-		fmt.Printf("  eniGOma encrypt --text \"Hello World\" --preset %s\n", preset.Name)
-		fmt.Printf("  eniGOma keygen --preset %s --output %s-key.json\n", preset.Name, preset.Name)
+		fmt.Fprintf(cmd.OutOrStdout(), "\nExample Usage:\n")
+		fmt.Fprintf(cmd.OutOrStdout(), "  eniGOma encrypt --text \"Hello World\" --preset %s\n", preset.Name)
+		fmt.Fprintf(cmd.OutOrStdout(), "  eniGOma keygen --preset %s --output %s-key.json\n", preset.Name, preset.Name)
 	}
 
-	fmt.Println()
+	fmt.Fprintln(cmd.OutOrStdout())
 }
 
 func exportPreset(presetName string, cmd *cobra.Command) error {
@@ -144,13 +144,13 @@ func exportPreset(presetName string, cmd *cobra.Command) error {
 	// Output configuration
 	outputFile, _ := cmd.Flags().GetString("output")
 	if outputFile == "" {
-		fmt.Print(jsonData)
+		fmt.Fprint(cmd.OutOrStdout(), jsonData)
 	} else {
 		err := writeStringToFile(jsonData, outputFile)
 		if err != nil {
 			return fmt.Errorf("failed to write configuration to file: %v", err)
 		}
-		fmt.Printf("Preset '%s' configuration saved to: %s\n", presetName, outputFile)
+		fmt.Fprintf(cmd.OutOrStdout(), "Preset '%s' configuration saved to: %s\n", presetName, outputFile)
 	}
 
 	return nil

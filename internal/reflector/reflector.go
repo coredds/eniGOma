@@ -37,16 +37,17 @@ func NewReflector(id string, alph *alphabet.Alphabet, mapping string) (Reflector
 	}
 
 	size := alph.Size()
-	if len(mapping) != size {
+	mappingRunes := []rune(mapping)
+	if len(mappingRunes) != size {
 		return nil, fmt.Errorf("mapping length (%d) must match alphabet size (%d)",
-			len(mapping), size)
+			len(mappingRunes), size)
 	}
 
 	// Convert mapping string to indices and validate reciprocity
 	reflectMap := make([]int, size)
 	used := make([]bool, size)
 
-	for i, r := range mapping {
+	for i, r := range mappingRunes {
 		outputIdx, err := alph.RuneToIndex(r)
 		if err != nil {
 			return nil, fmt.Errorf("invalid character in mapping at position %d: %v", i, err)
@@ -196,16 +197,17 @@ func ValidateReflectorMapping(alph *alphabet.Alphabet, mapping string) error {
 	}
 
 	size := alph.Size()
-	if len(mapping) != size {
+	mappingRunes := []rune(mapping)
+	if len(mappingRunes) != size {
 		return fmt.Errorf("mapping length (%d) must match alphabet size (%d)",
-			len(mapping), size)
+			len(mappingRunes), size)
 	}
 
 	// Convert to indices for validation
 	indices := make([]int, size)
 	used := make([]bool, size)
 
-	for i, r := range mapping {
+	for i, r := range mappingRunes {
 		outputIdx, err := alph.RuneToIndex(r)
 		if err != nil {
 			return fmt.Errorf("invalid character in mapping at position %d: %v", i, err)

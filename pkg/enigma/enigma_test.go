@@ -198,7 +198,7 @@ func TestEnigma_RotorStepping(t *testing.T) {
 	// Encrypt a character and check that rightmost rotor stepped
 	enigma.Encrypt("A")
 	positions := enigma.GetCurrentRotorPositions()
-	
+
 	if positions[1] != 1 { // Rightmost rotor should have stepped
 		t.Errorf("Rightmost rotor should have stepped to position 1, got %d", positions[1])
 	}
@@ -316,10 +316,10 @@ func TestEnigma_Clone(t *testing.T) {
 
 	// Test that both produce same output initially
 	input := "ABC"
-	
+
 	original.Reset()
 	originalOutput, _ := original.Encrypt(input)
-	
+
 	clone.Reset()
 	cloneOutput, _ := clone.Encrypt(input)
 
@@ -329,11 +329,11 @@ func TestEnigma_Clone(t *testing.T) {
 
 	// Test that modifying clone doesn't affect original
 	clone.Encrypt("XYZ") // This should change clone's rotor positions
-	
+
 	// Reset both and check they still produce same output
 	original.Reset()
 	clone.Reset()
-	
+
 	originalOutput2, _ := original.Encrypt(input)
 	cloneOutput2, _ := clone.Encrypt(input)
 
@@ -447,4 +447,4 @@ func equalSlices(a, b []int) bool {
 		}
 	}
 	return true
-} 
+}

@@ -7,7 +7,6 @@ package alphabet
 
 import (
 	"fmt"
-	"sort"
 )
 
 // Alphabet represents a character set used by the Enigma machine.
@@ -34,12 +33,10 @@ func New(runes []rune) (*Alphabet, error) {
 		seen[r] = true
 	}
 
-	// Create a copy and sort for consistent ordering
+	// Create a copy but preserve the original ordering
+	// Sorting can cause issues with carefully crafted Unicode alphabets
 	runesCopy := make([]rune, len(runes))
 	copy(runesCopy, runes)
-	sort.Slice(runesCopy, func(i, j int) bool {
-		return runesCopy[i] < runesCopy[j]
-	})
 
 	// Build the mapping
 	runeToID := make(map[rune]int, len(runesCopy))
@@ -126,4 +123,104 @@ func (a *Alphabet) IndicesToString(indices []int) (string, error) {
 		runes = append(runes, r)
 	}
 	return string(runes), nil
+}
+
+// AutoDetectFromText creates an alphabet by analyzing the unique characters in the input text.
+// It automatically handles reflector compatibility by ensuring an even number of characters.
+func AutoDetectFromText(text string, options ...AutoDetectOption) (*Alphabet, error) {
+	if text == "" {
+		return nil, fmt.Errorf("cannot auto-detect alphabet from empty text")
+	}
+
+	config := &autoDetectConfig{
+		maxSize:        1000, // Default safety limit
+		addPadding:     true, // Ensure even size for reflector
+		excludeControl: true, // Skip control characters
+	}
+
+	// Apply options
+	for _, opt := range options {
+		opt(config)
+	}
+
+	// Collect unique runes
+	uniqueRunes := make(map[rune]bool)
+	for _, r := range text {
+		// Skip control characters if configured
+		if config.excludeControl && r < 32 && r != '\n' && r != '\t' {
+			continue
+		}
+		uniqueRunes[r] = true
+
+		// Safety limit to prevent performance issues
+		if len(uniqueRunes) >= config.maxSize {
+			break
+		}
+	}
+
+	if len(uniqueRunes) == 0 {
+		return nil, fmt.Errorf("no valid characters found in text for alphabet")
+	}
+
+	// Convert to ordered slice (deterministic ordering by Unicode codepoint)
+	runes := make([]rune, 0, len(uniqueRunes))
+	for r := range uniqueRunes {
+		runes = append(runes, r)
+	}
+
+	// Sort by Unicode codepoint for deterministic behavior
+	for i := 0; i < len(runes)-1; i++ {
+		for j := i + 1; j < len(runes); j++ {
+			if runes[i] > runes[j] {
+				runes[i], runes[j] = runes[j], runes[i]
+			}
+		}
+	}
+
+	// Ensure even size for reflector compatibility
+	if config.addPadding && len(runes)%2 != 0 {
+		// Find a suitable padding character not in the text
+		paddingChar := rune(' ')
+		for uniqueRunes[paddingChar] {
+			paddingChar++
+			// Safety check to avoid infinite loop
+			if paddingChar > 0x10000 {
+				return nil, fmt.Errorf("unable to find suitable padding character for even-sized alphabet")
+			}
+		}
+		runes = append(runes, paddingChar)
+	}
+
+	return New(runes)
+}
+
+// autoDetectConfig holds configuration for auto-detection
+type autoDetectConfig struct {
+	maxSize        int
+	addPadding     bool
+	excludeControl bool
+}
+
+// AutoDetectOption is a function that configures auto-detection behavior
+type AutoDetectOption func(*autoDetectConfig)
+
+// WithMaxSize sets the maximum number of characters in the auto-detected alphabet
+func WithMaxSize(maxSize int) AutoDetectOption {
+	return func(config *autoDetectConfig) {
+		config.maxSize = maxSize
+	}
+}
+
+// WithoutPadding disables automatic padding for even-sized alphabets
+func WithoutPadding() AutoDetectOption {
+	return func(config *autoDetectConfig) {
+		config.addPadding = false
+	}
+}
+
+// WithControlCharacters includes control characters in the alphabet
+func WithControlCharacters() AutoDetectOption {
+	return func(config *autoDetectConfig) {
+		config.excludeControl = false
+	}
 }

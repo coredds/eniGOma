@@ -22,9 +22,14 @@ process as encryption. The machine must be configured with the same settings
 that were used for encryption.
 
 Examples:
-  eniGOma decrypt --text "ENCRYPTED_TEXT" --preset classic
-  eniGOma decrypt --file encrypted.txt --output decrypted.txt --config my-enigma.json
-  eniGOma decrypt --text "CIPHER" --alphabet greek --security medium`,
+  # Decrypt using the same configuration file used for encryption
+  eniGOma decrypt --text "ENCRYPTED_TEXT" --config my-key.json
+  eniGOma decrypt --file encrypted.txt --config my-key.json --output decrypted.txt
+  
+  # Legacy mode: specify alphabet manually (not recommended)
+  eniGOma decrypt --text "CIPHER" --alphabet latin --security medium
+  
+Note: Always use the same configuration file that was used for encryption.`,
 	RunE: runDecrypt,
 }
 
@@ -36,7 +41,7 @@ func init() {
 
 	// Machine configuration
 	decryptCmd.Flags().StringP("preset", "p", "", "Use a preset configuration (classic, simple, high, extreme)")
-	decryptCmd.Flags().StringP("alphabet", "a", "latin", "Alphabet to use (latin, greek, cyrillic, portuguese, ascii, alphanumeric)")
+	decryptCmd.Flags().StringP("alphabet", "a", "auto", "Alphabet to use (auto, latin, greek, cyrillic, portuguese, ascii, alphanumeric)")
 	decryptCmd.Flags().StringP("security", "s", "medium", "Security level (low, medium, high, extreme)")
 
 	// Advanced options

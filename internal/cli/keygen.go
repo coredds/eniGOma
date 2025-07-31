@@ -90,25 +90,25 @@ func runKeygen(cmd *cobra.Command, args []string) error {
 	}
 
 	if outputFile == "" {
-		fmt.Print(jsonData)
+		fmt.Fprint(cmd.OutOrStdout(), jsonData)
 	} else {
 		err := writeStringToFile(jsonData, outputFile)
 		if err != nil {
 			return fmt.Errorf("failed to write configuration to file: %v", err)
 		}
-		fmt.Printf("Configuration saved to: %s\n", outputFile)
+		fmt.Fprintf(cmd.OutOrStdout(), "Configuration saved to: %s\n", outputFile)
 	}
 
 	return nil
 }
 
 func showConfigurationDescription(machine *enigma.Enigma, cmd *cobra.Command) {
-	fmt.Printf("Configuration Description:\n")
-	fmt.Printf("  Alphabet Size: %d characters\n", machine.GetAlphabetSize())
-	fmt.Printf("  Rotors: %d\n", machine.GetRotorCount())
-	fmt.Printf("  Plugboard Pairs: %d\n", machine.GetPlugboardPairCount())
-	fmt.Printf("  Current Rotor Positions: %v\n", machine.GetCurrentRotorPositions())
-	fmt.Printf("\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "Configuration Description:\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "  Alphabet Size: %d characters\n", machine.GetAlphabetSize())
+	fmt.Fprintf(cmd.OutOrStdout(), "  Rotors: %d\n", machine.GetRotorCount())
+	fmt.Fprintf(cmd.OutOrStdout(), "  Plugboard Pairs: %d\n", machine.GetPlugboardPairCount())
+	fmt.Fprintf(cmd.OutOrStdout(), "  Current Rotor Positions: %v\n", machine.GetCurrentRotorPositions())
+	fmt.Fprintf(cmd.OutOrStdout(), "\n")
 }
 
 func showConfigurationStats(machine *enigma.Enigma, cmd *cobra.Command) {
@@ -121,13 +121,13 @@ func showConfigurationStats(machine *enigma.Enigma, cmd *cobra.Command) {
 	rotorPositions := calculatePower(alphabetSize, rotorCount)
 	plugboardCombinations := calculatePlugboardCombinations(alphabetSize, plugboardPairs)
 
-	fmt.Printf("Configuration Statistics:\n")
-	fmt.Printf("  Rotor Combinations: ~%g\n", float64(rotorCombinations))
-	fmt.Printf("  Rotor Position Combinations: %d\n", rotorPositions)
-	fmt.Printf("  Plugboard Combinations: ~%g\n", float64(plugboardCombinations))
-	fmt.Printf("  Approximate Total Keyspace: ~%g\n",
+	fmt.Fprintf(cmd.OutOrStdout(), "Configuration Statistics:\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "  Rotor Combinations: ~%g\n", float64(rotorCombinations))
+	fmt.Fprintf(cmd.OutOrStdout(), "  Rotor Position Combinations: %d\n", rotorPositions)
+	fmt.Fprintf(cmd.OutOrStdout(), "  Plugboard Combinations: ~%g\n", float64(plugboardCombinations))
+	fmt.Fprintf(cmd.OutOrStdout(), "  Approximate Total Keyspace: ~%g\n",
 		float64(rotorCombinations)*float64(rotorPositions)*float64(plugboardCombinations))
-	fmt.Printf("\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "\n")
 }
 
 func calculateFactorial(n int) int64 {

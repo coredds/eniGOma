@@ -1,8 +1,21 @@
 # eniGOma Usage Guide
 
+## 🌟 Auto-Detection (New in v0.3.0)
+
+**The easiest way to use eniGOma**: Just encrypt any text in any language!
+
+```bash
+# Works automatically with any language!
+eniGOma encrypt --text "Olá mundo! Como você está?"
+eniGOma encrypt --text "Mixed: Hello! Привет! 日本語!"
+eniGOma encrypt --text "Symbols: αβγ δεζ 🙂 test!"
+```
+
+No need to specify alphabets - eniGOma automatically detects the optimal character set from your text.
+
 ## Brazilian Portuguese Support 🇧🇷
 
-eniGOma now includes **built-in support for Brazilian Portuguese** with the `AlphabetPortuguese` predefined alphabet.
+eniGOma includes **built-in support for Brazilian Portuguese** with both auto-detection and the `AlphabetPortuguese` predefined alphabet.
 
 ### Quick Start with Portuguese
 

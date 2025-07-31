@@ -387,8 +387,8 @@ func TestReflectorRoundtrip(t *testing.T) {
 	// Test that recreated has same behavior
 	for i := 0; i < alph.Size(); i++ {
 		if recreated.Reflect(i) != original.Reflect(i) {
-			t.Errorf("Roundtrip failed: Reflect(%d) = %d, want %d", 
+			t.Errorf("Roundtrip failed: Reflect(%d) = %d, want %d",
 				i, recreated.Reflect(i), original.Reflect(i))
 		}
 	}
-} 
+}
