@@ -294,16 +294,41 @@ eniGOma provides predefined security levels for quick setup:
 | High     | 8      | 15              | Strong obfuscation |
 | Extreme  | 12     | 20              | Maximum complexity |
 
-## Predefined Alphabets
+## Predefined Alphabets (Advanced)
 
-- `AlphabetLatinUpper` - A-Z (26 characters)
-- `AlphabetLatinLower` - a-z (26 characters)  
-- `AlphabetDigits` - 0-9 (10 characters)
-- `AlphabetASCIIPrintable` - All printable ASCII (95 characters)
-- `AlphabetAlphaNumeric` - Letters and digits (62 characters)
-- `AlphabetGreek` - Greek letters (48 characters)
-- `AlphabetCyrillic` - Cyrillic letters (66 characters)
-- `AlphabetPortuguese` - **Brazilian Portuguese with accents (88 characters)**
+While **auto-detection is recommended** for most use cases, eniGOma provides predefined alphabets for specialized scenarios or when you need deterministic character sets:
+
+### When to Use Predefined Alphabets
+- **Consistent character sets** across multiple messages
+- **Legacy compatibility** with specific character requirements  
+- **Performance optimization** when alphabet is known in advance
+- **Educational purposes** to understand specific character mappings
+
+### Available Alphabets
+
+| Alphabet | Characters | Use Case |
+|----------|------------|----------|
+| `AlphabetLatinUpper` | A-Z (26) | Classic Enigma simulation |
+| `AlphabetLatinLower` | a-z (26) | Lowercase text processing |
+| `AlphabetDigits` | 0-9 (10) | Numeric data encryption |
+| `AlphabetASCIIPrintable` | All printable ASCII (95) | General text with symbols |
+| `AlphabetAlphaNumeric` | Letters + digits (62) | Alphanumeric codes |
+| `AlphabetGreek` | Greek letters (48) | Greek text processing |
+| `AlphabetCyrillic` | Cyrillic letters (66) | Russian/Slavic languages |
+| `AlphabetPortuguese` | Brazilian Portuguese (88) | Portuguese with accents |
+
+### Usage Examples
+
+```bash
+# CLI: Use predefined alphabet with keygen
+eniGOma keygen --alphabet latin --output latin-key.json
+eniGOma encrypt --text "HELLO WORLD" --config latin-key.json
+
+# Library: Use predefined alphabet directly
+machine, err := enigma.NewEnigmaSimple(eniGOma.AlphabetGreek)
+```
+
+💡 **Tip**: For most use cases, prefer `--auto-config` which automatically detects the optimal alphabet from your input text.
 
 ## Advanced Features
 
