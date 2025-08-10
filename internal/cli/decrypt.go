@@ -5,9 +5,9 @@
 package cli
 
 import (
+	"encoding/base64"
+	"encoding/hex"
 	"fmt"
-    "encoding/base64"
-    "encoding/hex"
 	"os"
 	"strings"
 
@@ -69,7 +69,7 @@ func runDecrypt(cmd *cobra.Command, args []string) error {
 	}
 
 	// Create Enigma machine
-	machine, err := createMachineFromFlags(cmd)
+	machine, err := createMachineFromFlags(cmd, text)
 	if err != nil {
 		return fmt.Errorf("failed to create Enigma machine: %v", err)
 	}
@@ -116,17 +116,17 @@ func parseInputFormat(text string, cmd *cobra.Command) (string, error) {
 	case "text", "":
 		return text, nil
 	case "hex":
-        decoded, err := hex.DecodeString(strings.TrimSpace(text))
-        if err != nil {
-            return "", fmt.Errorf("invalid hex input: %w", err)
-        }
-        return string(decoded), nil
+		decoded, err := hex.DecodeString(strings.TrimSpace(text))
+		if err != nil {
+			return "", fmt.Errorf("invalid hex input: %w", err)
+		}
+		return string(decoded), nil
 	case "base64":
-        decoded, err := base64.StdEncoding.DecodeString(strings.TrimSpace(text))
-        if err != nil {
-            return "", fmt.Errorf("invalid base64 input: %w", err)
-        }
-        return string(decoded), nil
+		decoded, err := base64.StdEncoding.DecodeString(strings.TrimSpace(text))
+		if err != nil {
+			return "", fmt.Errorf("invalid base64 input: %w", err)
+		}
+		return string(decoded), nil
 	default:
 		return "", fmt.Errorf("unknown format: %s. Available: text, hex, base64", format)
 	}

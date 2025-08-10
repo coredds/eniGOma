@@ -52,7 +52,7 @@ func runKeygen(cmd *cobra.Command, args []string) error {
 	setupVerbose(cmd)
 
 	// Create machine based on parameters
-	machine, err := createMachineFromFlags(cmd)
+	machine, err := createMachineFromFlags(cmd, "")
 	if err != nil {
 		return fmt.Errorf("failed to create Enigma machine: %v", err)
 	}
