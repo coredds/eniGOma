@@ -6,6 +6,8 @@ package cli
 
 import (
 	"fmt"
+    "encoding/base64"
+    "encoding/hex"
 	"os"
 	"strings"
 
@@ -114,14 +116,17 @@ func parseInputFormat(text string, cmd *cobra.Command) (string, error) {
 	case "text", "":
 		return text, nil
 	case "hex":
-		// Simple hex decoding (for demo purposes)
-		return text, nil // In a real implementation, we'd decode hex properly
+        decoded, err := hex.DecodeString(strings.TrimSpace(text))
+        if err != nil {
+            return "", fmt.Errorf("invalid hex input: %w", err)
+        }
+        return string(decoded), nil
 	case "base64":
-		// Simple base64-like decoding (for demo purposes)
-		if strings.HasPrefix(text, "base64:") {
-			return strings.TrimPrefix(text, "base64:"), nil
-		}
-		return text, nil
+        decoded, err := base64.StdEncoding.DecodeString(strings.TrimSpace(text))
+        if err != nil {
+            return "", fmt.Errorf("invalid base64 input: %w", err)
+        }
+        return string(decoded), nil
 	default:
 		return "", fmt.Errorf("unknown format: %s. Available: text, hex, base64", format)
 	}
