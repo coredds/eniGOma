@@ -5,9 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2025-01-31
+
+### Added
+- CLI flags: `--auto-config` and `--save-config`
+- Stdin support for `encrypt` (pipe input directly)
+- Proper hex/base64 encoding (encrypt) and decoding (decrypt) via stdlib
+
+### Changed
+- Default alphabet documented and enforced as auto-detected for `encrypt` (equivalent to `--alphabet=auto`)
+- README and USAGE updated with configuration-first workflow, stdin, and encoding examples
+- Documentation consistency improvements (removed decorative emojis; reorganized CLI examples)
+
+### Fixed
+- Version tests updated to avoid pinning an exact patch version
+
 ## [0.3.0] - 2025-01-30
 
-### 🌟 Major Features Added
+### Major Features Added
 - **Smart Auto-Alphabet Detection** - Automatically detects optimal character set from input text
 - **Universal Unicode Support** - Encrypt any text in any language without alphabet selection
 - **Mixed-Language Text Support** - Handle text combining multiple languages (e.g., "Hello! Привет! 日本語!")

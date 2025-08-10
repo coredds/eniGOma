@@ -1,8 +1,8 @@
 # eniGOma Usage Guide
 
-## 🌟 Auto-Detection (New in v0.3.0)
+## Auto-Detection (since v0.3.0)
 
-**The easiest way to use eniGOma**: Just encrypt any text in any language!
+The easiest way to use eniGOma: just encrypt any text in any language.
 
 ```bash
 # Works automatically with any language!
@@ -11,9 +11,9 @@ eniGOma encrypt --text "Mixed: Hello! Привет! 日本語!"
 eniGOma encrypt --text "Symbols: αβγ δεζ 🙂 test!"
 ```
 
-No need to specify alphabets - eniGOma automatically detects the optimal character set from your text.
+Note: The default alphabet is auto-detected (equivalent to --alphabet=auto). No need to specify alphabets; eniGOma automatically detects the optimal character set from your text.
 
-## Brazilian Portuguese Support 🇧🇷
+## Brazilian Portuguese Support
 
 eniGOma includes **built-in support for Brazilian Portuguese** with both auto-detection and the `AlphabetPortuguese` predefined alphabet.
 
@@ -54,7 +54,7 @@ func main() {
     }
     fmt.Printf("Decrypted: %s\n", decrypted)
     
-    // ✅ Perfect round-trip with all accents preserved!
+    // Perfect round-trip with all accents preserved!
 }
 ```
 
@@ -122,8 +122,7 @@ machine, err := enigma.New(
 ### Save/Load Portuguese Settings
 ```go
 // Save Portuguese machine configuration
-settings, err := machine.GetSettings()
-jsonData, err := settings.MarshalJSON()
+jsonData, err := machine.SaveSettingsToJSON()
 
 // Later: restore exact same configuration
 newMachine, err := enigma.NewFromJSON(jsonData)
@@ -136,7 +135,8 @@ The [`examples/`](./examples/) directory contains ready-to-use configuration fil
 ### Portuguese Examples
 ```bash
 # Use the Portuguese configuration example
-eniGOma encrypt --text "Bom dia, Brasil!" --config examples/languages/portuguese-basic.json
+eniGOma encrypt --text "Bom dia, Brasil!" --auto-config pt-key.json
+eniGOma decrypt --text "ENCRYPTED" --config pt-key.json
 
 # Generate your own Portuguese configuration
 eniGOma keygen --alphabet portuguese --security medium --output my-portuguese.json
@@ -167,4 +167,19 @@ Browse all examples: [`examples/README.md`](./examples/README.md)
 
 ---
 
-🇧🇷 **Brazilian Portuguese is now a first-class citizen in eniGOma!** 🇧🇷 
+Brazilian Portuguese is now a first-class citizen in eniGOma.
+
+## CLI: Stdin and Encoding Examples
+
+```bash
+# Stdin encryption (auto-detected alphabet by default)
+echo "Hello via stdin" | eniGOma encrypt --auto-config my-key.json
+
+# Base64 output and decrypt
+eniGOma encrypt --text "Hello" --auto-config my-key.json --format base64
+eniGOma decrypt --text "SGVsbG8=" --config my-key.json --format base64
+
+# Hex output and decrypt
+eniGOma encrypt --text "Hello" --auto-config my-key.json --format hex
+eniGOma decrypt --text "48656c6c6f" --config my-key.json --format hex
+```
