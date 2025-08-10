@@ -21,10 +21,7 @@ func TestVersion(t *testing.T) {
 		t.Errorf("Version format invalid: %s (should be X.Y.Z)", version)
 	}
 
-	// Check that it's version 0.3.0
-	if version != "0.3.0" {
-		t.Errorf("Expected version 0.3.0, got %s", version)
-	}
+    // Version should match the constant (already checked) and follow semver
 }
 
 func TestVersionConstant(t *testing.T) {

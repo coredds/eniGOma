@@ -1,6 +1,6 @@
 # eniGOma
 
-[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](https://github.com/coredds/eniGOma/releases)
+[![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)](https://github.com/coredds/eniGOma/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/coredds/eniGOma.svg)](https://pkg.go.dev/github.com/coredds/eniGOma)
 
 A highly customizable, Unicode-capable Enigma machine implementation in Go.
@@ -42,7 +42,7 @@ eniGOma is a Go library that simulates the famous Enigma machine used during Wor
 ## Installation
 
 ```bash
-go get github.com/coredds/eniGOma@v0.3.0
+go get github.com/coredds/eniGOma@v0.3.1
 ```
 
 Or get the latest version:
@@ -449,7 +449,7 @@ eniGOma maintains historical Enigma machine behaviors:
 
 ## Version History
 
-Current version: **0.2.3**
+Current version: **0.3.1**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 
