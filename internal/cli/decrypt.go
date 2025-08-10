@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -101,7 +102,16 @@ func getInputTextForDecrypt(cmd *cobra.Command) (string, error) {
 	if filename, _ := cmd.Flags().GetString("file"); filename != "" {
 		data, err := os.ReadFile(filename)
 		if err != nil {
-			return "", fmt.Errorf("failed to read file %s: %v", filename, err)
+			return "", fmt.Errorf("failed to read file %s: %w", filename, err)
+		}
+		return parseInputFormat(string(data), cmd)
+	}
+
+	// Read from stdin if piped
+	if stat, err := os.Stdin.Stat(); err == nil && (stat.Mode()&os.ModeCharDevice) == 0 {
+		data, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			return "", fmt.Errorf("failed to read stdin: %w", err)
 		}
 		return parseInputFormat(string(data), cmd)
 	}

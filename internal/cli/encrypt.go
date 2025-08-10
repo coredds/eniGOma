@@ -143,7 +143,7 @@ func getInputText(cmd *cobra.Command) (string, error) {
 	if filename, _ := cmd.Flags().GetString("file"); filename != "" {
 		data, err := os.ReadFile(filename)
 		if err != nil {
-			return "", fmt.Errorf("failed to read file %s: %v", filename, err)
+			return "", fmt.Errorf("failed to read file %s: %w", filename, err)
 		}
 		return string(data), nil
 	}
@@ -152,7 +152,7 @@ func getInputText(cmd *cobra.Command) (string, error) {
 	if stat, err := os.Stdin.Stat(); err == nil && (stat.Mode()&os.ModeCharDevice) == 0 {
 		data, err := io.ReadAll(os.Stdin)
 		if err != nil {
-			return "", fmt.Errorf("failed to read stdin: %v", err)
+			return "", fmt.Errorf("failed to read stdin: %w", err)
 		}
 		return string(data), nil
 	}
@@ -248,6 +248,9 @@ func createMachineFromSettings(cmd *cobra.Command, inputText string) (*enigma.En
 		}
 	}
 
+	if v, _ := cmd.Flags().GetBool("verbose"); v {
+		fmt.Fprintln(cmd.ErrOrStderr(), "Encrypt: using manual settings")
+	}
 	return machine, nil
 }
 
@@ -264,7 +267,7 @@ func getAlphabetFromFlag(cmd *cobra.Command, inputText string) ([]rune, error) {
 			return nil, fmt.Errorf("auto-detect alphabet: %w", err)
 		}
 		if v, _ := cmd.Flags().GetBool("verbose"); v {
-			fmt.Printf("Auto-detected alphabet size: %d\n", detected.Size())
+			fmt.Fprintf(cmd.ErrOrStderr(), "Auto-detected alphabet size: %d\n", detected.Size())
 		}
 		return detected.Runes(), nil
 	case "latin", "latin-upper":
@@ -342,7 +345,7 @@ func writeOutput(text string, cmd *cobra.Command) error {
 	outputFile, _ := cmd.Flags().GetString("output")
 
 	if outputFile == "" {
-		fmt.Print(text)
+		fmt.Fprint(cmd.OutOrStdout(), text)
 		return nil
 	}
 
