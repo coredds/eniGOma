@@ -18,26 +18,26 @@ eniGOma is a Go library that simulates the famous Enigma machine used during Wor
 ## Features
 
 ### Core Functionality
-- ✅ Encryption and decryption with reciprocal property
-- ✅ Configurable rotors with custom mappings and notch positions
-- ✅ Reflector with reciprocal character mapping
-- ✅ Plugboard for additional character swapping
-- ✅ Proper rotor stepping including double-stepping
+- Encryption and decryption with reciprocal property
+- Configurable rotors with custom mappings and notch positions
+- Reflector with reciprocal character mapping
+- Plugboard for additional character swapping
+- Proper rotor stepping including double-stepping
 
 ### Unicode & Smart Features  
-- ✅ **Auto-Alphabet Detection**: Automatically detects and uses the optimal character set from your input text
-- ✅ Support for any Unicode character set (Latin, Greek, Cyrillic, Portuguese, Japanese, etc.)
-- ✅ Mixed-language text support (e.g., "Hello! Privет! 日本語!")
-- ✅ Predefined alphabets for advanced users (Latin, Greek, Cyrillic, Portuguese, ASCII)
-- ✅ Custom alphabet support for specialized use cases
-- ✅ Adjustable complexity levels (Low, Medium, High, Extreme)
+- **Auto-Alphabet Detection**: Automatically detects and uses the optimal character set from your input text
+- Support for any Unicode character set (Latin, Greek, Cyrillic, Portuguese, Japanese, etc.)
+- Mixed-language text support (e.g., "Hello! Privет! 日本語!")
+- Predefined alphabets for advanced users (Latin, Greek, Cyrillic, Portuguese, ASCII)
+- Custom alphabet support for specialized use cases
+- Adjustable complexity levels (Low, Medium, High, Extreme)
 
 ### Developer Experience
-- ✅ Functional options pattern for clean configuration
-- ✅ Comprehensive error handling
-- ✅ Full JSON serialization of machine state
-- ✅ Deep cloning support
-- ✅ Extensive unit tests (>95% coverage)
+- Functional options pattern for clean configuration
+- Comprehensive error handling
+- Full JSON serialization of machine state
+- Deep cloning support
+- Extensive unit tests (>95% coverage)
 
 ## Installation
 
@@ -93,7 +93,7 @@ func main() {
 
 ### Command Line Interface
 
-eniGOma includes a powerful CLI with **configuration-first workflow** for secure encryption, decryption, and key management. **New in v0.3.0**: Auto-config support ensures you can always decrypt your data!
+eniGOma includes a powerful CLI with a configuration-first workflow for secure encryption, decryption, and key management. New in v0.3.0: Auto-config support ensures you can always decrypt your data.
 
 ```bash
 # Install the CLI
@@ -102,6 +102,21 @@ go install github.com/coredds/eniGOma/cmd/eniGOma@latest
 # Quick start with auto-config (recommended for new users)
 eniGOma encrypt --text "Hello World!" --auto-config my-key.json
 eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+
+# Note: The default alphabet is auto-detected (equivalent to --alphabet=auto)
+
+# Stdin usage
+echo "Hello via stdin" | eniGOma encrypt --auto-config my-key.json
+
+# Output encoding (base64)
+eniGOma encrypt --text "Hello" --auto-config my-key.json --format base64
+# Decrypt base64 input
+eniGOma decrypt --text "SGVsbG8=" --config my-key.json --format base64
+
+# Output encoding (hex)
+eniGOma encrypt --text "Hello" --auto-config my-key.json --format hex
+# Decrypt hex input
+eniGOma decrypt --text "48656c6c6f" --config my-key.json --format hex
 ```
 
 #### CLI Commands
@@ -155,7 +170,7 @@ eniGOma preset --list
 eniGOma preset --describe classic --verbose
 ```
 
-## 🔑 Configuration-First Approach
+## Configuration-First Approach
 
 **New in v0.3.0**: eniGOma uses a configuration-first approach that ensures you can always decrypt your data!
 
@@ -328,7 +343,7 @@ eniGOma encrypt --text "HELLO WORLD" --config latin-key.json
 machine, err := enigma.NewEnigmaSimple(eniGOma.AlphabetGreek)
 ```
 
-💡 **Tip**: For most use cases, prefer `--auto-config` which automatically detects the optimal alphabet from your input text.
+Tip: For most use cases, prefer `--auto-config` which automatically detects the optimal alphabet from your input text.
 
 ## Advanced Features
 
@@ -411,7 +426,7 @@ The library includes:
 
 ## Examples
 
-### 📁 Configuration Examples
+### Configuration Examples
 
 The [`examples/`](./examples/) directory contains comprehensive configuration examples organized by category:
 
@@ -428,7 +443,7 @@ eniGOma encrypt --text "Hello World" --config examples/security-levels/high-secu
 eniGOma keygen --security high --output my-config.json
 ```
 
-### 🔧 Code Examples
+### Code Examples
 
 See the `cmd/example/` directory for complete code examples:
 
