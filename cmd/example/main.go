@@ -247,7 +247,9 @@ func demonstrateReciprocal() {
 		input := string(char)
 		encrypted, _ := machine.Encrypt(input)
 
-		machine.Reset()
+		if err := machine.Reset(); err != nil {
+			log.Fatalf("Reset failed: %v", err)
+		}
 
 		// Encrypt the encrypted character (should give us back the original)
 		backToOriginal, _ := machine.Encrypt(encrypted)
