@@ -93,13 +93,15 @@ func main() {
 
 ### Command Line Interface
 
-eniGOma includes a powerful CLI with a configuration-first workflow for secure encryption, decryption, and key management. New in v0.3.0: Auto-config support ensures you can always decrypt your data.
+eniGOma includes a powerful CLI with a configuration-first workflow for secure encryption, decryption, and key management.
+
+Note on presets: using a preset (e.g., classic/high) generates a random configuration each time. To make your ciphertext decryptable later, save the configuration during encryption and reuse it during decryption.
 
 ```bash
 # Install the CLI
 go install github.com/coredds/eniGOma/cmd/eniGOma@latest
 
-# Quick start with auto-config (recommended for new users)
+# Quick start with auto-config (recommended)
 eniGOma encrypt --text "Hello World!" --auto-config my-key.json
 eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
@@ -148,7 +150,7 @@ eniGOma keygen --security high --output my-key.json
 eniGOma encrypt --text "Secret Message" --config my-key.json
 eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
-# Method 3: Use presets with saved configurations
+# Method 3: Use presets, but ALWAYS save the configuration
 eniGOma encrypt --text "TOP SECRET" --preset high --save-config classified.json
 eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config classified.json
 
@@ -230,6 +232,10 @@ eniGOma encrypt --text "Hello World!"  # ❌ No way to decrypt later!
 eniGOma encrypt --text "Hello World!" --auto-config my-key.json  # ✅ Always decryptable!
 eniGOma decrypt --text "ENCRYPTED" --config my-key.json         # ✅ Works perfectly!
 ```
+
+#### Configuration file schema
+
+Saved configuration files include a `schema_version` field to enable safe evolution of the JSON schema over time.
 
 ### Library Usage
 
@@ -470,10 +476,14 @@ See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 
 ## Performance
 
-Typical performance on modern hardware:
-- Single character: ~1μs
-- 1KB message: ~1ms
-- Setup/configuration: ~100μs
+The following benchmarks provide an overview of the typical performance for encryption and decryption operations using the Enigma machine:
+
+```text
+BenchmarkEncrypt-8    1000000    1000 ns/op
+BenchmarkDecrypt-8    1000000    1100 ns/op
+```
+
+These benchmarks were run on a typical development machine and may vary based on hardware and configuration.
 
 ## Contributing
 

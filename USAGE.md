@@ -182,4 +182,20 @@ eniGOma decrypt --text "SGVsbG8=" --config my-key.json --format base64
 # Hex output and decrypt
 eniGOma encrypt --text "Hello" --auto-config my-key.json --format hex
 eniGOma decrypt --text "48656c6c6f" --config my-key.json --format hex
+
+## Presets and decryptability
+
+Presets (e.g., `classic`, `high`, `extreme`) generate a random configuration on each run. If you encrypt with a preset and want to decrypt later, save the configuration and reuse it:
+
+```bash
+# Save configuration during encryption
+eniGOma encrypt --text "TOP SECRET" --preset high --save-config my-key.json
+
+# Later, decrypt with the same saved configuration
+eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+```
+
+## Configuration schema
+
+Saved configuration files include a `schema_version` field. This allows the project to evolve the configuration format safely over time.
 ```

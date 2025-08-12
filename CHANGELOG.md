@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI flags: `--auto-config` and `--save-config`
 - Stdin support for `encrypt` (pipe input directly)
 - Proper hex/base64 encoding (encrypt) and decoding (decrypt) via stdlib
+- JSON configs now include `schema_version` for forward compatibility
 
 ### Changed
 - Default alphabet documented and enforced as auto-detected for `encrypt` (equivalent to `--alphabet=auto`)
 - README and USAGE updated with configuration-first workflow, stdin, and encoding examples
 - Documentation consistency improvements (removed decorative emojis; reorganized CLI examples)
+- Docs now clarify that presets generate random configurations per run; use `--save-config` and reuse with `--config` for decryptability
 
 ### Fixed
 - Version tests updated to avoid pinning an exact patch version
