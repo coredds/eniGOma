@@ -3,6 +3,8 @@
 [![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)](https://github.com/coredds/eniGOma/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/coredds/eniGOma.svg)](https://pkg.go.dev/github.com/coredds/eniGOma)
 [![CI](https://github.com/coredds/eniGOma/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coredds/eniGOma/actions/workflows/ci.yml)
+[![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A highly customizable, Unicode-capable Enigma machine implementation in Go.
 
@@ -221,22 +223,7 @@ eniGOma encrypt --text "Test unicode: 🙂" --auto-config test.json --verbose
 #         Auto-generated configuration saved to: test.json
 ```
 
-### Why Configuration Files?
 
-**Problem with old approach:**
-```bash
-eniGOma encrypt --text "Hello World!"  # ❌ No way to decrypt later!
-```
-
-**Solution with configuration files:**
-```bash
-eniGOma encrypt --text "Hello World!" --auto-config my-key.json  # ✅ Always decryptable!
-eniGOma decrypt --text "ENCRYPTED" --config my-key.json         # ✅ Works perfectly!
-```
-
-#### Configuration file schema
-
-Saved configuration files include a `schema_version` field to enable safe evolution of the JSON schema over time.
 
 ### Library Usage
 
