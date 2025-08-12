@@ -78,9 +78,7 @@ func TestAlphabetPortuguese(t *testing.T) {
 func TestPortugueseMessage(t *testing.T) {
 	// Test that a typical Portuguese message is fully supported
 	message := "Hoje eu fui almoçar na casa da vovó."
-	messageRunes := []rune(message)
-
-	for _, msgChar := range messageRunes {
+    for _, msgChar := range message {
 		found := false
 		for _, alphaChar := range AlphabetPortuguese {
 			if msgChar == alphaChar {
@@ -106,9 +104,8 @@ func TestPortugueseVariousMessages(t *testing.T) {
 		"Açúcar, café e pão de açúcar.",
 	}
 
-	for _, phrase := range phrases {
-		phraseRunes := []rune(phrase)
-		for _, msgChar := range phraseRunes {
+    for _, phrase := range phrases {
+        for _, msgChar := range phrase {
 			found := false
 			for _, alphaChar := range AlphabetPortuguese {
 				if msgChar == alphaChar {

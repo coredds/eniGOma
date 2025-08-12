@@ -76,9 +76,9 @@ func TestFindPreset(t *testing.T) {
 				t.Errorf("findPreset(%q) found=%v, expected=%v", tt.preset, found, tt.expected)
 			}
 
-			if found && preset.Name != tt.preset && preset.Name != strings.ToLower(tt.preset) {
-				// Account for case insensitive matching
-				if strings.ToLower(preset.Name) != strings.ToLower(tt.preset) {
+            if found && preset.Name != tt.preset && !strings.EqualFold(preset.Name, tt.preset) {
+                // Account for case insensitive matching
+                if !strings.EqualFold(preset.Name, tt.preset) {
 					t.Errorf("findPreset(%q) returned wrong preset: %s", tt.preset, preset.Name)
 				}
 			}

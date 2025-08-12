@@ -104,8 +104,10 @@ func TestEnigma_EncryptDecrypt(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Reset enigma to initial state
-			enigma.Reset()
+            // Reset enigma to initial state
+            if err := enigma.Reset(); err != nil {
+                t.Fatalf("Reset failed: %v", err)
+            }
 
 			encrypted, err := enigma.Encrypt(tt.input)
 			if tt.wantError {
@@ -119,8 +121,10 @@ func TestEnigma_EncryptDecrypt(t *testing.T) {
 				return
 			}
 
-			// Reset enigma to initial state for decryption
-			enigma.Reset()
+            // Reset enigma to initial state for decryption
+            if err := enigma.Reset(); err != nil {
+                t.Fatalf("Reset failed: %v", err)
+            }
 
 			decrypted, err := enigma.Decrypt(encrypted)
 			if err != nil {
@@ -149,8 +153,10 @@ func TestEnigma_Reciprocal(t *testing.T) {
 
 	// Test reciprocal property for each character
 	for _, char := range alph.Runes() {
-		// Reset to same initial state
-		enigma.Reset()
+        // Reset to same initial state
+        if err := enigma.Reset(); err != nil {
+            t.Fatalf("Reset failed: %v", err)
+        }
 		encrypted1, err := enigma.Encrypt(string(char))
 		if err != nil {
 			t.Errorf("Encrypt(%c) error: %v", char, err)
@@ -162,8 +168,10 @@ func TestEnigma_Reciprocal(t *testing.T) {
 			continue
 		}
 
-		// Reset to same initial state
-		enigma.Reset()
+        // Reset to same initial state
+        if err := enigma.Reset(); err != nil {
+            t.Fatalf("Reset failed: %v", err)
+        }
 		encrypted2, err := enigma.Encrypt(encrypted1)
 		if err != nil {
 			t.Errorf("Encrypt(%s) error: %v", encrypted1, err)
@@ -193,10 +201,14 @@ func TestEnigma_RotorStepping(t *testing.T) {
 	}
 
 	// Set known initial positions
-	enigma.SetRotorPositions([]int{0, 0}) // Both at position A
+    if err := enigma.SetRotorPositions([]int{0, 0}); err != nil {
+        t.Fatalf("SetRotorPositions failed: %v", err)
+    } // Both at position A
 
 	// Encrypt a character and check that rightmost rotor stepped
-	enigma.Encrypt("A")
+    if _, err := enigma.Encrypt("A"); err != nil {
+        t.Fatalf("Encrypt failed: %v", err)
+    }
 	positions := enigma.GetCurrentRotorPositions()
 
 	if positions[1] != 1 { // Rightmost rotor should have stepped
@@ -222,7 +234,9 @@ func TestEnigma_Reset(t *testing.T) {
 	initialPositions := enigma.GetCurrentRotorPositions()
 
 	// Encrypt some text to change rotor positions
-	enigma.Encrypt("ABCDEF")
+    if _, err := enigma.Encrypt("ABCDEF"); err != nil {
+        t.Fatalf("Encrypt failed: %v", err)
+    }
 
 	// Positions should have changed
 	currentPositions := enigma.GetCurrentRotorPositions()
@@ -231,7 +245,9 @@ func TestEnigma_Reset(t *testing.T) {
 	}
 
 	// Reset and check positions are back to initial
-	enigma.Reset()
+    if err := enigma.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
 	resetPositions := enigma.GetCurrentRotorPositions()
 
 	if !equalSlices(initialPositions, resetPositions) {
@@ -317,25 +333,47 @@ func TestEnigma_Clone(t *testing.T) {
 	// Test that both produce same output initially
 	input := "ABC"
 
-	original.Reset()
-	originalOutput, _ := original.Encrypt(input)
+    if err := original.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
+    originalOutput, err := original.Encrypt(input)
+    if err != nil {
+        t.Fatalf("Encrypt failed: %v", err)
+    }
 
-	clone.Reset()
-	cloneOutput, _ := clone.Encrypt(input)
+    if err := clone.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
+    cloneOutput, err := clone.Encrypt(input)
+    if err != nil {
+        t.Fatalf("Encrypt failed: %v", err)
+    }
 
 	if originalOutput != cloneOutput {
 		t.Errorf("Clone output differs: original=%s, clone=%s", originalOutput, cloneOutput)
 	}
 
 	// Test that modifying clone doesn't affect original
-	clone.Encrypt("XYZ") // This should change clone's rotor positions
+    if _, err := clone.Encrypt("XYZ"); err != nil { // This should change clone's rotor positions
+        t.Fatalf("Encrypt failed: %v", err)
+    }
 
 	// Reset both and check they still produce same output
-	original.Reset()
-	clone.Reset()
+    if err := original.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
+    if err := clone.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
 
-	originalOutput2, _ := original.Encrypt(input)
-	cloneOutput2, _ := clone.Encrypt(input)
+    originalOutput2, err := original.Encrypt(input)
+    if err != nil {
+        t.Fatalf("Encrypt failed: %v", err)
+    }
+    cloneOutput2, err := clone.Encrypt(input)
+    if err != nil {
+        t.Fatalf("Encrypt failed: %v", err)
+    }
 
 	if originalOutput2 != cloneOutput2 {
 		t.Errorf("After modification, clone behavior differs: original=%s, clone=%s", originalOutput2, cloneOutput2)

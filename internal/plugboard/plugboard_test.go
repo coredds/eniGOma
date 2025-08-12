@@ -164,9 +164,13 @@ func TestPlugboard_Clear(t *testing.T) {
 		t.Fatalf("Failed to create plugboard: %v", err)
 	}
 
-	// Add some pairs
-	pb.AddPair('A', 'B')
-	pb.AddPair('C', 'D')
+    // Add some pairs
+    if err := pb.AddPair('A', 'B'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
+    if err := pb.AddPair('C', 'D'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
 
 	if pb.PairCount() != 2 {
 		t.Errorf("Expected 2 pairs before clear, got %d", pb.PairCount())
@@ -185,9 +189,13 @@ func TestPlugboard_Process(t *testing.T) {
 		t.Fatalf("Failed to create plugboard: %v", err)
 	}
 
-	// Add pairs: A<->B, C<->D
-	pb.AddPair('A', 'B')
-	pb.AddPair('C', 'D')
+    // Add pairs: A<->B, C<->D
+    if err := pb.AddPair('A', 'B'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
+    if err := pb.AddPair('C', 'D'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
 
 	tests := []struct {
 		name     string
@@ -220,8 +228,10 @@ func TestPlugboard_ProcessRune(t *testing.T) {
 		t.Fatalf("Failed to create plugboard: %v", err)
 	}
 
-	// Add pair A<->B
-	pb.AddPair('A', 'B')
+    // Add pair A<->B
+    if err := pb.AddPair('A', 'B'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
 
 	tests := []struct {
 		name      string
@@ -312,9 +322,13 @@ func TestPlugboard_GetPairs(t *testing.T) {
 		t.Fatalf("Failed to create plugboard: %v", err)
 	}
 
-	// Add pairs
-	pb.AddPair('A', 'B')
-	pb.AddPair('C', 'D')
+    // Add pairs
+    if err := pb.AddPair('A', 'B'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
+    if err := pb.AddPair('C', 'D'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
 
 	pairs, err := pb.GetPairs()
 	if err != nil {
@@ -346,9 +360,13 @@ func TestPlugboard_GetPairsMap(t *testing.T) {
 		t.Fatalf("Failed to create plugboard: %v", err)
 	}
 
-	// Add pairs
-	pb.AddPair('A', 'B')
-	pb.AddPair('C', 'D')
+    // Add pairs
+    if err := pb.AddPair('A', 'B'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
+    if err := pb.AddPair('C', 'D'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
 
 	pairsMap, err := pb.GetPairsMap()
 	if err != nil {
@@ -431,9 +449,13 @@ func TestPlugboard_Clone(t *testing.T) {
 		t.Fatalf("Failed to create plugboard: %v", err)
 	}
 
-	// Add pairs
-	pb.AddPair('A', 'B')
-	pb.AddPair('C', 'D')
+    // Add pairs
+    if err := pb.AddPair('A', 'B'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
+    if err := pb.AddPair('C', 'D'); err != nil {
+        t.Fatalf("AddPair failed: %v", err)
+    }
 
 	clone, err := pb.Clone()
 	if err != nil {
@@ -453,8 +475,10 @@ func TestPlugboard_Clone(t *testing.T) {
 		}
 	}
 
-	// Test that modifying clone doesn't affect original
-	clone.AddPair('E', 'F')
+    // Test that modifying clone doesn't affect original
+    if err := clone.AddPair('E', 'F'); err != nil {
+        t.Fatalf("AddPair on clone failed: %v", err)
+    }
 	if pb.PairCount() == clone.PairCount() {
 		t.Errorf("Modifying clone affected original")
 	}

@@ -81,7 +81,7 @@ func listPresets(cmd *cobra.Command) error {
 func describePresets(presetName string, cmd *cobra.Command) error {
 	verbose, _ := cmd.Flags().GetBool("verbose")
 
-	if strings.ToLower(presetName) == "all" {
+    if strings.EqualFold(presetName, "all") {
 		presets := getAvailablePresets()
 		for i, preset := range presets {
 			if i > 0 {
@@ -235,7 +235,7 @@ func getAvailablePresets() []PresetInfo {
 func findPreset(name string) *PresetInfo {
 	presets := getAvailablePresets()
 	for _, preset := range presets {
-		if strings.ToLower(preset.Name) == strings.ToLower(name) {
+    if strings.EqualFold(preset.Name, name) {
 			return &preset
 		}
 	}
