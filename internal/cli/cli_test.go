@@ -6,11 +6,13 @@ package cli
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
+	"github.com/coredds/eniGOma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
@@ -515,6 +517,129 @@ func TestEncryptDecryptRoundTrip(t *testing.T) {
 	}
 }
 
+func TestEncryptDecryptHexBase64RoundTrip(t *testing.T) {
+	const original = "HELLOWORLD"
+
+	// Create temp dir for config files
+	tempDir, err := os.MkdirTemp("", "enigma-roundtrip-")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// HEX round-trip using saved config
+	{
+		cfg := filepath.Join(tempDir, "key-hex.json")
+
+		// Encrypt and save config
+		var encryptOutput bytes.Buffer
+		cmd := createTestRootCmd()
+		cmd.SetOut(&encryptOutput)
+		cmd.SetArgs([]string{"encrypt", "--text", original, "--preset", "classic", "--save-config", cfg, "--format", "hex"})
+		if err := cmd.Execute(); err != nil {
+			t.Fatalf("encrypt hex failed: %v", err)
+		}
+		encryptedHex := strings.TrimSpace(encryptOutput.String())
+
+		// Decrypt using the same saved config
+		var decryptOutput bytes.Buffer
+		cmd = createTestRootCmd()
+		cmd.SetOut(&decryptOutput)
+		cmd.SetArgs([]string{"decrypt", "--text", encryptedHex, "--config", cfg, "--format", "hex"})
+		if err := cmd.Execute(); err != nil {
+			t.Fatalf("decrypt hex failed: %v", err)
+		}
+		decryptedText := strings.TrimSpace(decryptOutput.String())
+		if decryptedText != original {
+			t.Errorf("Expected decrypted text to be %q, got %q", original, decryptedText)
+		}
+	}
+
+	// BASE64 round-trip using saved config
+	{
+		cfg := filepath.Join(tempDir, "key-b64.json")
+
+		// Encrypt and save config
+		var encryptOutput bytes.Buffer
+		cmd := createTestRootCmd()
+		cmd.SetOut(&encryptOutput)
+		cmd.SetArgs([]string{"encrypt", "--text", original, "--preset", "classic", "--save-config", cfg, "--format", "base64"})
+		if err := cmd.Execute(); err != nil {
+			t.Fatalf("encrypt base64 failed: %v", err)
+		}
+		encryptedB64 := strings.TrimSpace(encryptOutput.String())
+
+		// Decrypt using the same saved config
+		var decryptOutput bytes.Buffer
+		cmd = createTestRootCmd()
+		cmd.SetOut(&decryptOutput)
+		cmd.SetArgs([]string{"decrypt", "--text", encryptedB64, "--config", cfg, "--format", "base64"})
+		if err := cmd.Execute(); err != nil {
+			t.Fatalf("decrypt base64 failed: %v", err)
+		}
+		decryptedText := strings.TrimSpace(decryptOutput.String())
+		if decryptedText != original {
+			t.Errorf("Expected decrypted text to be %q, got %q", original, decryptedText)
+		}
+	}
+}
+
+func TestSaveConfigFileContents(t *testing.T) {
+	cmd := createTestRootCmd()
+	// Encrypt with a preset and --save-config so a config file is produced
+	encryptArgs := []string{"encrypt", "--text", "HELLOWORLD", "--preset", "classic", "--save-config", "test-config.json"}
+	cmd.SetArgs(encryptArgs)
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("encrypt with save-config failed: %v", err)
+	}
+
+	// Verify the config file contents
+	configData, err := os.ReadFile("test-config.json")
+	if err != nil {
+		t.Fatalf("Failed to read config file: %v", err)
+	}
+
+	var settings enigma.EnigmaSettings
+	if err := json.Unmarshal(configData, &settings); err != nil {
+		t.Fatalf("Failed to unmarshal config file: %v", err)
+	}
+
+	if settings.SchemaVersion != 1 {
+		t.Errorf("Expected schema version 1, got %d", settings.SchemaVersion)
+	}
+
+	// Clean up
+	os.Remove("test-config.json")
+}
+
+func TestAutoConfigJSONOutput(t *testing.T) {
+	cmd := createTestRootCmd()
+	// Encrypt with --auto-config providing the output path directly
+	encryptArgs := []string{"encrypt", "--text", "HELLOWORLD", "--auto-config", "auto-config.json"}
+	cmd.SetArgs(encryptArgs)
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("encrypt with auto-config failed: %v", err)
+	}
+
+	// Verify the auto-config file contents
+	configData, err := os.ReadFile("auto-config.json")
+	if err != nil {
+		t.Fatalf("Failed to read auto-config file: %v", err)
+	}
+
+	var settings enigma.EnigmaSettings
+	if err := json.Unmarshal(configData, &settings); err != nil {
+		t.Fatalf("Failed to unmarshal auto-config file: %v", err)
+	}
+
+	if settings.SchemaVersion != 1 {
+		t.Errorf("Expected schema version 1, got %d", settings.SchemaVersion)
+	}
+
+	// Clean up
+	os.Remove("auto-config.json")
+}
+
 // createTestRootCmd creates a fresh root command for testing.
 func createTestRootCmd() *cobra.Command {
 	// Create a new root command to avoid state pollution between tests
@@ -593,7 +718,7 @@ func createFreshDecryptCmd() *cobra.Command {
 
 	// Machine configuration
 	cmd.Flags().StringP("preset", "p", "", "Use a preset configuration (classic, simple, high, extreme)")
-	cmd.Flags().StringP("alphabet", "a", "latin", "Alphabet to use (latin, greek, cyrillic, portuguese, ascii, alphanumeric)")
+	cmd.Flags().StringP("alphabet", "a", "auto", "Alphabet to use (auto, latin, greek, cyrillic, portuguese, ascii, alphanumeric)")
 	cmd.Flags().StringP("security", "s", "medium", "Security level (low, medium, high, extreme)")
 
 	// Advanced options

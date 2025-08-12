@@ -436,6 +436,50 @@ func TestNewEnigmaClassic(t *testing.T) {
 	}
 }
 
+func BenchmarkEncrypt(b *testing.B) {
+	machine, _ := NewFromSettings(&EnigmaSettings{
+		SchemaVersion: 1,
+		Alphabet:      []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+		RotorSpecs: []rotor.RotorSpec{
+			{ID: "I", ForwardMapping: "EKMFLGDQVZNTOWYHXUSPAIBRCJ", Notches: []rune{'Q'}, Position: 0, RingSetting: 0},
+			{ID: "II", ForwardMapping: "AJDKSIRUXBLHWTMCQGZNPYFVOE", Notches: []rune{'E'}, Position: 0, RingSetting: 0},
+			{ID: "III", ForwardMapping: "BDFHJLCPRTXVZNYEIWGAKMUSQO", Notches: []rune{'V'}, Position: 0, RingSetting: 0},
+		},
+		ReflectorSpec:         reflector.ReflectorSpec{ID: "B", Mapping: "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
+		PlugboardPairs:        map[rune]rune{'A': 'Z', 'Z': 'A'},
+		CurrentRotorPositions: []int{0, 0, 0},
+	})
+
+	text := "HELLOWORLD"
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		machine.Encrypt(text)
+	}
+}
+
+func BenchmarkDecrypt(b *testing.B) {
+	machine, _ := NewFromSettings(&EnigmaSettings{
+		SchemaVersion: 1,
+		Alphabet:      []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+		RotorSpecs: []rotor.RotorSpec{
+			{ID: "I", ForwardMapping: "EKMFLGDQVZNTOWYHXUSPAIBRCJ", Notches: []rune{'Q'}, Position: 0, RingSetting: 0},
+			{ID: "II", ForwardMapping: "AJDKSIRUXBLHWTMCQGZNPYFVOE", Notches: []rune{'E'}, Position: 0, RingSetting: 0},
+			{ID: "III", ForwardMapping: "BDFHJLCPRTXVZNYEIWGAKMUSQO", Notches: []rune{'V'}, Position: 0, RingSetting: 0},
+		},
+		ReflectorSpec:         reflector.ReflectorSpec{ID: "B", Mapping: "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
+		PlugboardPairs:        map[rune]rune{'A': 'Z', 'Z': 'A'},
+		CurrentRotorPositions: []int{0, 0, 0},
+	})
+
+	text := "HELLOWORLD"
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		machine.Decrypt(text)
+	}
+}
+
 // Helper function to compare slices
 func equalSlices(a, b []int) bool {
 	if len(a) != len(b) {

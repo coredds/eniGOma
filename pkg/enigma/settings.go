@@ -16,6 +16,7 @@ import (
 
 // EnigmaSettings represents the serializable configuration and state of an Enigma machine.
 type EnigmaSettings struct {
+	SchemaVersion         int                     `json:"schema_version"`
 	Alphabet              []rune                  `json:"alphabet"`
 	RotorSpecs            []rotor.RotorSpec       `json:"rotor_specs"`
 	ReflectorSpec         reflector.ReflectorSpec `json:"reflector_spec"`
@@ -58,6 +59,7 @@ func (e *Enigma) GetSettings() (*EnigmaSettings, error) {
 	currentPositions := e.GetCurrentRotorPositions()
 
 	return &EnigmaSettings{
+		SchemaVersion:         1, // Placeholder, will be updated by LoadSettings
 		Alphabet:              alphabetRunes,
 		RotorSpecs:            rotorSpecs,
 		ReflectorSpec:         reflectorSpec,
@@ -139,6 +141,7 @@ func (e *Enigma) LoadSettings(settings *EnigmaSettings) error {
 func (s *EnigmaSettings) MarshalJSON() ([]byte, error) {
 	// Convert runes to strings for JSON compatibility
 	type jsonSettings struct {
+		SchemaVersion         int                     `json:"schema_version"`
 		Alphabet              string                  `json:"alphabet"`
 		RotorSpecs            []rotor.RotorSpec       `json:"rotor_specs"`
 		ReflectorSpec         reflector.ReflectorSpec `json:"reflector_spec"`
@@ -147,6 +150,7 @@ func (s *EnigmaSettings) MarshalJSON() ([]byte, error) {
 	}
 
 	js := jsonSettings{
+		SchemaVersion:         s.SchemaVersion,
 		Alphabet:              string(s.Alphabet),
 		RotorSpecs:            s.RotorSpecs,
 		ReflectorSpec:         s.ReflectorSpec,
@@ -165,6 +169,7 @@ func (s *EnigmaSettings) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON unmarshals JSON to EnigmaSettings.
 func (s *EnigmaSettings) UnmarshalJSON(data []byte) error {
 	type jsonSettings struct {
+		SchemaVersion         int                     `json:"schema_version"`
 		Alphabet              string                  `json:"alphabet"`
 		RotorSpecs            []rotor.RotorSpec       `json:"rotor_specs"`
 		ReflectorSpec         reflector.ReflectorSpec `json:"reflector_spec"`
@@ -177,6 +182,7 @@ func (s *EnigmaSettings) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	s.SchemaVersion = js.SchemaVersion
 	s.Alphabet = []rune(js.Alphabet)
 	s.RotorSpecs = js.RotorSpecs
 	s.ReflectorSpec = js.ReflectorSpec
