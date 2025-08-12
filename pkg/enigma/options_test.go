@@ -256,7 +256,10 @@ func TestSecurityLevels_Integration(t *testing.T) {
 				return
 			}
 
-			enigma.Reset()
+            if err := enigma.Reset(); err != nil {
+                t.Errorf("Reset() error with level %v: %v", level, err)
+                return
+            }
 			decrypted, err := enigma.Decrypt(encrypted)
 			if err != nil {
 				t.Errorf("Decrypt() error with level %v: %v", level, err)
