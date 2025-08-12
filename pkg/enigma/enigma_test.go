@@ -354,7 +354,7 @@ func TestEnigma_Clone(t *testing.T) {
 	}
 
 	// Test that modifying clone doesn't affect original
-    if _, err := clone.Encrypt("XYZ"); err != nil { // This should change clone's rotor positions
+    if _, err := clone.Encrypt("ABC"); err != nil { // This should change clone's rotor positions
         t.Fatalf("Encrypt failed: %v", err)
     }
 
