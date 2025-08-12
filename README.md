@@ -2,6 +2,7 @@
 
 [![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)](https://github.com/coredds/eniGOma/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/coredds/eniGOma.svg)](https://pkg.go.dev/github.com/coredds/eniGOma)
+[![CI](https://github.com/coredds/eniGOma/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coredds/eniGOma/actions/workflows/ci.yml)
 
 A highly customizable, Unicode-capable Enigma machine implementation in Go.
 
