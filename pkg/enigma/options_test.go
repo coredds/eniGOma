@@ -92,7 +92,9 @@ func TestWithRotorPositions(t *testing.T) {
 
 	// Create enigma with rotors first
 	enigma := &Enigma{alphabet: alph}
-	WithRandomSettings(Low)(enigma) // This creates rotors
+    if err := WithRandomSettings(Low)(enigma); err != nil { // This creates rotors
+        t.Fatalf("WithRandomSettings failed: %v", err)
+    }
 
 	positions := []int{1, 2, 0}
 	opt := WithRotorPositions(positions)
@@ -115,7 +117,9 @@ func TestWithRotorPositions_WrongCount(t *testing.T) {
 
 	// Create enigma with 3 rotors
 	enigma := &Enigma{alphabet: alph}
-	WithRandomSettings(Low)(enigma)
+    if err := WithRandomSettings(Low)(enigma); err != nil {
+        t.Fatalf("WithRandomSettings failed: %v", err)
+    }
 
 	// Try to set positions for wrong number of rotors
 	positions := []int{1, 2} // Only 2 positions for 3 rotors
@@ -131,7 +135,9 @@ func TestWithRandomRotorPositions(t *testing.T) {
 	alph, _ := alphabet.New([]rune{'A', 'B', 'C', 'D'})
 
 	enigma := &Enigma{alphabet: alph}
-	WithRandomSettings(Low)(enigma) // Create rotors first
+    if err := WithRandomSettings(Low)(enigma); err != nil { // Create rotors first
+        t.Fatalf("WithRandomSettings failed: %v", err)
+    }
 
 	// Get initial positions
 	initialPositions := enigma.GetCurrentRotorPositions()

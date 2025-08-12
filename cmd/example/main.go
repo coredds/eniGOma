@@ -53,8 +53,10 @@ func demoClassicEnigma() {
 	}
 	fmt.Printf("Encrypted: %s\n", encrypted)
 
-	// Reset machine to initial state for decryption
-	machine.Reset()
+    // Reset machine to initial state for decryption
+    if err := machine.Reset(); err != nil {
+        log.Fatalf("Reset failed: %v", err)
+    }
 
 	// Decrypt
 	decrypted, err := machine.Decrypt(encrypted)
@@ -83,8 +85,10 @@ func demoUnicodeEnigma() {
 	}
 	fmt.Printf("Encrypted: %s\n", encrypted)
 
-	// Reset and decrypt
-	machine.Reset()
+    // Reset and decrypt
+    if err := machine.Reset(); err != nil {
+        log.Fatalf("Reset failed: %v", err)
+    }
 	decrypted, err := machine.Decrypt(encrypted)
 	if err != nil {
 		log.Fatalf("Decryption failed: %v", err)
@@ -120,7 +124,9 @@ func demoSecurityLevels() {
 		encrypted, _ := machine.Encrypt(message)
 		fmt.Printf("  Encrypted: %s\n", encrypted)
 
-		machine.Reset()
+        if err := machine.Reset(); err != nil {
+            log.Fatalf("Reset failed: %v", err)
+        }
 		decrypted, _ := machine.Decrypt(encrypted)
 		fmt.Printf("  Round-trip: %t\n", message == decrypted)
 		fmt.Println()
@@ -193,7 +199,9 @@ func demoCustomComponents() {
 	encrypted, _ := machine.Encrypt(message)
 	fmt.Printf("Encrypted: %s\n", encrypted)
 
-	machine.Reset()
+    if err := machine.Reset(); err != nil {
+        log.Fatalf("Reset failed: %v", err)
+    }
 	decrypted, _ := machine.Decrypt(encrypted)
 	fmt.Printf("Decrypted: %s\n", decrypted)
 
@@ -229,7 +237,9 @@ func demonstrateReciprocal() {
 	testChars := []rune{'A', 'B', 'C', 'D', 'E'}
 
 	for _, char := range testChars {
-		machine.Reset()
+    if err := machine.Reset(); err != nil {
+        log.Fatalf("Reset failed: %v", err)
+    }
 
 		// Encrypt the character
 		input := string(char)
