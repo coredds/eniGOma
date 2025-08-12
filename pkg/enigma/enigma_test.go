@@ -403,7 +403,9 @@ func TestEnigma_LongMessage(t *testing.T) {
 		t.Errorf("Encrypted length = %d, want %d", len(encrypted), len(message))
 	}
 
-	enigma.Reset()
+    if err := enigma.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
 	decrypted, err := enigma.Decrypt(encrypted)
 	if err != nil {
 		t.Fatalf("Decrypt() error: %v", err)
@@ -429,7 +431,9 @@ func TestNewEnigmaSimple(t *testing.T) {
 		t.Errorf("Encrypt() error: %v", err)
 	}
 
-	enigma.Reset()
+    if err := enigma.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
 	decrypted, err := enigma.Decrypt(encrypted)
 	if err != nil {
 		t.Errorf("Decrypt() error: %v", err)
@@ -453,7 +457,9 @@ func TestNewEnigmaClassic(t *testing.T) {
 		t.Errorf("Encrypt() error: %v", err)
 	}
 
-	enigma.Reset()
+    if err := enigma.Reset(); err != nil {
+        t.Fatalf("Reset failed: %v", err)
+    }
 	decrypted, err := enigma.Decrypt(encrypted)
 	if err != nil {
 		t.Errorf("Decrypt() error: %v", err)
@@ -492,7 +498,9 @@ func BenchmarkEncrypt(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		machine.Encrypt(text)
+    if _, err := machine.Encrypt(text); err != nil {
+        b.Fatalf("Encrypt failed: %v", err)
+    }
 	}
 }
 
@@ -514,7 +522,9 @@ func BenchmarkDecrypt(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		machine.Decrypt(text)
+    if _, err := machine.Decrypt(text); err != nil {
+        b.Fatalf("Decrypt failed: %v", err)
+    }
 	}
 }
 

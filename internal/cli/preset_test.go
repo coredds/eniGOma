@@ -123,7 +123,9 @@ func TestCreateMachineFromPreset(t *testing.T) {
 			}
 
 			// Reset and decrypt
-			machine.Reset()
+            if err := machine.Reset(); err != nil {
+                t.Fatalf("Reset failed: %v", err)
+            }
 			decrypted, err := machine.Decrypt(encrypted)
 			if err != nil {
 				t.Errorf("Preset %s: decryption failed: %v", preset.Name, err)

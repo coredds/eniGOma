@@ -225,6 +225,8 @@ func levelToString(level enigma.SecurityLevel) string {
 	}
 }
 
+// demonstrateReciprocal is kept for reference and is not used in the demo flow.
+//nolint:unused
 func demonstrateReciprocal() {
 	fmt.Println("\n=== Enigma Reciprocal Property Demo ===")
 
