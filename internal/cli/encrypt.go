@@ -63,6 +63,7 @@ func init() {
 	encryptCmd.Flags().BoolP("preserve-case", "", false, "Preserve original case (when possible)")
 }
 
+// nolint:gocyclo // This function handles multiple encryption paths
 func runEncrypt(cmd *cobra.Command, args []string) error {
 	setupVerbose(cmd)
 
@@ -353,7 +354,7 @@ func writeOutput(text string, cmd *cobra.Command) error {
 		return nil
 	}
 
-	return os.WriteFile(outputFile, []byte(text), 0644)
+	return os.WriteFile(outputFile, []byte(text), 0600)
 }
 
 // createMachineWithAutoConfig builds an Enigma machine by auto-detecting the alphabet
@@ -408,7 +409,7 @@ func saveMachineConfig(machine *enigma.Enigma, path string) error {
 	if err != nil {
 		return fmt.Errorf("serialize configuration: %w", err)
 	}
-	if err := os.WriteFile(path, []byte(jsonData), 0644); err != nil {
+	if err := os.WriteFile(path, []byte(jsonData), 0600); err != nil {
 		return fmt.Errorf("write configuration to %s: %w", path, err)
 	}
 	return nil

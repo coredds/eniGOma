@@ -127,6 +127,7 @@ func (a *Alphabet) IndicesToString(indices []int) (string, error) {
 
 // AutoDetectFromText creates an alphabet by analyzing the unique characters in the input text.
 // It automatically handles reflector compatibility by ensuring an even number of characters.
+// nolint:gocyclo // This function is necessarily complex due to alphabet detection logic
 func AutoDetectFromText(text string, options ...AutoDetectOption) (*Alphabet, error) {
 	if text == "" {
 		return nil, fmt.Errorf("cannot auto-detect alphabet from empty text")

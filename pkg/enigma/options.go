@@ -237,7 +237,7 @@ func WithRandomRotorPositionsSeed(seed int64) Option {
             return fmt.Errorf("alphabet must be set before setting random positions")
         }
 
-        rng := mrand.New(mrand.NewSource(seed))
+        rng := mrand.New(mrand.NewSource(seed)) // #nosec G404 - Using math/rand is intentional for deterministic seeding
         maxPos := e.alphabet.Size()
         for _, r := range e.rotors {
             r.SetPosition(rng.Intn(maxPos))

@@ -22,7 +22,9 @@ func TestHistoricalM3(t *testing.T) {
 
 	// Test a known encryption with the M3
 	// Set specific rotor positions for a deterministic test
-	machine.SetRotorPositions([]int{0, 0, 0}) // AAA
+	if err := machine.SetRotorPositions([]int{0, 0, 0}); err != nil { // AAA
+		t.Fatalf("Failed to set rotor positions: %v", err)
+	}
 
 	// Encrypt a message
 	plaintext := "ENIGMA"
@@ -32,7 +34,9 @@ func TestHistoricalM3(t *testing.T) {
 	}
 
 	// Reset and decrypt
-	machine.Reset()
+	if err := machine.Reset(); err != nil {
+		t.Fatalf("Failed to reset machine: %v", err)
+	}
 	decrypted, err := machine.Decrypt(ciphertext)
 	if err != nil {
 		t.Fatalf("Failed to decrypt: %v", err)
@@ -61,7 +65,9 @@ func TestHistoricalM4(t *testing.T) {
 
 	// Test a known encryption with the M4
 	// Set specific rotor positions for a deterministic test
-	machine.SetRotorPositions([]int{0, 0, 0, 0}) // AAAA
+	if err := machine.SetRotorPositions([]int{0, 0, 0, 0}); err != nil { // AAAA
+		t.Fatalf("Failed to set rotor positions: %v", err)
+	}
 
 	// Encrypt a message
 	plaintext := "UBOAT"
@@ -71,7 +77,9 @@ func TestHistoricalM4(t *testing.T) {
 	}
 
 	// Reset and decrypt
-	machine.Reset()
+	if err := machine.Reset(); err != nil {
+		t.Fatalf("Failed to reset machine: %v", err)
+	}
 	decrypted, err := machine.Decrypt(ciphertext)
 	if err != nil {
 		t.Fatalf("Failed to decrypt: %v", err)

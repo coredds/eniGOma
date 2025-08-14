@@ -76,5 +76,5 @@ func WriteOutput(text, filePath string) error {
 	}
 
 	// Write to file
-	return os.WriteFile(filePath, []byte(text), 0644)
+	return os.WriteFile(filePath, []byte(text), 0600)
 }

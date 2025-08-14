@@ -175,5 +175,5 @@ func calculatePlugboardCombinations(alphabetSize, pairs int) int64 {
 }
 
 func writeStringToFile(content, filename string) error {
-	return os.WriteFile(filename, []byte(content), 0644)
+	return os.WriteFile(filename, []byte(content), 0600)
 }
