@@ -753,6 +753,7 @@ func createFreshKeygenCmd() *cobra.Command {
 	cmd.Flags().IntP("rotors", "r", 0, "Number of rotors (overrides security level)")
 	cmd.Flags().IntP("plugboard-pairs", "", 0, "Number of plugboard pairs (overrides security level)")
 	cmd.Flags().BoolP("random-positions", "", true, "Generate random rotor positions")
+	cmd.Flags().Int64("seed", 0, "Deterministic seed for rotor positions (optional)")
 
 	// Information options
 	cmd.Flags().BoolP("describe", "d", false, "Show description of generated configuration")

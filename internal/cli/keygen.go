@@ -42,6 +42,7 @@ func init() {
 	keygenCmd.Flags().IntP("rotors", "r", 0, "Number of rotors (overrides security level)")
 	keygenCmd.Flags().IntP("plugboard-pairs", "", 0, "Number of plugboard pairs (overrides security level)")
 	keygenCmd.Flags().BoolP("random-positions", "", true, "Generate random rotor positions")
+	keygenCmd.Flags().Int64("seed", 0, "Deterministic seed for rotor positions (optional)")
 
 	// Information options
 	keygenCmd.Flags().BoolP("describe", "d", false, "Show description of generated configuration")
@@ -57,11 +58,17 @@ func runKeygen(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create Enigma machine: %v", err)
 	}
 
-	// Apply random rotor positions if requested
+	// Apply rotor positions if requested
 	if randomPos, _ := cmd.Flags().GetBool("random-positions"); randomPos {
-		err := enigma.WithRandomRotorPositions()(machine)
-		if err != nil {
-			return fmt.Errorf("failed to set random rotor positions: %v", err)
+		if cmd.Flags().Changed("seed") {
+			seed, _ := cmd.Flags().GetInt64("seed")
+			if err := enigma.WithRandomRotorPositionsSeed(seed)(machine); err != nil {
+				return fmt.Errorf("failed to set seeded rotor positions: %v", err)
+			}
+		} else {
+			if err := enigma.WithRandomRotorPositions()(machine); err != nil {
+				return fmt.Errorf("failed to set random rotor positions: %v", err)
+			}
 		}
 	}
 

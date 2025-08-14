@@ -5,14 +5,15 @@
 package enigma
 
 import (
-	"crypto/rand"
-	"fmt"
-	"math/big"
+    "crypto/rand"
+    "fmt"
+    "math/big"
+    mrand "math/rand"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
-	"github.com/coredds/eniGOma/internal/plugboard"
-	"github.com/coredds/eniGOma/internal/reflector"
-	"github.com/coredds/eniGOma/internal/rotor"
+    "github.com/coredds/eniGOma/internal/alphabet"
+    "github.com/coredds/eniGOma/internal/plugboard"
+    "github.com/coredds/eniGOma/internal/reflector"
+    "github.com/coredds/eniGOma/internal/rotor"
 )
 
 // Option is a functional option for Enigma configuration.
@@ -226,6 +227,23 @@ func WithRandomRotorPositions() Option {
 
 		return nil
 	}
+}
+
+// WithRandomRotorPositionsSeed sets rotor positions using a deterministic PRNG seeded with the provided value.
+// This is useful for reproducible configurations in testing or when a stable output is desired.
+func WithRandomRotorPositionsSeed(seed int64) Option {
+    return func(e *Enigma) error {
+        if e.alphabet == nil {
+            return fmt.Errorf("alphabet must be set before setting random positions")
+        }
+
+        rng := mrand.New(mrand.NewSource(seed))
+        maxPos := e.alphabet.Size()
+        for _, r := range e.rotors {
+            r.SetPosition(rng.Intn(maxPos))
+        }
+        return nil
+    }
 }
 
 // WithRotorPositions sets specific initial positions for rotors.
