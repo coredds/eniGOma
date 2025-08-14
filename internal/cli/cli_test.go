@@ -288,7 +288,7 @@ func TestPresetCommand(t *testing.T) {
 			name:     "describe classic preset",
 			args:     []string{"preset", "--describe", "classic"},
 			wantErr:  false,
-			contains: "Historical M3 Enigma",
+			contains: "Classic Enigma simulation",
 		},
 		{
 			name:     "describe all presets",
@@ -343,6 +343,7 @@ func TestPresetCommand(t *testing.T) {
 func TestConfigCommand(t *testing.T) {
 	// Create a test configuration file
 	testConfig := `{
+		"schema_version": 1,
 		"alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 		"rotor_specs": [{
 			"id": "TestRotor",
