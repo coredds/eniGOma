@@ -494,24 +494,3 @@ Do not use eniGOma for securing sensitive data in production systems. Modern cry
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
-## Author
-
-**David Duarte** - *Creator and Lead Developer*
-
-- GitHub: [@coredds](https://github.com/coredds)
-- Project: [eniGOma](https://github.com/coredds/eniGOma)
-
-## Acknowledgments
-
-- Historical Enigma machine designers and operators
-- The cryptographic community for preserving this important history
-- Go community for excellent tooling and libraries
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-*eniGOma - Experience the legendary Enigma machine with modern Go power!* 
