@@ -1,8 +1,6 @@
 run:
   timeout: 5m
   tests: true
-  skip-files:
-    - "examples/**"
 
 linters:
   enable:
@@ -42,5 +40,8 @@ issues:
     - path: cmd/
       linters:
         - gocyclo
+    - path: examples/
+      linters:
+        - all
   max-issues-per-linter: 0
   max-same-issues: 0
