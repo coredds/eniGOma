@@ -6,6 +6,13 @@
 [![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+<p align="center">
+  <img src="enigoma_machine.png" alt="eniGOma machine mockup" width="720" />
+  <br/>
+  <em>eniGOma machine mockup</em>
+  
+</p>
+
 A highly customizable, Unicode-capable Enigma machine implementation in Go.
 
 ## Overview
