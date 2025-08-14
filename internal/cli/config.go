@@ -76,15 +76,22 @@ func validateConfig(configFile string, cmd *cobra.Command) error {
 		return fmt.Errorf("failed to read config file: %v", err)
 	}
 
+	// Validate against JSON schema
+	if err := ValidateConfigAgainstSchema(configFile); err != nil {
+		fmt.Fprintf(cmd.OutOrStdout(), "❌ Configuration is INVALID (schema validation): %v\n", err)
+		return nil
+	}
+
 	// Try to create machine from configuration
 	machine, err := enigma.NewFromJSON(string(data))
 	if err != nil {
-		fmt.Fprintf(cmd.OutOrStdout(), "❌ Configuration is INVALID: %v\n", err)
+		fmt.Fprintf(cmd.OutOrStdout(), "❌ Configuration is INVALID (machine creation): %v\n", err)
 		return nil
 	}
 
 	// Additional validation
 	fmt.Fprintf(cmd.OutOrStdout(), "✅ Configuration is VALID\n")
+	fmt.Fprintf(cmd.OutOrStdout(), "   Schema Version: %d\n", 1) // Currently only v1 is supported
 	fmt.Fprintf(cmd.OutOrStdout(), "   Alphabet Size: %d characters\n", machine.GetAlphabetSize())
 	fmt.Fprintf(cmd.OutOrStdout(), "   Rotors: %d\n", machine.GetRotorCount())
 	fmt.Fprintf(cmd.OutOrStdout(), "   Plugboard Pairs: %d\n", machine.GetPlugboardPairCount())

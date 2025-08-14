@@ -22,6 +22,16 @@ type EnigmaSettings struct {
 	ReflectorSpec         reflector.ReflectorSpec `json:"reflector_spec"`
 	PlugboardPairs        map[rune]rune           `json:"plugboard_pairs"`
 	CurrentRotorPositions []int                   `json:"current_rotor_positions"`
+	Metadata              *Metadata               `json:"metadata,omitempty"`
+}
+
+// Metadata contains optional information about the configuration.
+type Metadata struct {
+	CreatedAt   string   `json:"created_at,omitempty"`
+	CreatedBy   string   `json:"created_by,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Preset      string   `json:"preset,omitempty"`
+	Tags        []string `json:"tags,omitempty"`
 }
 
 // GetSettings returns the current configuration and state of the Enigma machine.
@@ -59,12 +69,13 @@ func (e *Enigma) GetSettings() (*EnigmaSettings, error) {
 	currentPositions := e.GetCurrentRotorPositions()
 
 	return &EnigmaSettings{
-		SchemaVersion:         1, // Placeholder, will be updated by LoadSettings
+		SchemaVersion:         1, // Current schema version
 		Alphabet:              alphabetRunes,
 		RotorSpecs:            rotorSpecs,
 		ReflectorSpec:         reflectorSpec,
 		PlugboardPairs:        plugboardPairs,
 		CurrentRotorPositions: currentPositions,
+		Metadata:              nil, // Default to no metadata
 	}, nil
 }
 
@@ -147,6 +158,7 @@ func (s *EnigmaSettings) MarshalJSON() ([]byte, error) {
 		ReflectorSpec         reflector.ReflectorSpec `json:"reflector_spec"`
 		PlugboardPairs        map[string]string       `json:"plugboard_pairs"`
 		CurrentRotorPositions []int                   `json:"current_rotor_positions"`
+		Metadata              *Metadata               `json:"metadata,omitempty"`
 	}
 
 	js := jsonSettings{
@@ -156,6 +168,7 @@ func (s *EnigmaSettings) MarshalJSON() ([]byte, error) {
 		ReflectorSpec:         s.ReflectorSpec,
 		CurrentRotorPositions: s.CurrentRotorPositions,
 		PlugboardPairs:        make(map[string]string),
+		Metadata:              s.Metadata,
 	}
 
 	// Convert rune pairs to string pairs
@@ -175,6 +188,7 @@ func (s *EnigmaSettings) UnmarshalJSON(data []byte) error {
 		ReflectorSpec         reflector.ReflectorSpec `json:"reflector_spec"`
 		PlugboardPairs        map[string]string       `json:"plugboard_pairs"`
 		CurrentRotorPositions []int                   `json:"current_rotor_positions"`
+		Metadata              *Metadata               `json:"metadata,omitempty"`
 	}
 
 	var js jsonSettings
@@ -182,11 +196,17 @@ func (s *EnigmaSettings) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	// Check schema version
+	if js.SchemaVersion != 1 {
+		return fmt.Errorf("unsupported schema version: %d (expected 1)", js.SchemaVersion)
+	}
+
 	s.SchemaVersion = js.SchemaVersion
 	s.Alphabet = []rune(js.Alphabet)
 	s.RotorSpecs = js.RotorSpecs
 	s.ReflectorSpec = js.ReflectorSpec
 	s.CurrentRotorPositions = js.CurrentRotorPositions
+	s.Metadata = js.Metadata
 	s.PlugboardPairs = make(map[rune]rune)
 
 	// Convert string pairs back to rune pairs

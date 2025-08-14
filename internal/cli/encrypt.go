@@ -188,6 +188,10 @@ func createMachineFromPreset(preset string) (*enigma.Enigma, error) {
 	switch strings.ToLower(preset) {
 	case "classic":
 		return enigma.NewEnigmaClassic()
+	case "m3":
+		return enigma.NewEnigmaM3()
+	case "m4":
+		return enigma.NewEnigmaM4()
 	case "simple":
 		return enigma.NewEnigmaSimple(eniGOma.AlphabetLatinUpper)
 	case "low":
@@ -211,7 +215,7 @@ func createMachineFromPreset(preset string) (*enigma.Enigma, error) {
 			enigma.WithRandomSettings(enigma.Extreme),
 		)
 	default:
-		return nil, fmt.Errorf("unknown preset: %s. Available: classic, simple, low, medium, high, extreme", preset)
+		return nil, fmt.Errorf("unknown preset: %s. Available: classic, m3, m4, simple, low, medium, high, extreme", preset)
 	}
 }
 
