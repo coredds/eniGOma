@@ -1,8 +1,9 @@
 project_name: eniGOma
 
 builds:
-  - id: eniGOma
-    main: ./cmd/example/main.go
+  - id: eniGOma-cli
+    main: ./cmd/eniGOma/main.go
+    binary: eniGOma
     goos:
       - linux
       - darwin
@@ -10,8 +11,19 @@ builds:
     goarch:
       - amd64
       - arm64
-    ldflags:
-      - "-s -w"
+  - id: eniGOma-example
+    main: ./cmd/example/main.go
+    binary: eniGOma-example
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+      
+ldflags:
+  - "-s -w"
 
 archives:
   - format: tar.gz
