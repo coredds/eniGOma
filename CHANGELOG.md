@@ -118,10 +118,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON serialization support
 - Clean API following Go best practices
 
+## [0.3.4] - 2025-02-15
+
+### Added
+- Schema file inclusion in releases for validation
+- Post-install hook to copy schema files to the correct location
+
+### Fixed
+- Schema validation compatibility for notches and reflector mapping formats
+- Cyclomatic complexity issues in validation code
+- Updated GoReleaser configuration to version 2 format
+
+### Changed
+- Updated Go version requirement to 1.23+ (to address vulnerability GO-2025-3750)
+- Improved code organization with better function separation
+
+## [0.3.3] - 2025-02-14
+
+### Fixed
+- Schema validation for configuration files
+- Added schema file path resolution improvements
+
+### Changed
+- Enhanced error handling for schema validation
+
+## [0.3.2] - 2025-02-13
+
+### Changed
+- Updated GoReleaser configuration to build CLI tool
+- Added CLI tool to release artifacts
+
 ## [Unreleased]
 
 ### Planned
 - Performance benchmarks
 - Additional historical rotor configurations
 - Web interface example
-- Advanced stepping mechanisms 
+- Advanced stepping mechanisms

@@ -198,4 +198,31 @@ eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 ## Configuration schema
 
 Saved configuration files include a `schema_version` field. This allows the project to evolve the configuration format safely over time.
+
+### Configuration Validation (since v0.3.4)
+
+eniGOma provides a configuration validation feature to ensure your configuration files are valid:
+
+```bash
+# Validate a configuration file
+enigoma config --validate my-key.json
+```
+
+This will check that:
+1. The JSON is well-formed
+2. The configuration follows the schema
+3. All required fields are present
+4. Field types are correct
+
+If validation succeeds, you'll see:
+```
+✅ Configuration is VALID
+   Schema Version: 1
+   Alphabet Size: 26 characters
+   Rotors: 5
+   Plugboard Pairs: 8
+   Current Rotor Positions: [16 20 24 14 9]
+```
+
+If validation fails, you'll see detailed error messages to help you fix the issues.
 ```

@@ -1,9 +1,9 @@
 # eniGOma
 
-[![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)](https://github.com/coredds/eniGOma/releases)
+[![Version](https://img.shields.io/badge/version-0.3.4-blue.svg)](https://github.com/coredds/eniGOma/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/coredds/eniGOma.svg)](https://pkg.go.dev/github.com/coredds/eniGOma)
 [![CI](https://github.com/coredds/eniGOma/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coredds/eniGOma/actions/workflows/ci.yml)
-[![Go Version](https://img.shields.io/badge/go-1.21+-blue.svg)](https://golang.org)
+[![Go Version](https://img.shields.io/badge/go-1.23+-blue.svg)](https://golang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <p align="center">
@@ -49,11 +49,13 @@ eniGOma is a Go library that simulates the famous Enigma machine used during Wor
 ## Installation
 
 ```bash
-go get github.com/coredds/eniGOma@v0.3.1
+# Inside your Go module:
+go get github.com/coredds/eniGOma@v0.3.4
 ```
 
 Or get the latest version:
 ```bash
+# Inside your Go module:
 go get github.com/coredds/eniGOma@latest
 ```
 
@@ -462,7 +464,7 @@ eniGOma maintains historical Enigma machine behaviors:
 
 ## Version History
 
-Current version: **0.3.1**
+Current version: **0.3.4**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 
