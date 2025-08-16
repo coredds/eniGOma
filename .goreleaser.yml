@@ -12,6 +12,10 @@ builds:
     goarch:
       - amd64
       - arm64
+    hooks:
+      post: |
+        mkdir -p "{{ .Env.GOPATH }}/bin/schemas"
+        cp ./schemas/* "{{ .Env.GOPATH }}/bin/schemas/"
   - id: eniGOma-example
     main: ./cmd/example/main.go
     binary: eniGOma-example
@@ -32,6 +36,7 @@ archives:
     files:
       - LICENSE
       - README.md
+      - schemas/**/*
 
 checksum:
   name_template: "checksums.txt"

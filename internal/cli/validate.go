@@ -31,13 +31,20 @@ func ValidateConfigAgainstSchema(configFile string) error {
 
 	// Find schema file
 	schemaPath := filepath.Join("schemas", "config.v1.schema.json")
+
+	// Check if schema file exists in the current directory
 	if _, err := os.Stat(schemaPath); os.IsNotExist(err) {
-		// Try to find schema in executable directory
+		// If not found, try to find schema in the executable directory
 		execPath, err := os.Executable()
 		if err == nil {
 			execDir := filepath.Dir(execPath)
 			schemaPath = filepath.Join(execDir, "schemas", "config.v1.schema.json")
 		}
+	}
+
+	// If schema file is still not found, return an error
+	if _, err := os.Stat(schemaPath); os.IsNotExist(err) {
+		return fmt.Errorf("schema file not found: %v", schemaPath)
 	}
 
 	// Load schema
