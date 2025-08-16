@@ -15,6 +15,122 @@ import (
 	"github.com/santhosh-tekuri/jsonschema/v5"
 )
 
+// fixNotchesFormat converts integer notches to string notches in the configuration.
+func fixNotchesFormat(configJSON map[string]interface{}) {
+	rotorSpecs, ok := configJSON["rotor_specs"].([]interface{})
+	if !ok {
+		return
+	}
+
+	for _, rotorSpec := range rotorSpecs {
+		rs, ok := rotorSpec.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		notches, ok := rs["notches"].([]interface{})
+		if !ok {
+			continue
+		}
+
+		stringNotches := make([]interface{}, len(notches))
+		for i, notch := range notches {
+			if n, ok := notch.(float64); ok {
+				// Convert integer notch to string (single character)
+				stringNotches[i] = string(rune(int(n)))
+			} else {
+				stringNotches[i] = notch
+			}
+		}
+		rs["notches"] = stringNotches
+	}
+}
+
+// fixReflectorMapping converts string reflector mapping to object mapping in the configuration.
+func fixReflectorMapping(configJSON map[string]interface{}) {
+	reflectorSpec, ok := configJSON["reflector_spec"].(map[string]interface{})
+	if !ok {
+		return
+	}
+
+	mapping, ok := reflectorSpec["mapping"].(string)
+	if !ok {
+		return
+	}
+
+	alphabet, ok := configJSON["alphabet"].(string)
+	if !ok {
+		return
+	}
+
+	mappingObj := make(map[string]interface{})
+	for i, r := range mapping {
+		if i < len(alphabet) {
+			mappingObj[string(alphabet[i])] = string(r)
+		}
+	}
+	reflectorSpec["mapping"] = mappingObj
+}
+
+// findSchemaPath returns the path to the schema file.
+func findSchemaPath() (string, error) {
+	schemaPath := filepath.Join("schemas", "config.v1.schema.json")
+
+	// Check if schema file exists in the current directory
+	if _, err := os.Stat(schemaPath); err == nil {
+		return schemaPath, nil
+	}
+
+	// Try to find schema in the executable directory
+	execPath, err := os.Executable()
+	if err != nil {
+		return "", fmt.Errorf("failed to get executable path: %v", err)
+	}
+
+	execDir := filepath.Dir(execPath)
+	schemaPath = filepath.Join(execDir, "schemas", "config.v1.schema.json")
+
+	// Check if schema file exists in the executable directory
+	if _, err := os.Stat(schemaPath); err != nil {
+		return "", fmt.Errorf("schema file not found: %v", schemaPath)
+	}
+
+	return schemaPath, nil
+}
+
+// loadSchema loads and compiles the JSON schema from the given path.
+func loadSchema(schemaPath string) (*jsonschema.Schema, error) {
+	// Open schema file
+	schemaFile, err := os.Open(schemaPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open schema file: %v", err)
+	}
+	defer schemaFile.Close()
+
+	// Read schema content
+	schemaData, err := io.ReadAll(schemaFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read schema file: %v", err)
+	}
+
+	// Compile schema
+	compiler := jsonschema.NewCompiler()
+	compiler.Draft = jsonschema.Draft7
+
+	// Add schema to compiler
+	if err := compiler.AddResource("config.v1.schema.json", bytes.NewReader(schemaData)); err != nil {
+		return nil, fmt.Errorf("failed to add schema resource: %v", err)
+	}
+
+	// Compile schema
+	schema, err := compiler.Compile("config.v1.schema.json")
+	if err != nil {
+		return nil, fmt.Errorf("failed to compile schema: %v", err)
+	}
+
+	return schema, nil
+}
+
 // ValidateConfigAgainstSchema validates a configuration file against the JSON schema.
 func ValidateConfigAgainstSchema(configFile string) error {
 	// Read configuration file
@@ -29,86 +145,19 @@ func ValidateConfigAgainstSchema(configFile string) error {
 		return fmt.Errorf("invalid JSON in config file: %v", err)
 	}
 
-	// Fix notches format (convert from integers to strings)
-	if rotorSpecs, ok := configJSON["rotor_specs"].([]interface{}); ok {
-		for _, rotorSpec := range rotorSpecs {
-			if rs, ok := rotorSpec.(map[string]interface{}); ok {
-				if notches, ok := rs["notches"].([]interface{}); ok {
-					stringNotches := make([]interface{}, len(notches))
-					for i, notch := range notches {
-						if n, ok := notch.(float64); ok {
-							// Convert integer notch to string (single character)
-							stringNotches[i] = string(rune(int(n)))
-						} else {
-							stringNotches[i] = notch
-						}
-					}
-					rs["notches"] = stringNotches
-				}
-			}
-		}
-	}
+	// Fix format issues for validation
+	fixNotchesFormat(configJSON)
+	fixReflectorMapping(configJSON)
 
-	// Fix reflector mapping format (convert from string to object)
-	if reflectorSpec, ok := configJSON["reflector_spec"].(map[string]interface{}); ok {
-		if mapping, ok := reflectorSpec["mapping"].(string); ok {
-			// Convert string mapping to object mapping
-			mappingObj := make(map[string]interface{})
-			for i, r := range mapping {
-				// Create a mapping from the alphabet index to the character
-				alphabet := configJSON["alphabet"].(string)
-				if i < len(alphabet) {
-					mappingObj[string(alphabet[i])] = string(r)
-				}
-			}
-			reflectorSpec["mapping"] = mappingObj
-		}
-	}
-
-	// Find schema file
-	schemaPath := filepath.Join("schemas", "config.v1.schema.json")
-
-	// Check if schema file exists in the current directory
-	if _, err := os.Stat(schemaPath); os.IsNotExist(err) {
-		// If not found, try to find schema in the executable directory
-		execPath, err := os.Executable()
-		if err == nil {
-			execDir := filepath.Dir(execPath)
-			schemaPath = filepath.Join(execDir, "schemas", "config.v1.schema.json")
-		}
-	}
-
-	// If schema file is still not found, return an error
-	if _, err := os.Stat(schemaPath); os.IsNotExist(err) {
-		return fmt.Errorf("schema file not found: %v", schemaPath)
-	}
-
-	// Load schema
-	compiler := jsonschema.NewCompiler()
-	compiler.Draft = jsonschema.Draft7
-
-	// Open schema file
-	schemaFile, err := os.Open(schemaPath)
+	// Find and load schema
+	schemaPath, err := findSchemaPath()
 	if err != nil {
-		return fmt.Errorf("failed to open schema file: %v", err)
+		return err
 	}
-	defer schemaFile.Close()
 
-	// Read schema content
-	schemaData, err := io.ReadAll(schemaFile)
+	schema, err := loadSchema(schemaPath)
 	if err != nil {
-		return fmt.Errorf("failed to read schema file: %v", err)
-	}
-
-	// Add schema to compiler
-	if err := compiler.AddResource("config.v1.schema.json", bytes.NewReader(schemaData)); err != nil {
-		return fmt.Errorf("failed to add schema resource: %v", err)
-	}
-
-	// Compile schema
-	schema, err := compiler.Compile("config.v1.schema.json")
-	if err != nil {
-		return fmt.Errorf("failed to compile schema: %v", err)
+		return err
 	}
 
 	// Validate configuration against schema
