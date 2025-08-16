@@ -12,6 +12,8 @@ builds:
     goarch:
       - amd64
       - arm64
+    ldflags:
+      - "-s -w"
     hooks:
       post: |
         mkdir -p "{{ .Env.GOPATH }}/bin/schemas"
@@ -26,9 +28,8 @@ builds:
     goarch:
       - amd64
       - arm64
-
-ldflags:
-  - "-s -w"
+    ldflags:
+      - "-s -w"
 
 archives:
   - format: tar.gz
@@ -45,8 +46,8 @@ release:
   github:
     owner: coredds
     name: eniGOma
-    draft: false
-    prerelease: false
+  draft: false
+  prerelease: false
 
 changelog:
   sort: asc
