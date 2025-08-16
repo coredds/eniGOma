@@ -14,10 +14,8 @@ builds:
       - arm64
     ldflags:
       - "-s -w"
-    hooks:
-      post: |
-        mkdir -p "{{ .Env.GOPATH }}/bin/schemas"
-        cp ./schemas/* "{{ .Env.GOPATH }}/bin/schemas/"
+    # Removed post-hook that was using GOPATH
+    # Schema files are already included in archives section
   - id: eniGOma-example
     main: ./cmd/example/main.go
     binary: eniGOma-example
