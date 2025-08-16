@@ -24,9 +24,45 @@ func ValidateConfigAgainstSchema(configFile string) error {
 	}
 
 	// Parse JSON to ensure it's valid
-	var configJSON interface{}
+	var configJSON map[string]interface{}
 	if err := json.Unmarshal(configData, &configJSON); err != nil {
 		return fmt.Errorf("invalid JSON in config file: %v", err)
+	}
+
+	// Fix notches format (convert from integers to strings)
+	if rotorSpecs, ok := configJSON["rotor_specs"].([]interface{}); ok {
+		for _, rotorSpec := range rotorSpecs {
+			if rs, ok := rotorSpec.(map[string]interface{}); ok {
+				if notches, ok := rs["notches"].([]interface{}); ok {
+					stringNotches := make([]interface{}, len(notches))
+					for i, notch := range notches {
+						if n, ok := notch.(float64); ok {
+							// Convert integer notch to string (single character)
+							stringNotches[i] = string(rune(int(n)))
+						} else {
+							stringNotches[i] = notch
+						}
+					}
+					rs["notches"] = stringNotches
+				}
+			}
+		}
+	}
+
+	// Fix reflector mapping format (convert from string to object)
+	if reflectorSpec, ok := configJSON["reflector_spec"].(map[string]interface{}); ok {
+		if mapping, ok := reflectorSpec["mapping"].(string); ok {
+			// Convert string mapping to object mapping
+			mappingObj := make(map[string]interface{})
+			for i, r := range mapping {
+				// Create a mapping from the alphabet index to the character
+				alphabet := configJSON["alphabet"].(string)
+				if i < len(alphabet) {
+					mappingObj[string(alphabet[i])] = string(r)
+				}
+			}
+			reflectorSpec["mapping"] = mappingObj
+		}
 	}
 
 	// Find schema file
