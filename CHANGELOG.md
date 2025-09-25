@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-01-31
+
+### Major Usability Enhancements Added
+
+#### 🚀 New CLI Commands
+- **`eniGOma demo`** - Interactive demonstration of all features with real-time examples
+- **`eniGOma examples`** - Copy-paste ready examples for common use cases
+- **`eniGOma test`** - Complete installation and functionality verification
+- **`eniGOma wizard`** - Interactive beginner-friendly setup wizard
+
+#### ⚡ Zero-Config Library Functions
+- **`enigma.EncryptText(text)`** - Simplest possible encryption with auto-detection
+- **`enigma.DecryptWithConfig(encrypted, config)`** - Companion decryption function
+- **`enigma.NewFromText(text, security)`** - Create machine from text with custom security
+- **`enigma.NewWithAutoDetection(text)`** - Auto-detection with medium security
+- **`enigma.QuickEncrypt(text, security)`** - Returns encrypted text + config JSON
+
+#### 🔧 Enhanced CLI Preprocessing
+- **`--remove-spaces`** - Remove spaces from input text
+- **`--uppercase`** - Convert input to uppercase
+- **`--letters-only`** - Keep only letters (A-Z, a-z)
+- **`--alphanumeric-only`** - Keep only letters and numbers
+
+### Fixed
+- **Auto-detection edge cases** - Now handles Windows line endings (`\r\n`) correctly
+- **Character preprocessing** - Consistent text normalization for auto-detection
+- **Piped input support** - Echo and pipe operations now work seamlessly
+
+### Enhanced  
+- **Error messages** - All library errors now include actionable suggestions
+- **Help documentation** - Comprehensive usage examples and troubleshooting tips
+- **CLI user experience** - Intelligent suggestions when operations fail
+
+### Technical Improvements
+- **Input validation** - Enhanced preprocessing and validation before operations
+- **Configuration handling** - Better error messages for invalid configs
+- **Cross-platform compatibility** - Improved Windows support for all operations
+
 ## [0.3.1] - 2025-01-31
 
 ### Added

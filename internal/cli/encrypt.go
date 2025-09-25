@@ -24,17 +24,34 @@ var encryptCmd = &cobra.Command{
 	Short: "Encrypt text or files using an Enigma machine",
 	Long: `Encrypt plaintext using a configured Enigma machine.
 
-You can encrypt text directly, read from a file, or read from stdin.
-The machine can be configured using presets, custom settings, or configuration files.
+QUICK START (Recommended):
+  eniGOma encrypt --text "Hello World!" --auto-config my-key.json
+  eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
-Examples:
-  eniGOma encrypt --text "Hello World" --preset classic
-  eniGOma encrypt --file input.txt --output encrypted.txt --preset high
-  eniGOma encrypt --text "Secret Message" --alphabet greek --security medium
-  eniGOma encrypt --file data.txt --config my-enigma.json
+The auto-config approach automatically detects the best alphabet for your text
+and saves a reusable configuration file for decryption.
 
-Recommended (configuration-first):
-  eniGOma encrypt --text "Hello World" --auto-config my-key.json`,
+HANDLING SPECIAL CHARACTERS:
+  • Spaces in text? Use --auto-config or --remove-spaces with presets
+  • Mixed case? Use --auto-config or --uppercase with presets  
+  • Special symbols? Use --auto-config or --alphabet ascii
+
+INPUT METHODS:
+  eniGOma encrypt --text "Hello World"           # Direct text
+  eniGOma encrypt --file input.txt               # From file
+  echo "Hello" | eniGOma encrypt                 # From stdin
+
+CONFIGURATION OPTIONS:
+  eniGOma encrypt --text "Hello" --auto-config key.json    # Auto-detect (recommended)
+  eniGOma encrypt --text "HELLO" --preset classic         # Historical presets
+  eniGOma encrypt --text "Hello" --alphabet ascii         # Manual alphabet
+  eniGOma encrypt --text "Hello" --config existing.json   # Existing config
+
+PREPROCESSING (for presets):
+  --remove-spaces     Remove spaces from input
+  --uppercase         Convert to uppercase  
+  --letters-only      Keep only A-Z, a-z
+  --alphanumeric-only Keep only letters and numbers`,
 	RunE: runEncrypt,
 }
 
@@ -58,6 +75,12 @@ func init() {
 	encryptCmd.Flags().String("auto-config", "", "Auto-detect alphabet from input and save configuration to file")
 	encryptCmd.Flags().String("save-config", "", "Save generated configuration to file (used with --preset or manual settings)")
 
+	// Input preprocessing
+	encryptCmd.Flags().BoolP("remove-spaces", "", false, "Remove spaces from input text")
+	encryptCmd.Flags().BoolP("uppercase", "", false, "Convert input to uppercase")
+	encryptCmd.Flags().BoolP("letters-only", "", false, "Keep only letters (A-Z, a-z)")
+	encryptCmd.Flags().BoolP("alphanumeric-only", "", false, "Keep only letters and numbers")
+
 	// Output formatting
 	encryptCmd.Flags().StringP("format", "", "text", "Output format (text, hex, base64)")
 	encryptCmd.Flags().BoolP("preserve-case", "", false, "Preserve original case (when possible)")
@@ -75,6 +98,22 @@ func runEncrypt(cmd *cobra.Command, args []string) error {
 
 	if text == "" {
 		return fmt.Errorf("no input text provided. Use --text, --file, or pipe to stdin")
+	}
+
+	// Apply input preprocessing
+	text, err = preprocessInput(cmd, text)
+	if err != nil {
+		return fmt.Errorf("input preprocessing failed: %v", err)
+	}
+
+	// Apply auto-detection preprocessing if using auto-config
+	if autoConfigPath, _ := cmd.Flags().GetString("auto-config"); autoConfigPath != "" {
+		text = alphabet.PreprocessTextForAutoDetection(text)
+	}
+
+	// Prevalidate operation
+	if err := prevalidateOperation(cmd, text); err != nil {
+		return err
 	}
 
 	// Create Enigma machine with configuration-first workflow
@@ -121,7 +160,7 @@ func runEncrypt(cmd *cobra.Command, args []string) error {
 	// Encrypt text
 	encrypted, err := machine.Encrypt(text)
 	if err != nil {
-		return fmt.Errorf("encryption failed: %v", err)
+		return enhanceEncryptionError(err, text, cmd)
 	}
 
 	// Format output
@@ -399,7 +438,8 @@ func createMachineWithAutoConfig(cmd *cobra.Command, text string, savePath strin
 	}
 
 	if v, _ := cmd.Flags().GetBool("verbose"); v {
-		fmt.Println("Encrypt: using manual settings")
+		fmt.Fprintf(cmd.ErrOrStderr(), "Auto-detected alphabet with %d characters\n", len(detectedAlphabet.Runes()))
+		fmt.Fprintf(cmd.ErrOrStderr(), "Auto-generated configuration saved to: %s\n", savePath)
 	}
 	return machine, nil
 }
@@ -413,4 +453,101 @@ func saveMachineConfig(machine *enigma.Enigma, path string) error {
 		return fmt.Errorf("write configuration to %s: %w", path, err)
 	}
 	return nil
+}
+
+// preprocessInput applies various text preprocessing options based on flags
+func preprocessInput(cmd *cobra.Command, text string) (string, error) {
+	result := text
+
+	// Apply filtering flags
+	if removeSpaces, _ := cmd.Flags().GetBool("remove-spaces"); removeSpaces {
+		result = strings.ReplaceAll(result, " ", "")
+	}
+
+	if uppercase, _ := cmd.Flags().GetBool("uppercase"); uppercase {
+		result = strings.ToUpper(result)
+	}
+
+	if lettersOnly, _ := cmd.Flags().GetBool("letters-only"); lettersOnly {
+		var filtered strings.Builder
+		for _, r := range result {
+			if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') {
+				filtered.WriteRune(r)
+			}
+		}
+		result = filtered.String()
+	}
+
+	if alphanumericOnly, _ := cmd.Flags().GetBool("alphanumeric-only"); alphanumericOnly {
+		var filtered strings.Builder
+		for _, r := range result {
+			if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+				filtered.WriteRune(r)
+			}
+		}
+		result = filtered.String()
+	}
+
+	if verbose, _ := cmd.Flags().GetBool("verbose"); verbose && result != text {
+		fmt.Fprintf(cmd.ErrOrStderr(), "Input preprocessed: %q -> %q\n", text, result)
+	}
+
+	return result, nil
+}
+
+// enhanceEncryptionError provides helpful suggestions when encryption fails
+func enhanceEncryptionError(err error, text string, cmd *cobra.Command) error {
+	errStr := err.Error()
+
+	// Check for character not found in alphabet errors
+	if strings.Contains(errStr, "character") && strings.Contains(errStr, "not found in alphabet") {
+		// Extract the problematic character if possible
+		var suggestions []string
+
+		// Check what preset/alphabet is being used
+		preset, _ := cmd.Flags().GetString("preset")
+		alphabet, _ := cmd.Flags().GetString("alphabet")
+
+		if preset != "" && preset != "auto" {
+			suggestions = append(suggestions, fmt.Sprintf("• Preset '%s' uses a limited alphabet. Try --auto-config instead:", preset))
+			suggestions = append(suggestions, fmt.Sprintf("  eniGOma encrypt --text %q --auto-config my-key.json", text))
+		}
+
+		if alphabet == "latin" || alphabet == "latin-upper" {
+			suggestions = append(suggestions, "• Latin alphabet doesn't include spaces/punctuation. Try:")
+			suggestions = append(suggestions, "  --remove-spaces (remove spaces)")
+			suggestions = append(suggestions, "  --letters-only (keep only A-Z, a-z)")
+			suggestions = append(suggestions, "  --alphabet ascii (include all printable characters)")
+			suggestions = append(suggestions, "  --alphabet auto (auto-detect from input)")
+		}
+
+		// Always suggest auto-config as the simplest solution
+		if len(suggestions) == 0 {
+			suggestions = append(suggestions, "• Try auto-detecting the alphabet:")
+			suggestions = append(suggestions, fmt.Sprintf("  eniGOma encrypt --text %q --auto-config my-key.json", text))
+		}
+
+		// Add preprocessing suggestions
+		if strings.Contains(text, " ") {
+			suggestions = append(suggestions, "• To remove spaces: add --remove-spaces")
+		}
+		if hasLowercase(text) {
+			suggestions = append(suggestions, "• To convert to uppercase: add --uppercase")
+		}
+
+		suggestionText := strings.Join(suggestions, "\n")
+		return fmt.Errorf("encryption failed: %v\n\nSuggestions:\n%s", err, suggestionText)
+	}
+
+	return fmt.Errorf("encryption failed: %v", err)
+}
+
+// hasLowercase checks if the text contains lowercase letters
+func hasLowercase(text string) bool {
+	for _, r := range text {
+		if r >= 'a' && r <= 'z' {
+			return true
+		}
+	}
+	return false
 }

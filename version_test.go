@@ -21,7 +21,7 @@ func TestVersion(t *testing.T) {
 		t.Errorf("Version format invalid: %s (should be X.Y.Z)", version)
 	}
 
-    // Version should match the constant (already checked) and follow semver
+	// Version should match the constant (already checked) and follow semver
 }
 
 func TestVersionConstant(t *testing.T) {
@@ -29,8 +29,8 @@ func TestVersionConstant(t *testing.T) {
 		t.Error("Version constant is empty")
 	}
 
-	// Version should start with "0.3"
-	if !strings.HasPrefix(Version, "0.3") {
-		t.Errorf("Version should start with '0.3', got %s", Version)
+	// Version should start with "0.4"
+	if !strings.HasPrefix(Version, "0.4") {
+		t.Errorf("Version should start with '0.4', got %s", Version)
 	}
 }

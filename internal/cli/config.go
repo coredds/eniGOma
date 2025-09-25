@@ -76,9 +76,9 @@ func validateConfig(configFile string, cmd *cobra.Command) error {
 		return fmt.Errorf("failed to read config file: %v", err)
 	}
 
-	// Validate against JSON schema
-	if err := ValidateConfigAgainstSchema(configFile); err != nil {
-		fmt.Fprintf(cmd.OutOrStdout(), "❌ Configuration is INVALID (schema validation): %v\n", err)
+	// Validate by attempting to load configuration
+	if err := validateConfigFile(configFile, cmd); err != nil {
+		fmt.Fprintf(cmd.OutOrStdout(), "❌ Configuration is INVALID: %v\n", err)
 		return nil
 	}
 

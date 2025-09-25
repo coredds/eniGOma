@@ -53,10 +53,10 @@ func demoClassicEnigma() {
 	}
 	fmt.Printf("Encrypted: %s\n", encrypted)
 
-    // Reset machine to initial state for decryption
-    if err := machine.Reset(); err != nil {
-        log.Fatalf("Reset failed: %v", err)
-    }
+	// Reset machine to initial state for decryption
+	if err := machine.Reset(); err != nil {
+		log.Fatalf("Reset failed: %v", err)
+	}
 
 	// Decrypt
 	decrypted, err := machine.Decrypt(encrypted)
@@ -85,10 +85,10 @@ func demoUnicodeEnigma() {
 	}
 	fmt.Printf("Encrypted: %s\n", encrypted)
 
-    // Reset and decrypt
-    if err := machine.Reset(); err != nil {
-        log.Fatalf("Reset failed: %v", err)
-    }
+	// Reset and decrypt
+	if err := machine.Reset(); err != nil {
+		log.Fatalf("Reset failed: %v", err)
+	}
 	decrypted, err := machine.Decrypt(encrypted)
 	if err != nil {
 		log.Fatalf("Decryption failed: %v", err)
@@ -124,9 +124,9 @@ func demoSecurityLevels() {
 		encrypted, _ := machine.Encrypt(message)
 		fmt.Printf("  Encrypted: %s\n", encrypted)
 
-        if err := machine.Reset(); err != nil {
-            log.Fatalf("Reset failed: %v", err)
-        }
+		if err := machine.Reset(); err != nil {
+			log.Fatalf("Reset failed: %v", err)
+		}
 		decrypted, _ := machine.Decrypt(encrypted)
 		fmt.Printf("  Round-trip: %t\n", message == decrypted)
 		fmt.Println()
@@ -199,9 +199,9 @@ func demoCustomComponents() {
 	encrypted, _ := machine.Encrypt(message)
 	fmt.Printf("Encrypted: %s\n", encrypted)
 
-    if err := machine.Reset(); err != nil {
-        log.Fatalf("Reset failed: %v", err)
-    }
+	if err := machine.Reset(); err != nil {
+		log.Fatalf("Reset failed: %v", err)
+	}
 	decrypted, _ := machine.Decrypt(encrypted)
 	fmt.Printf("Decrypted: %s\n", decrypted)
 
@@ -226,6 +226,7 @@ func levelToString(level enigma.SecurityLevel) string {
 }
 
 // demonstrateReciprocal is kept for reference and is not used in the demo flow.
+//
 //nolint:unused
 func demonstrateReciprocal() {
 	fmt.Println("\n=== Enigma Reciprocal Property Demo ===")
@@ -239,9 +240,9 @@ func demonstrateReciprocal() {
 	testChars := []rune{'A', 'B', 'C', 'D', 'E'}
 
 	for _, char := range testChars {
-    if err := machine.Reset(); err != nil {
-        log.Fatalf("Reset failed: %v", err)
-    }
+		if err := machine.Reset(); err != nil {
+			log.Fatalf("Reset failed: %v", err)
+		}
 
 		// Encrypt the character
 		input := string(char)

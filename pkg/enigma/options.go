@@ -5,15 +5,15 @@
 package enigma
 
 import (
-    "crypto/rand"
-    "fmt"
-    "math/big"
-    mrand "math/rand"
+	"crypto/rand"
+	"fmt"
+	"math/big"
+	mrand "math/rand"
 
-    "github.com/coredds/eniGOma/internal/alphabet"
-    "github.com/coredds/eniGOma/internal/plugboard"
-    "github.com/coredds/eniGOma/internal/reflector"
-    "github.com/coredds/eniGOma/internal/rotor"
+	"github.com/coredds/eniGOma/internal/alphabet"
+	"github.com/coredds/eniGOma/internal/plugboard"
+	"github.com/coredds/eniGOma/internal/reflector"
+	"github.com/coredds/eniGOma/internal/rotor"
 )
 
 // Option is a functional option for Enigma configuration.
@@ -78,7 +78,7 @@ func WithCustomComponents(rotors []rotor.Rotor, refl reflector.Reflector, pb *pl
 func WithRandomSettings(level SecurityLevel) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before applying random settings")
+			return fmt.Errorf("alphabet must be set before applying random settings. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
 		}
 
 		config := getSecurityConfig(level)
@@ -147,7 +147,7 @@ func WithRandomSettings(level SecurityLevel) Option {
 func WithRotorConfiguration(rotorSpecs []rotor.RotorSpec) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before configuring rotors")
+			return fmt.Errorf("alphabet must be set before configuring rotors. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
 		}
 
 		if len(rotorSpecs) == 0 {
@@ -172,7 +172,7 @@ func WithRotorConfiguration(rotorSpecs []rotor.RotorSpec) Option {
 func WithReflectorConfiguration(reflectorSpec reflector.ReflectorSpec) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before configuring reflector")
+			return fmt.Errorf("alphabet must be set before configuring reflector. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
 		}
 
 		refl, err := reflector.CreateFromSpec(reflectorSpec, e.alphabet)
@@ -189,7 +189,7 @@ func WithReflectorConfiguration(reflectorSpec reflector.ReflectorSpec) Option {
 func WithPlugboardConfiguration(pairs map[rune]rune) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before configuring plugboard")
+			return fmt.Errorf("alphabet must be set before configuring plugboard. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
 		}
 
 		pb, err := plugboard.New(e.alphabet)
@@ -232,18 +232,18 @@ func WithRandomRotorPositions() Option {
 // WithRandomRotorPositionsSeed sets rotor positions using a deterministic PRNG seeded with the provided value.
 // This is useful for reproducible configurations in testing or when a stable output is desired.
 func WithRandomRotorPositionsSeed(seed int64) Option {
-    return func(e *Enigma) error {
-        if e.alphabet == nil {
-            return fmt.Errorf("alphabet must be set before setting random positions")
-        }
+	return func(e *Enigma) error {
+		if e.alphabet == nil {
+			return fmt.Errorf("alphabet must be set before setting random positions")
+		}
 
-        rng := mrand.New(mrand.NewSource(seed)) // #nosec G404 - Using math/rand is intentional for deterministic seeding
-        maxPos := e.alphabet.Size()
-        for _, r := range e.rotors {
-            r.SetPosition(rng.Intn(maxPos))
-        }
-        return nil
-    }
+		rng := mrand.New(mrand.NewSource(seed)) // #nosec G404 - Using math/rand is intentional for deterministic seeding
+		maxPos := e.alphabet.Size()
+		for _, r := range e.rotors {
+			r.SetPosition(rng.Intn(maxPos))
+		}
+		return nil
+	}
 }
 
 // WithRotorPositions sets specific initial positions for rotors.

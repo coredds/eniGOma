@@ -12,15 +12,15 @@ import (
 // Historical rotor wirings from actual Enigma machines
 const (
 	// Enigma I, M3, M4 rotors
-	RotorI     = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
-	RotorII    = "AJDKSIRUXBLHWTMCQGZNPYFVOE"
-	RotorIII   = "BDFHJLCPRTXVZNYEIWGAKMUSQO"
-	RotorIV    = "ESOVPZJAYQUIRHXLNFTGKDCMWB"
-	RotorV     = "VZBRGITYUPSDNHLXAWMJQOFECK"
-	RotorVI    = "JPGVOUMFYQBENHZRDKASXLICTW"
-	RotorVII   = "NZJHGRCXMYSWBOUFAIVLPEKQDT"
-	RotorVIII  = "FKQHTLXOCBJSPDZRAMEWNIUYGV"
-	
+	RotorI    = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+	RotorII   = "AJDKSIRUXBLHWTMCQGZNPYFVOE"
+	RotorIII  = "BDFHJLCPRTXVZNYEIWGAKMUSQO"
+	RotorIV   = "ESOVPZJAYQUIRHXLNFTGKDCMWB"
+	RotorV    = "VZBRGITYUPSDNHLXAWMJQOFECK"
+	RotorVI   = "JPGVOUMFYQBENHZRDKASXLICTW"
+	RotorVII  = "NZJHGRCXMYSWBOUFAIVLPEKQDT"
+	RotorVIII = "FKQHTLXOCBJSPDZRAMEWNIUYGV"
+
 	// M4 Naval Enigma additional thin rotors (used with thin reflectors)
 	RotorBeta  = "LEYJVCNIXWPBQMDRTAKZGFUHOS"
 	RotorGamma = "FSOKANUERHMBTIYCWLQPZXVGJD"
@@ -32,7 +32,7 @@ const (
 	ReflectorA = "EJMZALYXVBWFCRQUONTSPIKHGD"
 	ReflectorB = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
 	ReflectorC = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
-	
+
 	// M4 Naval Enigma thin reflectors (used with thin rotors)
 	ReflectorBThin = "ENKQAUYWJICOPBLMDXZVFTHRGS"
 	ReflectorCThin = "RDOBJNTKVEHMLFCWZAXGYIPSUQ"
@@ -40,14 +40,14 @@ const (
 
 // Historical notch positions (when stepping occurs)
 var (
-	NotchI    = []rune{'Q'}         // Notch at position Q
-	NotchII   = []rune{'E'}         // Notch at position E
-	NotchIII  = []rune{'V'}         // Notch at position V
-	NotchIV   = []rune{'J'}         // Notch at position J
-	NotchV    = []rune{'Z'}         // Notch at position Z
-	NotchVI   = []rune{'Z', 'M'}    // Notches at positions Z and M
-	NotchVII  = []rune{'Z', 'M'}    // Notches at positions Z and M
-	NotchVIII = []rune{'Z', 'M'}    // Notches at positions Z and M
+	NotchI    = []rune{'Q'}      // Notch at position Q
+	NotchII   = []rune{'E'}      // Notch at position E
+	NotchIII  = []rune{'V'}      // Notch at position V
+	NotchIV   = []rune{'J'}      // Notch at position J
+	NotchV    = []rune{'Z'}      // Notch at position Z
+	NotchVI   = []rune{'Z', 'M'} // Notches at positions Z and M
+	NotchVII  = []rune{'Z', 'M'} // Notches at positions Z and M
+	NotchVIII = []rune{'Z', 'M'} // Notches at positions Z and M
 )
 
 // NewEnigmaM3 creates a historically accurate Enigma M3 machine.
@@ -59,7 +59,7 @@ func NewEnigmaM3() (*Enigma, error) {
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	}
-	
+
 	// Define the rotor specifications
 	rotorSpecs := []rotor.RotorSpec{
 		{
@@ -84,13 +84,13 @@ func NewEnigmaM3() (*Enigma, error) {
 			RingSetting:    0,
 		},
 	}
-	
+
 	// Define the reflector specification
 	reflectorSpec := reflector.ReflectorSpec{
 		ID:      "B",
 		Mapping: ReflectorB,
 	}
-	
+
 	// Create the machine
 	return New(
 		WithAlphabet(alphabet),
@@ -109,7 +109,7 @@ func NewEnigmaM4() (*Enigma, error) {
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	}
-	
+
 	// Define the rotor specifications
 	rotorSpecs := []rotor.RotorSpec{
 		{
@@ -141,13 +141,13 @@ func NewEnigmaM4() (*Enigma, error) {
 			RingSetting:    0,
 		},
 	}
-	
+
 	// Define the reflector specification
 	reflectorSpec := reflector.ReflectorSpec{
 		ID:      "B-Thin",
 		Mapping: ReflectorBThin,
 	}
-	
+
 	// Create the machine
 	return New(
 		WithAlphabet(alphabet),

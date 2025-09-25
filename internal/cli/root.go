@@ -38,6 +38,10 @@ func init() {
 	rootCmd.AddCommand(keygenCmd)
 	rootCmd.AddCommand(presetCmd)
 	rootCmd.AddCommand(configCmd)
+	rootCmd.AddCommand(wizardCmd)
+	rootCmd.AddCommand(demoCmd)
+	rootCmd.AddCommand(examplesCmd)
+	rootCmd.AddCommand(testCmd)
 
 	// Global flags
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Enable verbose output")

@@ -1,6 +1,6 @@
 # eniGOma
 
-[![Version](https://img.shields.io/badge/version-0.3.4-blue.svg)](https://github.com/coredds/eniGOma/releases)
+[![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)](https://github.com/coredds/eniGOma/releases)
 [![Go Reference](https://pkg.go.dev/badge/github.com/coredds/eniGOma.svg)](https://pkg.go.dev/github.com/coredds/eniGOma)
 [![CI](https://github.com/coredds/eniGOma/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coredds/eniGOma/actions/workflows/ci.yml)
 [![Go Version](https://img.shields.io/badge/go-1.23+-blue.svg)](https://golang.org)
@@ -39,6 +39,13 @@ eniGOma is a Go library that simulates the famous Enigma machine used during Wor
 - Custom alphabet support for specialized use cases
 - Adjustable complexity levels (Low, Medium, High, Extreme)
 
+### New in v0.4.0: Enhanced Usability ✨
+- **Zero-Config Functions**: `enigma.EncryptText("Hello!")` - encrypt in one line
+- **Discovery Commands**: `eniGOma demo`, `eniGOma examples`, `eniGOma test`
+- **Interactive Wizard**: `eniGOma wizard` for beginner-friendly setup
+- **Smart Preprocessing**: `--remove-spaces`, `--uppercase`, `--letters-only` flags
+- **Enhanced Error Messages**: All errors now include actionable suggestions
+
 ### Developer Experience
 - Functional options pattern for clean configuration
 - Comprehensive error handling
@@ -50,7 +57,7 @@ eniGOma is a Go library that simulates the famous Enigma machine used during Wor
 
 ```bash
 # Inside your Go module:
-go get github.com/coredds/eniGOma@v0.3.4
+go get github.com/coredds/eniGOma@v0.4.0
 ```
 
 Or get the latest version:
@@ -61,7 +68,36 @@ go get github.com/coredds/eniGOma@latest
 
 ## Quick Start
 
-### Basic Usage
+### 🚀 Zero-Config Usage (New in v0.4.0)
+
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+    
+    "github.com/coredds/eniGOma/pkg/enigma"
+)
+
+func main() {
+    // Simplest possible usage - one line encryption!
+    encrypted, config, err := enigma.EncryptText("Hello World! 🌟")
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Encrypted: %s\n", encrypted)
+    
+    // Decrypt using the config
+    decrypted, err := enigma.DecryptWithConfig(encrypted, config)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Decrypted: %s\n", decrypted)
+}
+```
+
+### Traditional Usage
 
 ```go
 package main
@@ -104,19 +140,24 @@ func main() {
 
 eniGOma includes a powerful CLI with a configuration-first workflow for secure encryption, decryption, and key management.
 
-Note on presets: using a preset (e.g., classic/high) generates a random configuration each time. To make your ciphertext decryptable later, save the configuration during encryption and reuse it during decryption.
-
 ```bash
 # Install the CLI
 go install github.com/coredds/eniGOma/cmd/eniGOma@latest
+
+# 🎯 New Discovery Commands (v0.4.0)
+eniGOma demo      # Interactive demonstration
+eniGOma examples  # Copy-paste ready examples  
+eniGOma test      # Verify installation
+eniGOma wizard    # Interactive setup
 
 # Quick start with auto-config (recommended)
 eniGOma encrypt --text "Hello World!" --auto-config my-key.json
 eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
-# Note: The default alphabet is auto-detected (equivalent to --alphabet=auto)
+# Enhanced preprocessing (v0.4.0)
+eniGOma encrypt --text "Hello World!" --preset classic --remove-spaces --uppercase
 
-# Stdin usage
+# Stdin usage (now works with Windows line endings!)
 echo "Hello via stdin" | eniGOma encrypt --auto-config my-key.json
 
 # Output encoding (base64)
@@ -137,6 +178,10 @@ eniGOma decrypt --text "48656c6c6f" --config my-key.json --format hex
 - **`keygen`** - Generate random Enigma machine configurations
 - **`preset`** - List and describe available machine presets
 - **`config`** - Manage and validate configuration files
+- **`demo`** ✨ - Interactive demonstration of features
+- **`examples`** ✨ - Copy-paste ready examples for common use cases
+- **`test`** ✨ - Test installation and functionality
+- **`wizard`** ✨ - Interactive beginner-friendly setup
 
 #### Available Presets
 
@@ -464,7 +509,7 @@ eniGOma maintains historical Enigma machine behaviors:
 
 ## Version History
 
-Current version: **0.3.4**
+Current version: **0.4.0**
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history and release notes.
 

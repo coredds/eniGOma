@@ -76,9 +76,9 @@ func TestFindPreset(t *testing.T) {
 				t.Errorf("findPreset(%q) found=%v, expected=%v", tt.preset, found, tt.expected)
 			}
 
-            if found && preset.Name != tt.preset && !strings.EqualFold(preset.Name, tt.preset) {
-                // Account for case insensitive matching
-                if !strings.EqualFold(preset.Name, tt.preset) {
+			if found && preset.Name != tt.preset && !strings.EqualFold(preset.Name, tt.preset) {
+				// Account for case insensitive matching
+				if !strings.EqualFold(preset.Name, tt.preset) {
 					t.Errorf("findPreset(%q) returned wrong preset: %s", tt.preset, preset.Name)
 				}
 			}
@@ -123,9 +123,9 @@ func TestCreateMachineFromPreset(t *testing.T) {
 			}
 
 			// Reset and decrypt
-            if err := machine.Reset(); err != nil {
-                t.Fatalf("Reset failed: %v", err)
-            }
+			if err := machine.Reset(); err != nil {
+				t.Fatalf("Reset failed: %v", err)
+			}
 			decrypted, err := machine.Decrypt(encrypted)
 			if err != nil {
 				t.Errorf("Preset %s: decryption failed: %v", preset.Name, err)

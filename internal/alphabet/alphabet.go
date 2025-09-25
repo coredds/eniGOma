@@ -7,6 +7,7 @@ package alphabet
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Alphabet represents a character set used by the Enigma machine.
@@ -133,6 +134,9 @@ func AutoDetectFromText(text string, options ...AutoDetectOption) (*Alphabet, er
 		return nil, fmt.Errorf("cannot auto-detect alphabet from empty text")
 	}
 
+	// Preprocess text to handle common issues
+	text = PreprocessTextForAutoDetection(text)
+
 	config := &autoDetectConfig{
 		maxSize:        1000, // Default safety limit
 		addPadding:     true, // Ensure even size for reflector
@@ -148,7 +152,7 @@ func AutoDetectFromText(text string, options ...AutoDetectOption) (*Alphabet, er
 	uniqueRunes := make(map[rune]bool)
 	for _, r := range text {
 		// Skip control characters if configured
-		if config.excludeControl && r < 32 && r != '\n' && r != '\t' {
+		if config.excludeControl && isControlCharacter(r) {
 			continue
 		}
 		uniqueRunes[r] = true
@@ -224,4 +228,27 @@ func WithControlCharacters() AutoDetectOption {
 	return func(config *autoDetectConfig) {
 		config.excludeControl = false
 	}
+}
+
+// PreprocessTextForAutoDetection handles common text preprocessing issues
+func PreprocessTextForAutoDetection(text string) string {
+	// Normalize line endings (Windows \r\n -> \n, old Mac \r -> \n)
+	text = strings.ReplaceAll(text, "\r\n", "\n")
+	text = strings.ReplaceAll(text, "\r", "\n")
+
+	// Trim leading and trailing whitespace to avoid accidental inclusion
+	text = strings.TrimSpace(text)
+
+	return text
+}
+
+// isControlCharacter determines if a rune is a control character that should be excluded
+func isControlCharacter(r rune) bool {
+	// Allow common whitespace characters
+	if r == ' ' || r == '\t' || r == '\n' {
+		return false
+	}
+
+	// Exclude other control characters (0-31 and 127-159)
+	return (r >= 0 && r <= 31) || (r >= 127 && r <= 159)
 }
