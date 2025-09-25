@@ -54,7 +54,9 @@ func runDemo(cmd *cobra.Command, args []string) error {
 	}
 	fmt.Printf("Encrypted: %q\n", encrypted)
 
-	machine.Reset()
+	if err := machine.Reset(); err != nil {
+		return fmt.Errorf("failed to reset machine: %v", err)
+	}
 	decrypted, err := machine.Decrypt(encrypted)
 	if err != nil {
 		return fmt.Errorf("decryption failed: %v", err)
@@ -83,7 +85,9 @@ func runDemo(cmd *cobra.Command, args []string) error {
 	}
 	fmt.Printf("Encrypted: %q\n", encryptedUnicode)
 
-	unicodeMachine.Reset()
+	if err := unicodeMachine.Reset(); err != nil {
+		return fmt.Errorf("failed to reset Unicode machine: %v", err)
+	}
 	decryptedUnicode, err := unicodeMachine.Decrypt(encryptedUnicode)
 	if err != nil {
 		return fmt.Errorf("Unicode decryption failed: %v", err)
@@ -119,7 +123,9 @@ func runDemo(cmd *cobra.Command, args []string) error {
 		secEncrypted, _ := secMachine.Encrypt(testMessage)
 		fmt.Printf("  • Encrypted: %q\n", secEncrypted)
 
-		secMachine.Reset()
+		if err := secMachine.Reset(); err != nil {
+			return fmt.Errorf("failed to reset %s security machine: %v", levelNames[i], err)
+		}
 		secDecrypted, _ := secMachine.Decrypt(secEncrypted)
 		fmt.Printf("  • ✅ Round-trip: %t\n\n", testMessage == secDecrypted)
 	}

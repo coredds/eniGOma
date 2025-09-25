@@ -444,3 +444,104 @@ func hasSpecialChars(text string) bool {
 	}
 	return false
 }
+
+// getWizardInputText handles input text collection for the wizard
+func getWizardInputText(reader *bufio.Reader) (inputText, inputFile string, err error) {
+	fmt.Println("\n📄 How would you like to provide the text to encrypt?")
+	fmt.Println("1) Type it directly")
+	fmt.Println("2) Read from a file")
+	fmt.Print("\nEnter your choice (1 or 2): ")
+
+	inputChoice, err := reader.ReadString('\n')
+	if err != nil {
+		return "", "", fmt.Errorf("failed to read input: %v", err)
+	}
+
+	inputChoice = strings.TrimSpace(inputChoice)
+	switch inputChoice {
+	case "1":
+		fmt.Print("\n📝 Enter the text to encrypt: ")
+		inputText, err = reader.ReadString('\n')
+		if err != nil {
+			return "", "", fmt.Errorf("failed to read text: %v", err)
+		}
+		inputText = strings.TrimSpace(inputText)
+		return inputText, "", nil
+	case "2":
+		fmt.Print("\n📁 Enter the file path: ")
+		inputFile, err = reader.ReadString('\n')
+		if err != nil {
+			return "", "", fmt.Errorf("failed to read file path: %v", err)
+		}
+		inputFile = strings.TrimSpace(inputFile)
+
+		// Validate file exists
+		if _, err := os.Stat(inputFile); os.IsNotExist(err) {
+			return "", "", fmt.Errorf("file does not exist: %s", inputFile)
+		}
+		return "", inputFile, nil
+	default:
+		return "", "", fmt.Errorf("invalid choice. Please enter 1 or 2")
+	}
+}
+
+// getWizardSecurityLevel handles security level selection for the wizard
+func getWizardSecurityLevel(reader *bufio.Reader) (string, error) {
+	fmt.Println("\n🛡️ Choose security level:")
+	fmt.Println("1) Low (3 rotors, 2 plugboard pairs)")
+	fmt.Println("2) Medium (5 rotors, 8 plugboard pairs)")
+	fmt.Println("3) High (8 rotors, 15 plugboard pairs)")
+	fmt.Println("4) Extreme (12 rotors, 20 plugboard pairs)")
+	fmt.Print("\nEnter your choice (1-4): ")
+
+	secChoice, err := reader.ReadString('\n')
+	if err != nil {
+		return "", fmt.Errorf("failed to read security choice: %v", err)
+	}
+
+	secChoice = strings.TrimSpace(secChoice)
+	switch secChoice {
+	case "1":
+		return "low", nil
+	case "2":
+		return "medium", nil
+	case "3":
+		return "high", nil
+	case "4":
+		return "extreme", nil
+	default:
+		return "", fmt.Errorf("invalid choice. Please enter 1-4")
+	}
+}
+
+// getWizardOutputOptions handles output configuration for the wizard
+func getWizardOutputOptions(reader *bufio.Reader) (outputFile, configFile string, err error) {
+	fmt.Println("\n📤 Output options:")
+	fmt.Println("1) Display result on screen")
+	fmt.Println("2) Save to file")
+	fmt.Print("\nEnter your choice (1 or 2): ")
+
+	outputChoice, err := reader.ReadString('\n')
+	if err != nil {
+		return "", "", fmt.Errorf("failed to read output choice: %v", err)
+	}
+
+	outputChoice = strings.TrimSpace(outputChoice)
+	if outputChoice == "2" {
+		fmt.Print("\n📁 Enter output file path: ")
+		outputFile, err = reader.ReadString('\n')
+		if err != nil {
+			return "", "", fmt.Errorf("failed to read output file path: %v", err)
+		}
+		outputFile = strings.TrimSpace(outputFile)
+	}
+
+	fmt.Print("\n🔑 Enter configuration file path (to save the key): ")
+	configFile, err = reader.ReadString('\n')
+	if err != nil {
+		return "", "", fmt.Errorf("failed to read config file path: %v", err)
+	}
+	configFile = strings.TrimSpace(configFile)
+
+	return outputFile, configFile, nil
+}

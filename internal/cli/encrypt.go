@@ -459,34 +459,11 @@ func saveMachineConfig(machine *enigma.Enigma, path string) error {
 func preprocessInput(cmd *cobra.Command, text string) (string, error) {
 	result := text
 
-	// Apply filtering flags
-	if removeSpaces, _ := cmd.Flags().GetBool("remove-spaces"); removeSpaces {
-		result = strings.ReplaceAll(result, " ", "")
-	}
+	// Apply basic transformations
+	result = applyBasicTransformations(cmd, result)
 
-	if uppercase, _ := cmd.Flags().GetBool("uppercase"); uppercase {
-		result = strings.ToUpper(result)
-	}
-
-	if lettersOnly, _ := cmd.Flags().GetBool("letters-only"); lettersOnly {
-		var filtered strings.Builder
-		for _, r := range result {
-			if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') {
-				filtered.WriteRune(r)
-			}
-		}
-		result = filtered.String()
-	}
-
-	if alphanumericOnly, _ := cmd.Flags().GetBool("alphanumeric-only"); alphanumericOnly {
-		var filtered strings.Builder
-		for _, r := range result {
-			if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
-				filtered.WriteRune(r)
-			}
-		}
-		result = filtered.String()
-	}
+	// Apply character filtering
+	result = applyCharacterFiltering(cmd, result)
 
 	if verbose, _ := cmd.Flags().GetBool("verbose"); verbose && result != text {
 		fmt.Fprintf(cmd.ErrOrStderr(), "Input preprocessed: %q -> %q\n", text, result)
@@ -550,4 +527,56 @@ func hasLowercase(text string) bool {
 		}
 	}
 	return false
+}
+
+// applyBasicTransformations applies remove-spaces and uppercase transformations
+func applyBasicTransformations(cmd *cobra.Command, text string) string {
+	result := text
+
+	if removeSpaces, _ := cmd.Flags().GetBool("remove-spaces"); removeSpaces {
+		result = strings.ReplaceAll(result, " ", "")
+	}
+
+	if uppercase, _ := cmd.Flags().GetBool("uppercase"); uppercase {
+		result = strings.ToUpper(result)
+	}
+
+	return result
+}
+
+// applyCharacterFiltering applies letters-only and alphanumeric-only filtering
+func applyCharacterFiltering(cmd *cobra.Command, text string) string {
+	result := text
+
+	if lettersOnly, _ := cmd.Flags().GetBool("letters-only"); lettersOnly {
+		result = filterLettersOnly(result)
+	}
+
+	if alphanumericOnly, _ := cmd.Flags().GetBool("alphanumeric-only"); alphanumericOnly {
+		result = filterAlphanumericOnly(result)
+	}
+
+	return result
+}
+
+// filterLettersOnly keeps only letters (A-Z, a-z)
+func filterLettersOnly(text string) string {
+	var filtered strings.Builder
+	for _, r := range text {
+		if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') {
+			filtered.WriteRune(r)
+		}
+	}
+	return filtered.String()
+}
+
+// filterAlphanumericOnly keeps only letters and numbers
+func filterAlphanumericOnly(text string) string {
+	var filtered strings.Builder
+	for _, r := range text {
+		if (r >= 'A' && r <= 'Z') || (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+			filtered.WriteRune(r)
+		}
+	}
+	return filtered.String()
 }

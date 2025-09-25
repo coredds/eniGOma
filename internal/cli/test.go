@@ -150,7 +150,9 @@ func testBasicEncryption() error {
 		return fmt.Errorf("encryption failed: %v", err)
 	}
 
-	machine.Reset()
+	if err := machine.Reset(); err != nil {
+		return fmt.Errorf("failed to reset machine: %v", err)
+	}
 	decrypted, err := machine.Decrypt(encrypted)
 	if err != nil {
 		return fmt.Errorf("decryption failed: %v", err)
@@ -175,7 +177,9 @@ func testUnicodeSupport() error {
 		return fmt.Errorf("Unicode encryption failed: %v", err)
 	}
 
-	machine.Reset()
+	if err := machine.Reset(); err != nil {
+		return fmt.Errorf("failed to reset Unicode machine: %v", err)
+	}
 	decrypted, err := machine.Decrypt(encrypted)
 	if err != nil {
 		return fmt.Errorf("Unicode decryption failed: %v", err)
@@ -204,7 +208,9 @@ func testAutoDetection() error {
 		return fmt.Errorf("encryption with auto-detected alphabet failed: %v", err)
 	}
 
-	machine.Reset()
+	if err := machine.Reset(); err != nil {
+		return fmt.Errorf("failed to reset auto-detection machine: %v", err)
+	}
 	decrypted, err := machine.Decrypt(encrypted)
 	if err != nil {
 		return fmt.Errorf("decryption with auto-detected alphabet failed: %v", err)
@@ -276,7 +282,9 @@ func testSecurityLevels() error {
 			return fmt.Errorf("%v security encryption failed: %v", level, err)
 		}
 
-		machine.Reset()
+		if err := machine.Reset(); err != nil {
+			return fmt.Errorf("failed to reset %v security machine: %v", level, err)
+		}
 		decrypted, err := machine.Decrypt(encrypted)
 		if err != nil {
 			return fmt.Errorf("%v security decryption failed: %v", level, err)
@@ -336,7 +344,9 @@ func testHistoricalPresets() error {
 			return fmt.Errorf("preset %d encryption failed: %v", i, err)
 		}
 
-		machine.Reset()
+		if err := machine.Reset(); err != nil {
+			return fmt.Errorf("failed to reset preset %d machine: %v", i, err)
+		}
 		decrypted, err := machine.Decrypt(encrypted)
 		if err != nil {
 			return fmt.Errorf("preset %d decryption failed: %v", i, err)
