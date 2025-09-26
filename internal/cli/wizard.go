@@ -51,7 +51,7 @@ func runWizard(cmd *cobra.Command, args []string) error {
 	}
 
 	if operation == "encrypt" {
-		return runEncryptWizard(reader, cmd)
+		return runEncryptWizard(reader)
 	} else {
 		return runDecryptWizard(reader)
 	}
@@ -80,7 +80,7 @@ func askOperation(reader *bufio.Reader) (string, error) {
 	}
 }
 
-func runEncryptWizard(reader *bufio.Reader, cmd *cobra.Command) error {
+func runEncryptWizard(reader *bufio.Reader) error {
 	fmt.Println("\n🔒 ENCRYPTION WIZARD")
 	fmt.Println("=====================")
 
