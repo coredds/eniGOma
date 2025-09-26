@@ -88,11 +88,8 @@ func runDecrypt(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("no input text provided. Use --text, --file, or pipe to stdin")
 	}
 
-	// Apply input preprocessing (import from encrypt.go)
-	text, err = preprocessInputForDecrypt(cmd, text)
-	if err != nil {
-		return fmt.Errorf("input preprocessing failed: %v", err)
-	}
+	// Apply input preprocessing
+	text = preprocessInputForDecrypt(cmd, text)
 
 	// Prevalidate operation
 	if err := prevalidateOperation(cmd, text); err != nil {
@@ -173,7 +170,7 @@ func parseInputFormat(text string, cmd *cobra.Command) (string, error) {
 }
 
 // preprocessInputForDecrypt applies text preprocessing for decrypt command
-func preprocessInputForDecrypt(cmd *cobra.Command, text string) (string, error) {
+func preprocessInputForDecrypt(cmd *cobra.Command, text string) string {
 	result := text
 
 	// Apply basic transformations
@@ -186,7 +183,7 @@ func preprocessInputForDecrypt(cmd *cobra.Command, text string) (string, error) 
 		fmt.Fprintf(cmd.ErrOrStderr(), "Input preprocessed: %q -> %q\n", text, result)
 	}
 
-	return result, nil
+	return result
 }
 
 // enhanceDecryptionError provides helpful suggestions when decryption fails

@@ -85,42 +85,9 @@ func runEncryptWizard(reader *bufio.Reader, cmd *cobra.Command) error {
 	fmt.Println("=====================")
 
 	// Step 1: Get input text
-	fmt.Println("\n📄 How would you like to provide the text to encrypt?")
-	fmt.Println("1) Type it directly")
-	fmt.Println("2) Read from a file")
-	fmt.Print("\nEnter your choice (1 or 2): ")
-
-	inputChoice, err := reader.ReadString('\n')
+	inputText, inputFile, err := getWizardInputText(reader)
 	if err != nil {
-		return fmt.Errorf("failed to read input: %v", err)
-	}
-
-	var inputText string
-	var inputFile string
-
-	inputChoice = strings.TrimSpace(inputChoice)
-	switch inputChoice {
-	case "1":
-		fmt.Print("\n📝 Enter the text to encrypt: ")
-		inputText, err = reader.ReadString('\n')
-		if err != nil {
-			return fmt.Errorf("failed to read text: %v", err)
-		}
-		inputText = strings.TrimSpace(inputText)
-	case "2":
-		fmt.Print("\n📁 Enter the file path: ")
-		inputFile, err = reader.ReadString('\n')
-		if err != nil {
-			return fmt.Errorf("failed to read file path: %v", err)
-		}
-		inputFile = strings.TrimSpace(inputFile)
-
-		// Validate file exists
-		if _, err := os.Stat(inputFile); os.IsNotExist(err) {
-			return fmt.Errorf("file does not exist: %s", inputFile)
-		}
-	default:
-		return fmt.Errorf("invalid choice: %s", inputChoice)
+		return err
 	}
 
 	// Step 2: Choose approach
@@ -190,7 +157,10 @@ func runEncryptWizard(reader *bufio.Reader, cmd *cobra.Command) error {
 	case "3":
 		// Custom settings
 		alphabet := askAlphabet(reader)
-		security := askSecurity(reader)
+		security, err := getWizardSecurityLevel(reader)
+		if err != nil {
+			return err
+		}
 		cmdArgs = append(cmdArgs, "--alphabet", alphabet, "--security", security, "--save-config", configFile)
 	default:
 		return fmt.Errorf("invalid approach choice: %s", approachChoice)
@@ -223,41 +193,9 @@ func runDecryptWizard(reader *bufio.Reader, cmd *cobra.Command) error {
 
 	// Step 1: Get encrypted text
 	fmt.Println("\n📄 How would you like to provide the encrypted text?")
-	fmt.Println("1) Type it directly")
-	fmt.Println("2) Read from a file")
-	fmt.Print("\nEnter your choice (1 or 2): ")
-
-	inputChoice, err := reader.ReadString('\n')
+	inputText, inputFile, err := getWizardInputText(reader)
 	if err != nil {
-		return fmt.Errorf("failed to read input: %v", err)
-	}
-
-	var inputText string
-	var inputFile string
-
-	inputChoice = strings.TrimSpace(inputChoice)
-	switch inputChoice {
-	case "1":
-		fmt.Print("\n🔐 Enter the encrypted text: ")
-		inputText, err = reader.ReadString('\n')
-		if err != nil {
-			return fmt.Errorf("failed to read text: %v", err)
-		}
-		inputText = strings.TrimSpace(inputText)
-	case "2":
-		fmt.Print("\n📁 Enter the file path: ")
-		inputFile, err = reader.ReadString('\n')
-		if err != nil {
-			return fmt.Errorf("failed to read file path: %v", err)
-		}
-		inputFile = strings.TrimSpace(inputFile)
-
-		// Validate file exists
-		if _, err := os.Stat(inputFile); os.IsNotExist(err) {
-			return fmt.Errorf("file does not exist: %s", inputFile)
-		}
-	default:
-		return fmt.Errorf("invalid choice: %s", inputChoice)
+		return err
 	}
 
 	// Step 2: Get configuration file

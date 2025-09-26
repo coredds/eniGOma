@@ -101,10 +101,7 @@ func runEncrypt(cmd *cobra.Command, args []string) error {
 	}
 
 	// Apply input preprocessing
-	text, err = preprocessInput(cmd, text)
-	if err != nil {
-		return fmt.Errorf("input preprocessing failed: %v", err)
-	}
+	text = preprocessInput(cmd, text)
 
 	// Apply auto-detection preprocessing if using auto-config
 	if autoConfigPath, _ := cmd.Flags().GetString("auto-config"); autoConfigPath != "" {
@@ -456,7 +453,7 @@ func saveMachineConfig(machine *enigma.Enigma, path string) error {
 }
 
 // preprocessInput applies various text preprocessing options based on flags
-func preprocessInput(cmd *cobra.Command, text string) (string, error) {
+func preprocessInput(cmd *cobra.Command, text string) string {
 	result := text
 
 	// Apply basic transformations
@@ -469,7 +466,7 @@ func preprocessInput(cmd *cobra.Command, text string) (string, error) {
 		fmt.Fprintf(cmd.ErrOrStderr(), "Input preprocessed: %q -> %q\n", text, result)
 	}
 
-	return result, nil
+	return result
 }
 
 // enhanceEncryptionError provides helpful suggestions when encryption fails
