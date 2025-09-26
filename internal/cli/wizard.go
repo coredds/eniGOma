@@ -53,7 +53,7 @@ func runWizard(cmd *cobra.Command, args []string) error {
 	if operation == "encrypt" {
 		return runEncryptWizard(reader, cmd)
 	} else {
-		return runDecryptWizard(reader, cmd)
+		return runDecryptWizard(reader)
 	}
 }
 
@@ -91,30 +91,16 @@ func runEncryptWizard(reader *bufio.Reader, cmd *cobra.Command) error {
 	}
 
 	// Step 2: Choose approach
-	fmt.Println("\n⚙️  Which approach would you prefer?")
-	fmt.Println("1) 🎯 Auto-config (recommended) - automatically detect the best settings")
-	fmt.Println("2) 🎨 Historical preset - use classic Enigma machine settings")
-	fmt.Println("3) 🔧 Custom settings - choose alphabet and security level manually")
-	fmt.Print("\nEnter your choice (1, 2, or 3): ")
-
-	approachChoice, err := reader.ReadString('\n')
+	approachChoice, err := getWizardApproach(reader)
 	if err != nil {
-		return fmt.Errorf("failed to read approach choice: %v", err)
+		return err
 	}
-
-	approachChoice = strings.TrimSpace(approachChoice)
 
 	// Step 3: Get configuration file name
-	fmt.Print("\n💾 Enter a name for your configuration file (without extension): ")
-	configName, err := reader.ReadString('\n')
+	configFile, err := getWizardConfigFile(reader)
 	if err != nil {
-		return fmt.Errorf("failed to read config name: %v", err)
+		return err
 	}
-	configName = strings.TrimSpace(configName)
-	if configName == "" {
-		configName = "my-enigma-config"
-	}
-	configFile := configName + ".json"
 
 	// Build command
 	var cmdArgs []string
@@ -187,7 +173,7 @@ func runEncryptWizard(reader *bufio.Reader, cmd *cobra.Command) error {
 	return nil
 }
 
-func runDecryptWizard(reader *bufio.Reader, cmd *cobra.Command) error {
+func runDecryptWizard(reader *bufio.Reader) error {
 	fmt.Println("\n🔓 DECRYPTION WIZARD")
 	fmt.Println("====================")
 
@@ -340,35 +326,6 @@ func askAlphabet(reader *bufio.Reader) string {
 	}
 }
 
-func askSecurity(reader *bufio.Reader) string {
-	fmt.Println("\n🛡️  Choose security level:")
-	fmt.Println("1) low - 3 rotors, 2 plugboard pairs (fast, basic)")
-	fmt.Println("2) medium - 5 rotors, 8 plugboard pairs (balanced)")
-	fmt.Println("3) high - 8 rotors, 15 plugboard pairs (strong)")
-	fmt.Println("4) extreme - 12 rotors, 20 plugboard pairs (maximum)")
-	fmt.Print("\nEnter your choice (1-4): ")
-
-	choice, err := reader.ReadString('\n')
-	if err != nil {
-		fmt.Println("Error reading input, defaulting to medium")
-		return "medium"
-	}
-
-	choice = strings.TrimSpace(choice)
-	switch choice {
-	case "1":
-		return "low"
-	case "2":
-		return "medium"
-	case "3":
-		return "high"
-	case "4":
-		return "extreme"
-	default:
-		fmt.Println("Invalid choice, defaulting to medium")
-		return "medium"
-	}
-}
 
 func needsPreprocessing(text string) bool {
 	return strings.Contains(text, " ") || hasLowercase(text) || hasSpecialChars(text)
@@ -452,34 +409,33 @@ func getWizardSecurityLevel(reader *bufio.Reader) (string, error) {
 	}
 }
 
-// getWizardOutputOptions handles output configuration for the wizard
-func getWizardOutputOptions(reader *bufio.Reader) (outputFile, configFile string, err error) {
-	fmt.Println("\n📤 Output options:")
-	fmt.Println("1) Display result on screen")
-	fmt.Println("2) Save to file")
-	fmt.Print("\nEnter your choice (1 or 2): ")
+// getWizardApproach handles approach selection for the wizard
+func getWizardApproach(reader *bufio.Reader) (string, error) {
+	fmt.Println("\n⚙️  Which approach would you prefer?")
+	fmt.Println("1) 🎯 Auto-config (recommended) - automatically detect the best settings")
+	fmt.Println("2) 🎨 Historical preset - use classic Enigma machine settings")
+	fmt.Println("3) 🔧 Custom settings - choose alphabet and security level manually")
+	fmt.Print("\nEnter your choice (1, 2, or 3): ")
 
-	outputChoice, err := reader.ReadString('\n')
+	approachChoice, err := reader.ReadString('\n')
 	if err != nil {
-		return "", "", fmt.Errorf("failed to read output choice: %v", err)
+		return "", fmt.Errorf("failed to read approach choice: %v", err)
 	}
 
-	outputChoice = strings.TrimSpace(outputChoice)
-	if outputChoice == "2" {
-		fmt.Print("\n📁 Enter output file path: ")
-		outputFile, err = reader.ReadString('\n')
-		if err != nil {
-			return "", "", fmt.Errorf("failed to read output file path: %v", err)
-		}
-		outputFile = strings.TrimSpace(outputFile)
-	}
-
-	fmt.Print("\n🔑 Enter configuration file path (to save the key): ")
-	configFile, err = reader.ReadString('\n')
-	if err != nil {
-		return "", "", fmt.Errorf("failed to read config file path: %v", err)
-	}
-	configFile = strings.TrimSpace(configFile)
-
-	return outputFile, configFile, nil
+	return strings.TrimSpace(approachChoice), nil
 }
+
+// getWizardConfigFile handles config file name input for the wizard
+func getWizardConfigFile(reader *bufio.Reader) (string, error) {
+	fmt.Print("\n💾 Enter a name for your configuration file (without extension): ")
+	configName, err := reader.ReadString('\n')
+	if err != nil {
+		return "", fmt.Errorf("failed to read config name: %v", err)
+	}
+	configName = strings.TrimSpace(configName)
+	if configName == "" {
+		configName = "my-enigma-config"
+	}
+	return configName + ".json", nil
+}
+
