@@ -60,7 +60,7 @@
   "metadata": {
     "description": "Historical M3 Enigma machine configuration",
     "created_at": "2025-08-14T12:00:00Z",
-    "created_by": "eniGOma CLI",
+    "created_by": "enigoma CLI",
     "preset": "m3",
     "tags": ["historical", "m3", "enigma"]
   }

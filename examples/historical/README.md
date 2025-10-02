@@ -13,11 +13,11 @@ The Enigma M3 was the standard Army and Navy Enigma machine used during most of 
 - 26-character Latin alphabet
 - Standard plugboard
 
-The M3 preset in eniGOma uses rotors I, II, and III with reflector B, which was a common configuration.
+The M3 preset in enigoma uses rotors I, II, and III with reflector B, which was a common configuration.
 
 ```bash
 # Use the M3 preset
-eniGOma encrypt --text "TOP SECRET" --preset m3 --save-config m3-config.json
+enigoma encrypt --text "TOP SECRET" --preset m3 --save-config m3-config.json
 ```
 
 ### M4 Naval Enigma (`m4`)
@@ -29,11 +29,11 @@ The Enigma M4 was used exclusively by the German Navy (Kriegsmarine) from 1942 o
 - 26-character Latin alphabet
 - Standard plugboard
 
-The M4 preset in eniGOma uses the Beta thin rotor, rotors I, II, and III, with the B-Thin reflector.
+The M4 preset in enigoma uses the Beta thin rotor, rotors I, II, and III, with the B-Thin reflector.
 
 ```bash
 # Use the M4 preset
-eniGOma encrypt --text "KRIEGSMARINE" --preset m4 --save-config m4-config.json
+enigoma encrypt --text "KRIEGSMARINE" --preset m4 --save-config m4-config.json
 ```
 
 ## Historical Accuracy

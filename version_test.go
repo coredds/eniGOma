@@ -1,4 +1,4 @@
-package eniGOma
+package enigoma
 
 import (
 	"strings"

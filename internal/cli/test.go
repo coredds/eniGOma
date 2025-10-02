@@ -1,4 +1,4 @@
-// Package cli provides the test command for the eniGOma CLI.
+// Package cli provides the test command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -7,17 +7,17 @@ package cli
 import (
 	"fmt"
 
-	"github.com/coredds/eniGOma"
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma"
+	"github.com/coredds/enigoma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
 var testCmd = &cobra.Command{
 	Use:   "test",
-	Short: "Test eniGOma installation and functionality",
-	Long: `Test eniGOma installation and core functionality.
+	Short: "Test enigoma installation and functionality",
+	Long: `Test enigoma installation and core functionality.
 
-This command runs a series of tests to verify that eniGOma is working correctly:
+This command runs a series of tests to verify that enigoma is working correctly:
 • Basic encryption/decryption round-trip
 • Unicode support
 • Auto-detection functionality
@@ -27,13 +27,13 @@ This command runs a series of tests to verify that eniGOma is working correctly:
 Perfect for verifying your installation or troubleshooting issues.
 
 Example:
-  eniGOma test`,
+  enigoma test`,
 	RunE: runTest,
 }
 
 func runTest(cmd *cobra.Command, args []string) error {
-	fmt.Printf("🧪 Testing eniGOma Installation\n")
-	fmt.Printf("Version: %s\n", eniGOma.GetVersion())
+	fmt.Printf("🧪 Testing enigoma Installation\n")
+	fmt.Printf("Version: %s\n", enigoma.GetVersion())
 	fmt.Println("==============================")
 	fmt.Println()
 
@@ -119,19 +119,19 @@ func runTest(cmd *cobra.Command, args []string) error {
 	fmt.Println()
 
 	if failed == 0 {
-		fmt.Println("🎉 All tests passed! eniGOma is working perfectly.")
+		fmt.Println("🎉 All tests passed! enigoma is working perfectly.")
 		fmt.Println()
 		fmt.Println("Ready to use:")
-		fmt.Println("• eniGOma encrypt --text \"Your message\" --auto-config key.json")
-		fmt.Println("• eniGOma wizard (for interactive setup)")
-		fmt.Println("• eniGOma examples (for copy-paste examples)")
+		fmt.Println("• enigoma encrypt --text \"Your message\" --auto-config key.json")
+		fmt.Println("• enigoma wizard (for interactive setup)")
+		fmt.Println("• enigoma examples (for copy-paste examples)")
 	} else {
-		fmt.Printf("⚠️  %d test(s) failed. eniGOma may not be working correctly.\n", failed)
+		fmt.Printf("⚠️  %d test(s) failed. enigoma may not be working correctly.\n", failed)
 		fmt.Println()
 		fmt.Println("Troubleshooting:")
 		fmt.Println("• Check your Go version (requires Go 1.23+)")
-		fmt.Println("• Try reinstalling: go install github.com/coredds/eniGOma/cmd/eniGOma@latest")
-		fmt.Println("• Report issues at: https://github.com/coredds/eniGOma/issues")
+		fmt.Println("• Try reinstalling: go install github.com/coredds/enigoma/cmd/enigoma@latest")
+		fmt.Println("• Report issues at: https://github.com/coredds/enigoma/issues")
 		return fmt.Errorf("test suite failed with %d failures", failed)
 	}
 
@@ -270,7 +270,7 @@ func testSecurityLevels() error {
 
 	for _, level := range levels {
 		machine, err := enigma.New(
-			enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+			enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 			enigma.WithRandomSettings(level),
 		)
 		if err != nil {

@@ -3,7 +3,7 @@ package plugboard
 import (
 	"testing"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
+	"github.com/coredds/enigoma/internal/alphabet"
 )
 
 func createTestAlphabet() *alphabet.Alphabet {

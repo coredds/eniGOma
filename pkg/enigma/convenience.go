@@ -7,7 +7,7 @@ package enigma
 import (
 	"fmt"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
+	"github.com/coredds/enigoma/internal/alphabet"
 )
 
 // QuickEncrypt encrypts text with auto-detected alphabet and specified security level.
@@ -43,7 +43,7 @@ func NewFromText(text string, security SecurityLevel) (*Enigma, error) {
 	// Auto-detect alphabet from text
 	detectedAlphabet, err := alphabet.AutoDetectFromText(text)
 	if err != nil {
-		return nil, fmt.Errorf("failed to auto-detect alphabet from text %q: %v. Try using enigma.NewEnigmaSimple(eniGOma.AlphabetLatinUpper) for manual setup", text, err)
+		return nil, fmt.Errorf("failed to auto-detect alphabet from text %q: %v. Try using enigma.NewEnigmaSimple(enigoma.AlphabetLatinUpper) for manual setup", text, err)
 	}
 
 	// Create machine with detected alphabet and specified security

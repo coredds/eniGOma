@@ -11,10 +11,10 @@ This directory contains example configurations tailored for specific real-world 
 
 ```bash
 # Encrypt a document
-eniGOma encrypt --file important-document.txt --config examples/use-cases/document-protection.json --output encrypted-doc.txt
+enigoma encrypt --file important-document.txt --config examples/use-cases/document-protection.json --output encrypted-doc.txt
 
 # Decrypt back to original
-eniGOma decrypt --file encrypted-doc.txt --config examples/use-cases/document-protection.json --output decrypted-doc.txt
+enigoma decrypt --file encrypted-doc.txt --config examples/use-cases/document-protection.json --output decrypted-doc.txt
 ```
 
 ### 🔐 `secure-communication.json` - Secure Messaging
@@ -24,10 +24,10 @@ eniGOma decrypt --file encrypted-doc.txt --config examples/use-cases/document-pr
 
 ```bash
 # Encrypt a message
-eniGOma encrypt --text "Meet at the usual place at 3pm" --config examples/use-cases/secure-communication.json
+enigoma encrypt --text "Meet at the usual place at 3pm" --config examples/use-cases/secure-communication.json
 
 # For secure file transfer
-eniGOma encrypt --file confidential-report.pdf --config examples/use-cases/secure-communication.json
+enigoma encrypt --file confidential-report.pdf --config examples/use-cases/secure-communication.json
 ```
 
 ### 🏛️ `historical-simulation.json` - Educational and Historical
@@ -37,10 +37,10 @@ eniGOma encrypt --file confidential-report.pdf --config examples/use-cases/secur
 
 ```bash
 # Historical encryption simulation
-eniGOma encrypt --text "WEATHER REPORT CLOUDY" --config examples/use-cases/historical-simulation.json
+enigoma encrypt --text "WEATHER REPORT CLOUDY" --config examples/use-cases/historical-simulation.json
 
 # Educational demonstration
-eniGOma config --show examples/use-cases/historical-simulation.json --detailed
+enigoma config --show examples/use-cases/historical-simulation.json --detailed
 ```
 
 ## Detailed Use Case Scenarios
@@ -54,12 +54,12 @@ eniGOma config --show examples/use-cases/historical-simulation.json --detailed
 ```bash
 # Protect a folder of documents
 for file in Documents/*.txt; do
-    eniGOma encrypt --file "$file" --config examples/use-cases/document-protection.json --output "encrypted-${file##*/}"
+    enigoma encrypt --file "$file" --config examples/use-cases/document-protection.json --output "encrypted-${file##*/}"
 done
 
 # Create encrypted backup
 tar -czf backup.tar.gz Documents/
-eniGOma encrypt --file backup.tar.gz --config examples/use-cases/document-protection.json --output secure-backup.enc
+enigoma encrypt --file backup.tar.gz --config examples/use-cases/document-protection.json --output secure-backup.enc
 ```
 
 ### 💬 Secure Communication
@@ -76,11 +76,11 @@ eniGOma encrypt --file backup.tar.gz --config examples/use-cases/document-protec
 
 ```bash
 # Sender
-eniGOma encrypt --text "The quarterly reports are ready for review" \
+enigoma encrypt --text "The quarterly reports are ready for review" \
     --config examples/use-cases/secure-communication.json > encrypted-message.txt
 
 # Receiver  
-cat encrypted-message.txt | eniGOma decrypt --config examples/use-cases/secure-communication.json
+cat encrypted-message.txt | enigoma decrypt --config examples/use-cases/secure-communication.json
 ```
 
 ### 🎓 Educational Projects
@@ -92,14 +92,14 @@ cat encrypted-message.txt | eniGOma decrypt --config examples/use-cases/secure-c
 **Learning Activities**:
 ```bash
 # Demonstrate Enigma principles
-eniGOma encrypt --text "ENIGMA" --config examples/use-cases/historical-simulation.json
+enigoma encrypt --text "ENIGMA" --config examples/use-cases/historical-simulation.json
 
 # Show rotor movement
-eniGOma config --test examples/use-cases/historical-simulation.json --text "AAAAA"
+enigoma config --test examples/use-cases/historical-simulation.json --text "AAAAA"
 
 # Compare with modern security
-eniGOma preset --describe classic
-eniGOma preset --describe extreme
+enigoma preset --describe classic
+enigoma preset --describe extreme
 ```
 
 ## Advanced Use Cases
@@ -108,23 +108,23 @@ eniGOma preset --describe extreme
 
 ```bash
 # Encrypt CSV data for processing
-eniGOma encrypt --file sales-data.csv --config examples/use-cases/document-protection.json --output encrypted-sales.csv
+enigoma encrypt --file sales-data.csv --config examples/use-cases/document-protection.json --output encrypted-sales.csv
 
 # Process encrypted data (theoretical - you'd decrypt first)
 # ... data processing ...
 
 # Re-encrypt results
-eniGOma encrypt --file processed-results.csv --config examples/use-cases/document-protection.json
+enigoma encrypt --file processed-results.csv --config examples/use-cases/document-protection.json
 ```
 
 ### 🔄 Configuration Rotation
 
 ```bash
 # Daily rotation for high-security communications
-eniGOma keygen --security high --output "daily-key-$(date +%Y%m%d).json"
+enigoma keygen --security high --output "daily-key-$(date +%Y%m%d).json"
 
 # Weekly rotation for document protection  
-eniGOma keygen --security medium --output "weekly-key-$(date +%Y-W%U).json"
+enigoma keygen --security medium --output "weekly-key-$(date +%Y-W%U).json"
 ```
 
 ### 🧪 Research and Testing
@@ -132,8 +132,8 @@ eniGOma keygen --security medium --output "weekly-key-$(date +%Y-W%U).json"
 ```bash
 # Generate test configurations for research
 for level in low medium high extreme; do
-    eniGOma keygen --security $level --output "research-${level}.json"
-    eniGOma config --validate "research-${level}.json" --stats
+    enigoma keygen --security $level --output "research-${level}.json"
+    enigoma config --validate "research-${level}.json" --stats
 done
 ```
 
@@ -151,7 +151,7 @@ ENCRYPTED_DIR="$HOME/secure-backups"
 
 # Create encrypted backup
 tar -czf temp-backup.tar.gz "$BACKUP_DIR"
-eniGOma encrypt --file temp-backup.tar.gz --config "$CONFIG" --output "$ENCRYPTED_DIR/backup-$(date +%Y%m%d).enc"
+enigoma encrypt --file temp-backup.tar.gz --config "$CONFIG" --output "$ENCRYPTED_DIR/backup-$(date +%Y%m%d).enc"
 rm temp-backup.tar.gz
 
 echo "Secure backup created: $ENCRYPTED_DIR/backup-$(date +%Y%m%d).enc"
@@ -164,9 +164,9 @@ import subprocess
 import json
 
 def encrypt_with_enigma(text, config_file):
-    """Encrypt text using eniGOma configuration"""
+    """Encrypt text using enigoma configuration"""
     result = subprocess.run([
-        'eniGOma', 'encrypt', 
+        'enigoma', 'encrypt', 
         '--text', text,
         '--config', config_file
     ], capture_output=True, text=True)
@@ -205,7 +205,7 @@ encrypted = encrypt_with_enigma(
 - Rotate configurations periodically for high-security use cases
 
 ### 🛡️ Security Considerations
-- ⚠️ eniGOma is for educational/simulation purposes only
+- ⚠️ enigoma is for educational/simulation purposes only
 - For production security, use AES-GCM or ChaCha20-Poly1305
 - Test configurations thoroughly before deployment
 
@@ -216,4 +216,4 @@ encrypted = encrypt_with_enigma(
 
 ---
 
-*These use case examples demonstrate practical applications of eniGOma while maintaining appropriate security practices.*
+*These use case examples demonstrate practical applications of enigoma while maintaining appropriate security practices.*

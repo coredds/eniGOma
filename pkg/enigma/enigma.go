@@ -7,10 +7,10 @@ package enigma
 import (
 	"fmt"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
-	"github.com/coredds/eniGOma/internal/plugboard"
-	"github.com/coredds/eniGOma/internal/reflector"
-	"github.com/coredds/eniGOma/internal/rotor"
+	"github.com/coredds/enigoma/internal/alphabet"
+	"github.com/coredds/enigoma/internal/plugboard"
+	"github.com/coredds/enigoma/internal/reflector"
+	"github.com/coredds/enigoma/internal/rotor"
 )
 
 // Enigma represents a configurable Enigma machine.

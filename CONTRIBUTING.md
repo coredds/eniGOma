@@ -1,6 +1,6 @@
-# Contributing to eniGOma
+# Contributing to enigoma
 
-Thank you for considering contributing to eniGOma! We welcome contributions from the community to help improve the project.
+Thank you for considering contributing to enigoma! We welcome contributions from the community to help improve the project.
 
 ## How to Contribute
 
@@ -9,8 +9,8 @@ Thank you for considering contributing to eniGOma! We welcome contributions from
 2. **Clone Your Fork**: Clone your forked repository to your local machine.
 
    ```bash
-   git clone https://github.com/your-username/eniGOma.git
-   cd eniGOma
+   git clone https://github.com/your-username/enigoma.git
+   cd enigoma
    ```
 
 3. **Create a Branch**: Create a new branch for your feature or bug fix.
@@ -51,4 +51,4 @@ If you encounter any issues or have questions, please open an issue on GitHub. P
 
 ## Thank You!
 
-Thank you for your interest in contributing to eniGOma! We appreciate your support and look forward to your contributions.
+Thank you for your interest in contributing to enigoma! We appreciate your support and look forward to your contributions.

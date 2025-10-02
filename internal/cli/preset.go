@@ -1,4 +1,4 @@
-// Package cli provides the preset command for the eniGOma CLI.
+// Package cli provides the preset command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -20,10 +20,10 @@ Presets provide quick configuration templates for common use cases,
 from historical accuracy to high security applications.
 
 Examples:
-  eniGOma preset --list
-  eniGOma preset --describe classic
-  eniGOma preset --describe all
-  eniGOma preset --export classic --output classic-config.json`,
+  enigoma preset --list
+  enigoma preset --describe classic
+  enigoma preset --describe all
+  enigoma preset --export classic --output classic-config.json`,
 	RunE: runPreset,
 }
 
@@ -72,8 +72,8 @@ func listPresets(cmd *cobra.Command) error {
 	}
 
 	fmt.Println()
-	fmt.Println("Use 'eniGOma preset --describe <name>' for detailed information.")
-	fmt.Println("Use 'eniGOma preset --export <name>' to generate configuration files.")
+	fmt.Println("Use 'enigoma preset --describe <name>' for detailed information.")
+	fmt.Println("Use 'enigoma preset --export <name>' to generate configuration files.")
 
 	return nil
 }
@@ -121,8 +121,8 @@ func describePreset(preset PresetInfo, verbose bool, cmd *cobra.Command) {
 		}
 
 		fmt.Fprintf(cmd.OutOrStdout(), "\nExample Usage:\n")
-		fmt.Fprintf(cmd.OutOrStdout(), "  eniGOma encrypt --text \"Hello World\" --preset %s\n", preset.Name)
-		fmt.Fprintf(cmd.OutOrStdout(), "  eniGOma keygen --preset %s --output %s-key.json\n", preset.Name, preset.Name)
+		fmt.Fprintf(cmd.OutOrStdout(), "  enigoma encrypt --text \"Hello World\" --preset %s\n", preset.Name)
+		fmt.Fprintf(cmd.OutOrStdout(), "  enigoma keygen --preset %s --output %s-key.json\n", preset.Name, preset.Name)
 	}
 
 	fmt.Fprintln(cmd.OutOrStdout())

@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
+	"github.com/coredds/enigoma/internal/alphabet"
 )
 
 // Reflector represents the reflector component of an Enigma machine.

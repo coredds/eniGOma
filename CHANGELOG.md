@@ -10,10 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Major Usability Enhancements Added
 
 #### 🚀 New CLI Commands
-- **`eniGOma demo`** - Interactive demonstration of all features with real-time examples
-- **`eniGOma examples`** - Copy-paste ready examples for common use cases
-- **`eniGOma test`** - Complete installation and functionality verification
-- **`eniGOma wizard`** - Interactive beginner-friendly setup wizard
+- **`enigoma demo`** - Interactive demonstration of all features with real-time examples
+- **`enigoma examples`** - Copy-paste ready examples for common use cases
+- **`enigoma test`** - Complete installation and functionality verification
+- **`enigoma wizard`** - Interactive beginner-friendly setup wizard
 
 #### ⚡ Zero-Config Library Functions
 - **`enigma.EncryptText(text)`** - Simplest possible encryption with auto-detection
@@ -121,7 +121,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **David Duarte** - Creator and Lead Developer
 
 ### Added
-- Complete eniGOma library implementation
+- Complete enigoma library implementation
 - **AlphabetPortuguese** - Built-in Brazilian Portuguese alphabet with full accent support (88 characters)
 - Unicode support for any character set (Latin, Greek, Cyrillic, etc.)
 - Configurable security levels (Low, Medium, High, Extreme)

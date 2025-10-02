@@ -1,4 +1,4 @@
-// Package cli provides the encrypt command for the eniGOma CLI.
+// Package cli provides the encrypt command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -13,9 +13,9 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 
-	"github.com/coredds/eniGOma"
-	"github.com/coredds/eniGOma/internal/alphabet"
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma"
+	"github.com/coredds/enigoma/internal/alphabet"
+	"github.com/coredds/enigoma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
@@ -25,8 +25,8 @@ var encryptCmd = &cobra.Command{
 	Long: `Encrypt plaintext using a configured Enigma machine.
 
 QUICK START (Recommended):
-  eniGOma encrypt --text "Hello World!" --auto-config my-key.json
-  eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+  enigoma encrypt --text "Hello World!" --auto-config my-key.json
+  enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
 The auto-config approach automatically detects the best alphabet for your text
 and saves a reusable configuration file for decryption.
@@ -37,15 +37,15 @@ HANDLING SPECIAL CHARACTERS:
   • Special symbols? Use --auto-config or --alphabet ascii
 
 INPUT METHODS:
-  eniGOma encrypt --text "Hello World"           # Direct text
-  eniGOma encrypt --file input.txt               # From file
-  echo "Hello" | eniGOma encrypt                 # From stdin
+  enigoma encrypt --text "Hello World"           # Direct text
+  enigoma encrypt --file input.txt               # From file
+  echo "Hello" | enigoma encrypt                 # From stdin
 
 CONFIGURATION OPTIONS:
-  eniGOma encrypt --text "Hello" --auto-config key.json    # Auto-detect (recommended)
-  eniGOma encrypt --text "HELLO" --preset classic         # Historical presets
-  eniGOma encrypt --text "Hello" --alphabet ascii         # Manual alphabet
-  eniGOma encrypt --text "Hello" --config existing.json   # Existing config
+  enigoma encrypt --text "Hello" --auto-config key.json    # Auto-detect (recommended)
+  enigoma encrypt --text "HELLO" --preset classic         # Historical presets
+  enigoma encrypt --text "Hello" --alphabet ascii         # Manual alphabet
+  enigoma encrypt --text "Hello" --config existing.json   # Existing config
 
 PREPROCESSING (for presets):
   --remove-spaces     Remove spaces from input
@@ -230,25 +230,25 @@ func createMachineFromPreset(preset string) (*enigma.Enigma, error) {
 	case "m4":
 		return enigma.NewEnigmaM4()
 	case "simple":
-		return enigma.NewEnigmaSimple(eniGOma.AlphabetLatinUpper)
+		return enigma.NewEnigmaSimple(enigoma.AlphabetLatinUpper)
 	case "low":
 		return enigma.New(
-			enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+			enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 			enigma.WithRandomSettings(enigma.Low),
 		)
 	case "medium":
 		return enigma.New(
-			enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+			enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 			enigma.WithRandomSettings(enigma.Medium),
 		)
 	case "high":
 		return enigma.New(
-			enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+			enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 			enigma.WithRandomSettings(enigma.High),
 		)
 	case "extreme":
 		return enigma.New(
-			enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+			enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 			enigma.WithRandomSettings(enigma.Extreme),
 		)
 	default:
@@ -312,21 +312,21 @@ func getAlphabetFromFlag(cmd *cobra.Command, inputText string) ([]rune, error) {
 		}
 		return detected.Runes(), nil
 	case "latin", "latin-upper":
-		return eniGOma.AlphabetLatinUpper, nil
+		return enigoma.AlphabetLatinUpper, nil
 	case "latin-lower":
-		return eniGOma.AlphabetLatinLower, nil
+		return enigoma.AlphabetLatinLower, nil
 	case "greek":
-		return eniGOma.AlphabetGreek, nil
+		return enigoma.AlphabetGreek, nil
 	case "cyrillic":
-		return eniGOma.AlphabetCyrillic, nil
+		return enigoma.AlphabetCyrillic, nil
 	case "portuguese":
-		return eniGOma.AlphabetPortuguese, nil
+		return enigoma.AlphabetPortuguese, nil
 	case "ascii":
-		return eniGOma.AlphabetASCIIPrintable, nil
+		return enigoma.AlphabetASCIIPrintable, nil
 	case "alphanumeric":
-		return eniGOma.AlphabetAlphaNumeric, nil
+		return enigoma.AlphabetAlphaNumeric, nil
 	case "digits":
-		return eniGOma.AlphabetDigits, nil
+		return enigoma.AlphabetDigits, nil
 	default:
 		return nil, fmt.Errorf("unknown alphabet: %s. Available: auto, latin, greek, cyrillic, portuguese, ascii, alphanumeric, digits", alphabetName)
 	}
@@ -484,7 +484,7 @@ func enhanceEncryptionError(err error, text string, cmd *cobra.Command) error {
 
 		if preset != "" && preset != "auto" {
 			suggestions = append(suggestions, fmt.Sprintf("• Preset '%s' uses a limited alphabet. Try --auto-config instead:", preset))
-			suggestions = append(suggestions, fmt.Sprintf("  eniGOma encrypt --text %q --auto-config my-key.json", text))
+			suggestions = append(suggestions, fmt.Sprintf("  enigoma encrypt --text %q --auto-config my-key.json", text))
 		}
 
 		if alphabet == "latin" || alphabet == "latin-upper" {
@@ -498,7 +498,7 @@ func enhanceEncryptionError(err error, text string, cmd *cobra.Command) error {
 		// Always suggest auto-config as the simplest solution
 		if len(suggestions) == 0 {
 			suggestions = append(suggestions, "• Try auto-detecting the alphabet:")
-			suggestions = append(suggestions, fmt.Sprintf("  eniGOma encrypt --text %q --auto-config my-key.json", text))
+			suggestions = append(suggestions, fmt.Sprintf("  enigoma encrypt --text %q --auto-config my-key.json", text))
 		}
 
 		// Add preprocessing suggestions

@@ -1,4 +1,4 @@
-// Package cli provides the config command for the eniGOma CLI.
+// Package cli provides the config command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
@@ -18,13 +18,13 @@ var configCmd = &cobra.Command{
 	Long: `Manage Enigma machine configuration files.
 
 This command helps validate, inspect, and manipulate configuration files
-used by the eniGOma CLI and library.
+used by the enigoma CLI and library.
 
 Examples:
-  eniGOma config --validate my-config.json
-  eniGOma config --show my-config.json
-  eniGOma config --test my-config.json --text "Hello World"
-  eniGOma config --convert old-config.json --output new-config.json`,
+  enigoma config --validate my-config.json
+  enigoma config --show my-config.json
+  enigoma config --test my-config.json --text "Hello World"
+  enigoma config --convert old-config.json --output new-config.json`,
 	RunE: runConfig,
 }
 

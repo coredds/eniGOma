@@ -1,4 +1,4 @@
-// Package cli provides the command-line interface for eniGOma.
+// Package cli provides the command-line interface for enigoma.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -7,23 +7,23 @@ package cli
 import (
 	"fmt"
 
-	"github.com/coredds/eniGOma"
+	"github.com/coredds/enigoma"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "eniGOma",
+	Use:   "enigoma",
 	Short: "A highly customizable, Unicode-capable Enigma machine implementation",
-	Long: `eniGOma is a Go library and CLI tool that simulates the famous Enigma machine 
+	Long: `enigoma is a Go library and CLI tool that simulates the famous Enigma machine 
 used during World War II, with modern enhancements including Unicode support,
 configurable complexity, and modular design.
 
 Examples:
-  eniGOma encrypt --text "Hello World" --preset classic
-  eniGOma decrypt --file encrypted.txt --config my-enigma.json
-  eniGOma keygen --security high --alphabet latin --output my-key.json
-  eniGOma preset --list`,
-	Version: eniGOma.GetVersion(),
+  enigoma encrypt --text "Hello World" --preset classic
+  enigoma decrypt --file encrypted.txt --config my-enigma.json
+  enigoma keygen --security high --alphabet latin --output my-key.json
+  enigoma preset --list`,
+	Version: enigoma.GetVersion(),
 }
 
 // Execute runs the root command and handles errors.

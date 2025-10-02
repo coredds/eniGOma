@@ -1,22 +1,22 @@
-# eniGOma
+# enigoma
 
-[![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)](https://github.com/coredds/eniGOma/releases)
-[![Go Reference](https://pkg.go.dev/badge/github.com/coredds/eniGOma.svg)](https://pkg.go.dev/github.com/coredds/eniGOma)
-[![CI](https://github.com/coredds/eniGOma/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coredds/eniGOma/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)](https://github.com/coredds/enigoma/releases)
+[![Go Reference](https://pkg.go.dev/badge/github.com/coredds/enigoma.svg)](https://pkg.go.dev/github.com/coredds/enigoma)
+[![CI](https://github.com/coredds/enigoma/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/coredds/enigoma/actions/workflows/ci.yml)
 [![Go Version](https://img.shields.io/badge/go-1.23+-blue.svg)](https://golang.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <p align="center">
-  <img src="enigoma_machine.png" alt="eniGOma machine" width="432" />
+  <img src="enigoma_machine.png" alt="enigoma machine" width="432" />
 </p>
 
 A highly customizable, Unicode-capable Enigma machine implementation in Go.
 
 ## Overview
 
-eniGOma is a Go library that simulates the famous Enigma machine used during World War II, with modern enhancements including:
+enigoma is a Go library that simulates the famous Enigma machine used during World War II, with modern enhancements including:
 
-- **Unicode Support**: Unlike traditional simulators limited to the Latin alphabet, eniGOma supports any Unicode character set
+- **Unicode Support**: Unlike traditional simulators limited to the Latin alphabet, enigoma supports any Unicode character set
 - **Configurable Complexity**: Adjust encryption complexity with different security levels
 - **Modular Design**: Clean, extensible architecture with well-defined interfaces
 - **State Management**: Save and load complete machine configurations
@@ -41,8 +41,8 @@ eniGOma is a Go library that simulates the famous Enigma machine used during Wor
 
 ### New in v0.4.0: Enhanced Usability ✨
 - **Zero-Config Functions**: `enigma.EncryptText("Hello!")` - encrypt in one line
-- **Discovery Commands**: `eniGOma demo`, `eniGOma examples`, `eniGOma test`
-- **Interactive Wizard**: `eniGOma wizard` for beginner-friendly setup
+- **Discovery Commands**: `enigoma demo`, `enigoma examples`, `enigoma test`
+- **Interactive Wizard**: `enigoma wizard` for beginner-friendly setup
 - **Smart Preprocessing**: `--remove-spaces`, `--uppercase`, `--letters-only` flags
 - **Enhanced Error Messages**: All errors now include actionable suggestions
 
@@ -57,13 +57,13 @@ eniGOma is a Go library that simulates the famous Enigma machine used during Wor
 
 ```bash
 # Inside your Go module:
-go get github.com/coredds/eniGOma@v0.4.0
+go get github.com/coredds/enigoma@v0.4.0
 ```
 
 Or get the latest version:
 ```bash
 # Inside your Go module:
-go get github.com/coredds/eniGOma@latest
+go get github.com/coredds/enigoma@latest
 ```
 
 ## Quick Start
@@ -77,7 +77,7 @@ import (
     "fmt"
     "log"
     
-    "github.com/coredds/eniGOma/pkg/enigma"
+    "github.com/coredds/enigoma/pkg/enigma"
 )
 
 func main() {
@@ -106,8 +106,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/coredds/eniGOma"
-    "github.com/coredds/eniGOma/pkg/enigma"
+    "github.com/coredds/enigoma"
+    "github.com/coredds/enigoma/pkg/enigma"
 )
 
 func main() {
@@ -138,37 +138,37 @@ func main() {
 
 ### Command Line Interface
 
-eniGOma includes a powerful CLI with a configuration-first workflow for secure encryption, decryption, and key management.
+enigoma includes a powerful CLI with a configuration-first workflow for secure encryption, decryption, and key management.
 
 ```bash
 # Install the CLI
-go install github.com/coredds/eniGOma/cmd/eniGOma@latest
+go install github.com/coredds/enigoma/cmd/enigoma@latest
 
 # 🎯 New Discovery Commands (v0.4.0)
-eniGOma demo      # Interactive demonstration
-eniGOma examples  # Copy-paste ready examples  
-eniGOma test      # Verify installation
-eniGOma wizard    # Interactive setup
+enigoma demo      # Interactive demonstration
+enigoma examples  # Copy-paste ready examples  
+enigoma test      # Verify installation
+enigoma wizard    # Interactive setup
 
 # Quick start with auto-config (recommended)
-eniGOma encrypt --text "Hello World!" --auto-config my-key.json
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+enigoma encrypt --text "Hello World!" --auto-config my-key.json
+enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
 # Enhanced preprocessing (v0.4.0)
-eniGOma encrypt --text "Hello World!" --preset classic --remove-spaces --uppercase
+enigoma encrypt --text "Hello World!" --preset classic --remove-spaces --uppercase
 
 # Stdin usage (now works with Windows line endings!)
-echo "Hello via stdin" | eniGOma encrypt --auto-config my-key.json
+echo "Hello via stdin" | enigoma encrypt --auto-config my-key.json
 
 # Output encoding (base64)
-eniGOma encrypt --text "Hello" --auto-config my-key.json --format base64
+enigoma encrypt --text "Hello" --auto-config my-key.json --format base64
 # Decrypt base64 input
-eniGOma decrypt --text "SGVsbG8=" --config my-key.json --format base64
+enigoma decrypt --text "SGVsbG8=" --config my-key.json --format base64
 
 # Output encoding (hex)
-eniGOma encrypt --text "Hello" --auto-config my-key.json --format hex
+enigoma encrypt --text "Hello" --auto-config my-key.json --format hex
 # Decrypt hex input
-eniGOma decrypt --text "48656c6c6f" --config my-key.json --format hex
+enigoma decrypt --text "48656c6c6f" --config my-key.json --format hex
 ```
 
 #### CLI Commands
@@ -196,39 +196,39 @@ eniGOma decrypt --text "48656c6c6f" --config my-key.json --format hex
 
 ```bash
 # Method 1: Auto-generate config during encryption (RECOMMENDED)
-eniGOma encrypt --text "Hello World!" --auto-config my-key.json
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+enigoma encrypt --text "Hello World!" --auto-config my-key.json
+enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
 # Method 2: Generate config first, then encrypt
-eniGOma keygen --security high --output my-key.json
-eniGOma encrypt --text "Secret Message" --config my-key.json
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+enigoma keygen --security high --output my-key.json
+enigoma encrypt --text "Secret Message" --config my-key.json
+enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
 # Method 3: Use presets, but ALWAYS save the configuration
-eniGOma encrypt --text "TOP SECRET" --preset high --save-config classified.json
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config classified.json
+enigoma encrypt --text "TOP SECRET" --preset high --save-config classified.json
+enigoma decrypt --text "ENCRYPTED_OUTPUT" --config classified.json
 
 # Unicode and multi-language support with auto-detection
-eniGOma encrypt --text "Olá Mundo! Café é ótimo!" --auto-config portuguese-key.json
-eniGOma encrypt --text "Mixed: English Русский 日本語!" --auto-config unicode-key.json
-eniGOma encrypt --text "Test unicode: 🙂" --auto-config emoji-key.json --verbose
+enigoma encrypt --text "Olá Mundo! Café é ótimo!" --auto-config portuguese-key.json
+enigoma encrypt --text "Mixed: English Русский 日本語!" --auto-config unicode-key.json
+enigoma encrypt --text "Test unicode: 🙂" --auto-config emoji-key.json --verbose
 
 # File encryption/decryption workflows
-eniGOma encrypt --file document.txt --auto-config my-key.json --output encrypted.txt
-eniGOma decrypt --file encrypted.txt --config my-key.json --output decrypted.txt
+enigoma encrypt --file document.txt --auto-config my-key.json --output encrypted.txt
+enigoma decrypt --file encrypted.txt --config my-key.json --output decrypted.txt
 
 # Advanced configuration management
-eniGOma config --show my-key.json --detailed
-eniGOma config --validate my-key.json
-eniGOma config --test my-key.json --text "TEST MESSAGE"
-eniGOma keygen --preset extreme --describe --stats --output extreme-key.json
-eniGOma preset --list
-eniGOma preset --describe classic --verbose
+enigoma config --show my-key.json --detailed
+enigoma config --validate my-key.json
+enigoma config --test my-key.json --text "TEST MESSAGE"
+enigoma keygen --preset extreme --describe --stats --output extreme-key.json
+enigoma preset --list
+enigoma preset --describe classic --verbose
 ```
 
 ## Configuration-First Approach
 
-**New in v0.3.0**: eniGOma uses a configuration-first approach that ensures you can always decrypt your data!
+**New in v0.3.0**: enigoma uses a configuration-first approach that ensures you can always decrypt your data!
 
 ### How It Works
 
@@ -248,28 +248,28 @@ This approach provides several benefits:
 
 ```bash
 # Method 1: Generate config first
-eniGOma keygen --output my-key.json
-eniGOma encrypt --text "Hello World!" --config my-key.json
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+enigoma keygen --output my-key.json
+enigoma encrypt --text "Hello World!" --config my-key.json
+enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
 # Method 2: Auto-generate during encryption
-eniGOma encrypt --text "Hello World!" --auto-config my-key.json
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+enigoma encrypt --text "Hello World!" --auto-config my-key.json
+enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 ```
 
 ### Advanced Examples
 
 ```bash
 # Auto-detection with different languages
-eniGOma encrypt --text "Olá Mundo! Café é ótimo!" --auto-config pt-key.json
-eniGOma encrypt --text "Mixed: English Русский 日本語!" --auto-config mixed-key.json
+enigoma encrypt --text "Olá Mundo! Café é ótimo!" --auto-config pt-key.json
+enigoma encrypt --text "Mixed: English Русский 日本語!" --auto-config mixed-key.json
 
 # Using presets with saved configuration
-eniGOma encrypt --text "TOP SECRET" --preset high --save-config classified.json
-eniGOma decrypt --text "ENCRYPTED" --config classified.json
+enigoma encrypt --text "TOP SECRET" --preset high --save-config classified.json
+enigoma decrypt --text "ENCRYPTED" --config classified.json
 
 # Verbose mode shows auto-detection details
-eniGOma encrypt --text "Test unicode: 🙂" --auto-config test.json --verbose
+enigoma encrypt --text "Test unicode: 🙂" --auto-config test.json --verbose
 # Output: Auto-detected alphabet with 12 characters
 #         Auto-generated configuration saved to: test.json
 ```
@@ -285,8 +285,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/coredds/eniGOma"
-    "github.com/coredds/eniGOma/pkg/enigma"
+    "github.com/coredds/enigoma"
+    "github.com/coredds/enigoma/pkg/enigma"
 )
 
 func main() {
@@ -319,7 +319,7 @@ func main() {
 
 ```go
 // Create an Enigma with Greek alphabet
-machine, err := enigma.NewEnigmaSimple(eniGOma.AlphabetGreek)
+machine, err := enigma.NewEnigmaSimple(enigoma.AlphabetGreek)
 if err != nil {
     log.Fatal(err)
 }
@@ -334,7 +334,7 @@ fmt.Printf("Encrypted Greek: %s\n", encrypted)
 ```go
 // Create a high-security Enigma
 machine, err := enigma.New(
-    enigma.WithAlphabet(eniGOma.AlphabetASCIIPrintable),
+    enigma.WithAlphabet(enigoma.AlphabetASCIIPrintable),
     enigma.WithRandomSettings(enigma.High),
     enigma.WithPlugboardConfiguration(map[rune]rune{
         'A': 'Z', 'Z': 'A',
@@ -345,7 +345,7 @@ machine, err := enigma.New(
 
 ## Security Levels
 
-eniGOma provides predefined security levels for quick setup:
+enigoma provides predefined security levels for quick setup:
 
 | Level    | Rotors | Plugboard Pairs | Use Case |
 |----------|--------|-----------------|----------|
@@ -356,7 +356,7 @@ eniGOma provides predefined security levels for quick setup:
 
 ## Predefined Alphabets (Advanced)
 
-While **auto-detection is recommended** for most use cases, eniGOma provides predefined alphabets for specialized scenarios or when you need deterministic character sets:
+While **auto-detection is recommended** for most use cases, enigoma provides predefined alphabets for specialized scenarios or when you need deterministic character sets:
 
 ### When to Use Predefined Alphabets
 - **Consistent character sets** across multiple messages
@@ -381,11 +381,11 @@ While **auto-detection is recommended** for most use cases, eniGOma provides pre
 
 ```bash
 # CLI: Use predefined alphabet with keygen
-eniGOma keygen --alphabet latin --output latin-key.json
-eniGOma encrypt --text "HELLO WORLD" --config latin-key.json
+enigoma keygen --alphabet latin --output latin-key.json
+enigoma encrypt --text "HELLO WORLD" --config latin-key.json
 
 # Library: Use predefined alphabet directly
-machine, err := enigma.NewEnigmaSimple(eniGOma.AlphabetGreek)
+machine, err := enigma.NewEnigmaSimple(enigoma.AlphabetGreek)
 ```
 
 Tip: For most use cases, prefer `--auto-config` which automatically detects the optimal alphabet from your input text.
@@ -427,7 +427,7 @@ rotorSpecs := []rotor.RotorSpec{
 }
 
 machine, err := enigma.New(
-    enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+    enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
     enigma.WithRotorConfiguration(rotorSpecs),
     // ... other options
 )
@@ -435,10 +435,10 @@ machine, err := enigma.New(
 
 ## Architecture
 
-eniGOma follows a modular architecture:
+enigoma follows a modular architecture:
 
 ```
-eniGOma/
+enigoma/
 ├── pkg/enigma/          # Main Enigma machine implementation
 ├── internal/
 │   ├── alphabet/        # Character set management
@@ -482,10 +482,10 @@ The [`examples/`](./examples/) directory contains comprehensive configuration ex
 
 ```bash
 # Use an example configuration
-eniGOma encrypt --text "Hello World" --config examples/security-levels/high-security.json
+enigoma encrypt --text "Hello World" --config examples/security-levels/high-security.json
 
 # Generate your own from examples
-eniGOma keygen --security high --output my-config.json
+enigoma keygen --security high --output my-config.json
 ```
 
 ### Code Examples
@@ -500,7 +500,7 @@ See the `cmd/example/` directory for complete code examples:
 
 ## Historical Accuracy
 
-eniGOma maintains historical Enigma machine behaviors:
+enigoma maintains historical Enigma machine behaviors:
 
 - **Reciprocal encryption**: If A encrypts to B, then B encrypts to A
 - **Rotor stepping**: Proper single and double-stepping mechanics
@@ -536,7 +536,7 @@ These benchmarks were run on a typical development machine and may vary based on
 
 ⚠️ **Important**: This library is for educational and simulation purposes only. 
 
-Do not use eniGOma for securing sensitive data in production systems. Modern cryptographic algorithms (AES-GCM, ChaCha20-Poly1305) should be used for real-world security applications.
+Do not use enigoma for securing sensitive data in production systems. Modern cryptographic algorithms (AES-GCM, ChaCha20-Poly1305) should be used for real-world security applications.
 
 ## License
 

@@ -1,4 +1,4 @@
-# Product Requirements Document: eniGOma Go Library
+# Product Requirements Document: enigoma Go Library
 
 **Document Version:** 0.2  
 **Date:** July 27, 2025  
@@ -8,7 +8,7 @@
 
 ### 1.1 Purpose
 
-This Product Requirements Document (PRD) outlines the specifications for eniGOma, a Go library designed to implement a highly customizable virtual Enigma machine. Unlike traditional Enigma simulators limited to the Latin alphabet, eniGOma will support Unicode characters, providing a flexible platform for exploring historical cryptography concepts with modern character sets. A key feature will be the ability for users to adjust the encryption's complexity, allowing for various levels of "protection" or demonstration.
+This Product Requirements Document (PRD) outlines the specifications for enigoma, a Go library designed to implement a highly customizable virtual Enigma machine. Unlike traditional Enigma simulators limited to the Latin alphabet, enigoma will support Unicode characters, providing a flexible platform for exploring historical cryptography concepts with modern character sets. A key feature will be the ability for users to adjust the encryption's complexity, allowing for various levels of "protection" or demonstration.
 
 ### 1.2 Goals
 
@@ -34,7 +34,7 @@ This Product Requirements Document (PRD) outlines the specifications for eniGOma
 
 ## 2. Features
 
-The eniGOma library will expose an API that allows users to configure and operate a virtual Enigma machine.
+The enigoma library will expose an API that allows users to configure and operate a virtual Enigma machine.
 
 ### 2.1 Core Enigma Machine Simulation
 
@@ -60,7 +60,7 @@ The library will allow detailed configuration of the Enigma's components to adju
 **Implementation Details:**
 - A `[]rune` slice or `map[rune]int` could represent the active alphabet.
 - All internal mappings (rotors, reflector, plugboard) will be dynamically adjusted to the size of this alphabet.
-- Pre-defined common alphabets (e.g., `eniGOma.AlphabetLatinUpper`, `eniGOma.AlphabetASCIIPrintable`) should be provided for convenience.
+- Pre-defined common alphabets (e.g., `enigoma.AlphabetLatinUpper`, `enigoma.AlphabetASCIIPrintable`) should be provided for convenience.
 - **Validation:** The library must ensure the chosen alphabet does not contain duplicate characters.
 
 #### 2.2.2 Rotors
@@ -147,7 +147,7 @@ The library will allow detailed configuration of the Enigma's components to adju
 ### 4.2 Cryptographic Best Practices (for Simulation)
 
 - **Randomness:** When generating random rotors, reflectors, or plugboard settings, `crypto/rand` package must be used to ensure cryptographically secure pseudo-random number generation.
-- **Avoid Homebrew Crypto:** While eniGOma is a simulation of a historical cipher, the underlying implementation of permutations and mappings should use standard, proven techniques. Avoid custom bit manipulations that could introduce subtle flaws.
+- **Avoid Homebrew Crypto:** While enigoma is a simulation of a historical cipher, the underlying implementation of permutations and mappings should use standard, proven techniques. Avoid custom bit manipulations that could introduce subtle flaws.
 - **Constant-Time Operations (where applicable):** While less critical for a simulation, any lookup tables or permutation logic should ideally aim for constant-time operations to prevent timing side-channel attacks, if practically feasible without excessive complexity. This primarily applies to lookups within a rotor's mapping.
 
 ### 4.3 Input/Output
@@ -159,7 +159,7 @@ The library will handle mapping incoming runes to the defined internal alphabet'
 ## 5. API Design (High-Level Examples)
 
 ```go
-package eniGOma
+package enigoma
 
 import "errors"
 
@@ -182,8 +182,8 @@ type Enigma struct {
 type Option func(*Enigma) error
 
 // NewEnigma creates a new Enigma machine with the given options.
-// Example: eni, err := eniGOma.NewEnigma(eniGOma.WithRandomSettings(eniGOma.High))
-// Example: eni, err := eniGOma.NewEnigma(eniGOma.WithAlphabet(eniGOma.AlphabetLatinUpper))
+// Example: eni, err := enigoma.NewEnigma(enigoma.WithRandomSettings(enigoma.High))
+// Example: eni, err := enigoma.NewEnigma(enigoma.WithAlphabet(enigoma.AlphabetLatinUpper))
 func NewEnigma(opts ...Option) (*Enigma, error) {
 	// ... implementation ...
 }
@@ -205,7 +205,7 @@ func WithRandomSettings(level SecurityLevel) Option {
 }
 
 // WithCustomComponents allows detailed manual configuration of components.
-// Example: eniGOma.WithCustomComponents(rotors, reflector, plugboard)
+// Example: enigoma.WithCustomComponents(rotors, reflector, plugboard)
 func WithCustomComponents(rotors []Rotor, reflector Reflector, plugboard *Plugboard) Option {
 	return func(e *Enigma) error {
 		// ... set components, perform validation ...
@@ -292,7 +292,7 @@ var (
 
 - **Error Handling for Invalid Characters:** Refine the behavior when input text contains characters not in the configured alphabet. Options include returning an error, silently skipping them, or defining a "default unknown character" mapping. The current PRD leans towards an error, which is generally safer.
 
-- **More Advanced Stepping:** While eniGOma allows defining notches, more complex historical stepping mechanisms (e.g., specific double-stepping behavior of some Enigma models) could be added as advanced options or specific Rotor implementations.
+- **More Advanced Stepping:** While enigoma allows defining notches, more complex historical stepping mechanisms (e.g., specific double-stepping behavior of some Enigma models) could be added as advanced options or specific Rotor implementations.
 
 - **Visualizer Integration:** While not part of the library, consider how the `EnigmaSettings` structure could facilitate easy integration with a separate visualization tool.
 

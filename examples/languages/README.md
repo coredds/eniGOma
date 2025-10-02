@@ -1,6 +1,6 @@
 # Language and Character Set Examples
 
-This directory contains example configurations for different languages and character sets, demonstrating eniGOma's Unicode support capabilities.
+This directory contains example configurations for different languages and character sets, demonstrating enigoma's Unicode support capabilities.
 
 ## Available Examples
 
@@ -12,7 +12,7 @@ This directory contains example configurations for different languages and chara
 
 ```bash
 # Example usage
-eniGOma encrypt --text "Olá, como você está?" --config examples/languages/portuguese-basic.json
+enigoma encrypt --text "Olá, como você está?" --config examples/languages/portuguese-basic.json
 ```
 
 **Supported Characters**:
@@ -29,7 +29,7 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 
 ```bash
 # Example usage
-eniGOma encrypt --text "Γεια σας κόσμε!" --config examples/languages/greek-simple.json
+enigoma encrypt --text "Γεια σας κόσμε!" --config examples/languages/greek-simple.json
 ```
 
 **Supported Characters**:
@@ -45,7 +45,7 @@ eniGOma encrypt --text "Γεια σας κόσμε!" --config examples/languages
 
 ```bash
 # Example usage  
-eniGOma encrypt --text "Password123!" --config examples/languages/mixed-alphabet-extreme.json
+enigoma encrypt --text "Password123!" --config examples/languages/mixed-alphabet-extreme.json
 ```
 
 ## Creating Language-Specific Configurations
@@ -55,19 +55,19 @@ eniGOma encrypt --text "Password123!" --config examples/languages/mixed-alphabet
 ```go
 // Programmatic creation
 machine, err := enigma.New(
-    enigma.WithAlphabet(eniGOma.AlphabetPortuguese),
+    enigma.WithAlphabet(enigoma.AlphabetPortuguese),
     enigma.WithRandomSettings(enigma.Medium),
 )
 
 // CLI generation
-eniGOma keygen --alphabet portuguese --security medium --output portuguese-config.json
+enigoma keygen --alphabet portuguese --security medium --output portuguese-config.json
 ```
 
 ### For Custom Languages
 
 ```bash
 # Create configuration with custom alphabet
-eniGOma keygen --security medium --output custom-lang.json
+enigoma keygen --security medium --output custom-lang.json
 # Then manually edit the "alphabet" field in the JSON
 ```
 
@@ -118,14 +118,14 @@ eniGOma keygen --security medium --output custom-lang.json
 
 ```bash
 # Validate language-specific configuration
-eniGOma config --validate examples/languages/portuguese-basic.json
+enigoma config --validate examples/languages/portuguese-basic.json
 
 # Test round-trip encryption
-eniGOma encrypt --text "Olá mundo!" --config examples/languages/portuguese-basic.json | \
-eniGOma decrypt --config examples/languages/portuguese-basic.json
+enigoma encrypt --text "Olá mundo!" --config examples/languages/portuguese-basic.json | \
+enigoma decrypt --config examples/languages/portuguese-basic.json
 
 # Show character mappings
-eniGOma config --show examples/languages/greek-simple.json --detailed
+enigoma config --show examples/languages/greek-simple.json --detailed
 ```
 
 ## Common Issues and Solutions
@@ -166,4 +166,4 @@ When adding new language examples:
 
 ---
 
-*eniGOma's Unicode support enables encryption for any language or character set while maintaining the historical Enigma machine behavior.*
+*enigoma's Unicode support enables encryption for any language or character set while maintaining the historical Enigma machine behavior.*

@@ -3,7 +3,7 @@ package enigma
 import (
 	"testing"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
+	"github.com/coredds/enigoma/internal/alphabet"
 )
 
 func TestWithAlphabet(t *testing.T) {

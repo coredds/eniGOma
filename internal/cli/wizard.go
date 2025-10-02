@@ -1,4 +1,4 @@
-// Package cli provides the wizard command for the eniGOma CLI.
+// Package cli provides the wizard command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -19,7 +19,7 @@ var wizardCmd = &cobra.Command{
 	Long: `Interactive wizard to guide you through encrypting or decrypting text.
 
 This wizard will ask you simple questions and generate the appropriate
-eniGOma command for you. Perfect for beginners!
+enigoma command for you. Perfect for beginners!
 
 The wizard will:
 • Help you choose between encryption and decryption
@@ -29,7 +29,7 @@ The wizard will:
 • Save configuration files for later use
 
 Example:
-  eniGOma wizard`,
+  enigoma wizard`,
 	RunE: runWizard,
 }
 
@@ -38,7 +38,7 @@ func init() {
 }
 
 func runWizard(cmd *cobra.Command, args []string) error {
-	fmt.Println("🔐 Welcome to the eniGOma Interactive Wizard!")
+	fmt.Println("🔐 Welcome to the enigoma Interactive Wizard!")
 	fmt.Println("Let's help you encrypt or decrypt your text step by step.")
 	fmt.Println()
 
@@ -156,7 +156,7 @@ func runEncryptWizard(reader *bufio.Reader) error {
 	cmdArgs = append(cmdArgs, "--verbose")
 
 	// Execute command
-	fmt.Printf("\n🚀 Executing command: eniGOma %s\n\n", strings.Join(cmdArgs, " "))
+	fmt.Printf("\n🚀 Executing command: enigoma %s\n\n", strings.Join(cmdArgs, " "))
 
 	// Create and execute the encrypt command
 	encryptCmd.SetArgs(cmdArgs[1:]) // Remove 'encrypt' from args
@@ -168,7 +168,7 @@ func runEncryptWizard(reader *bufio.Reader) error {
 	// Success message
 	fmt.Printf("\n✅ Success! Your text has been encrypted.\n")
 	fmt.Printf("📋 Configuration saved to: %s\n", configFile)
-	fmt.Printf("🔑 To decrypt later, use: eniGOma decrypt --text \"ENCRYPTED_TEXT\" --config %s\n", configFile)
+	fmt.Printf("🔑 To decrypt later, use: enigoma decrypt --text \"ENCRYPTED_TEXT\" --config %s\n", configFile)
 
 	return nil
 }
@@ -244,7 +244,7 @@ func runDecryptWizard(reader *bufio.Reader) error {
 	cmdArgs = append(cmdArgs, "--verbose")
 
 	// Execute command
-	fmt.Printf("\n🚀 Executing command: eniGOma %s\n\n", strings.Join(cmdArgs, " "))
+	fmt.Printf("\n🚀 Executing command: enigoma %s\n\n", strings.Join(cmdArgs, " "))
 
 	// Create and execute the decrypt command
 	decryptCmd.SetArgs(cmdArgs[1:]) // Remove 'decrypt' from args
@@ -325,7 +325,6 @@ func askAlphabet(reader *bufio.Reader) string {
 		return "auto"
 	}
 }
-
 
 func needsPreprocessing(text string) bool {
 	return strings.Contains(text, " ") || hasLowercase(text) || hasSpecialChars(text)
@@ -438,4 +437,3 @@ func getWizardConfigFile(reader *bufio.Reader) (string, error) {
 	}
 	return configName + ".json", nil
 }
-

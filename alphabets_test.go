@@ -1,6 +1,6 @@
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
-package eniGOma
+package enigoma
 
 import (
 	"testing"

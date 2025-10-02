@@ -1,4 +1,4 @@
-// Package cli provides the keygen command for the eniGOma CLI.
+// Package cli provides the keygen command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
@@ -21,9 +21,9 @@ The generated configuration can be saved to a file and used later with the
 --config flag in encrypt/decrypt commands.
 
 Examples:
-  eniGOma keygen --security high --alphabet latin --output my-key.json
-  eniGOma keygen --preset classic --output classic-key.json
-  eniGOma keygen --security extreme --alphabet portuguese --save-to keys/extreme-pt.json`,
+  enigoma keygen --security high --alphabet latin --output my-key.json
+  enigoma keygen --preset classic --output classic-key.json
+  enigoma keygen --security extreme --alphabet portuguese --save-to keys/extreme-pt.json`,
 	RunE: runKeygen,
 }
 

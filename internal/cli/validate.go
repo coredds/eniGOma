@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
@@ -67,19 +67,19 @@ func suggestConfigFixes(err error, configPath string) string {
 	if strings.Contains(errStr, "invalid") || strings.Contains(errStr, "unmarshal") {
 		suggestions = append(suggestions, "• The configuration file may be corrupted")
 		suggestions = append(suggestions, "• Try generating a new configuration:")
-		suggestions = append(suggestions, "  eniGOma keygen --output new-config.json")
+		suggestions = append(suggestions, "  enigoma keygen --output new-config.json")
 		suggestions = append(suggestions, "• Validate the JSON syntax online")
 	}
 
 	if strings.Contains(errStr, "schema") {
 		suggestions = append(suggestions, "• The configuration format may be outdated")
 		suggestions = append(suggestions, "• Try updating to the latest format:")
-		suggestions = append(suggestions, fmt.Sprintf("  eniGOma config --convert %s --output updated-config.json", configPath))
+		suggestions = append(suggestions, fmt.Sprintf("  enigoma config --convert %s --output updated-config.json", configPath))
 	}
 
 	if len(suggestions) == 0 {
 		suggestions = append(suggestions, "• Try creating a new configuration file:")
-		suggestions = append(suggestions, "  eniGOma keygen --output new-config.json")
+		suggestions = append(suggestions, "  enigoma keygen --output new-config.json")
 	}
 
 	return strings.Join(suggestions, "\n")

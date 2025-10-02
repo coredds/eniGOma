@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
+	"github.com/coredds/enigoma/internal/alphabet"
 )
 
 // Rotor represents a single rotor with its internal wiring and notch positions.

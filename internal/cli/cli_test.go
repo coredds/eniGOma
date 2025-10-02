@@ -1,4 +1,4 @@
-// Package cli provides unit tests for the eniGOma CLI.
+// Package cli provides unit tests for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -12,7 +12,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +28,7 @@ func TestRootCommand(t *testing.T) {
 			name:     "version flag",
 			args:     []string{"--version"},
 			wantErr:  false,
-			contains: "eniGOma",
+			contains: "enigoma",
 		},
 		{
 			name:     "help flag",
@@ -645,7 +645,7 @@ func TestAutoConfigJSONOutput(t *testing.T) {
 func createTestRootCmd() *cobra.Command {
 	// Create a new root command to avoid state pollution between tests
 	testRootCmd := &cobra.Command{
-		Use:     "eniGOma",
+		Use:     "enigoma",
 		Short:   "A highly customizable, Unicode-capable Enigma machine implementation",
 		Version: "0.2.1",
 	}

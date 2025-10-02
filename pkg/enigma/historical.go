@@ -5,8 +5,8 @@
 package enigma
 
 import (
-	"github.com/coredds/eniGOma/internal/reflector"
-	"github.com/coredds/eniGOma/internal/rotor"
+	"github.com/coredds/enigoma/internal/reflector"
+	"github.com/coredds/enigoma/internal/rotor"
 )
 
 // Historical rotor wirings from actual Enigma machines

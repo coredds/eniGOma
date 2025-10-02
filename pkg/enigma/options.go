@@ -10,10 +10,10 @@ import (
 	"math/big"
 	mrand "math/rand"
 
-	"github.com/coredds/eniGOma/internal/alphabet"
-	"github.com/coredds/eniGOma/internal/plugboard"
-	"github.com/coredds/eniGOma/internal/reflector"
-	"github.com/coredds/eniGOma/internal/rotor"
+	"github.com/coredds/enigoma/internal/alphabet"
+	"github.com/coredds/enigoma/internal/plugboard"
+	"github.com/coredds/enigoma/internal/reflector"
+	"github.com/coredds/enigoma/internal/rotor"
 )
 
 // Option is a functional option for Enigma configuration.
@@ -78,7 +78,7 @@ func WithCustomComponents(rotors []rotor.Rotor, refl reflector.Reflector, pb *pl
 func WithRandomSettings(level SecurityLevel) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before applying random settings. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
+			return fmt.Errorf("alphabet must be set before applying random settings. Try: enigma.WithAlphabet(enigoma.AlphabetLatinUpper)")
 		}
 
 		config := getSecurityConfig(level)
@@ -147,7 +147,7 @@ func WithRandomSettings(level SecurityLevel) Option {
 func WithRotorConfiguration(rotorSpecs []rotor.RotorSpec) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before configuring rotors. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
+			return fmt.Errorf("alphabet must be set before configuring rotors. Try: enigma.WithAlphabet(enigoma.AlphabetLatinUpper)")
 		}
 
 		if len(rotorSpecs) == 0 {
@@ -172,7 +172,7 @@ func WithRotorConfiguration(rotorSpecs []rotor.RotorSpec) Option {
 func WithReflectorConfiguration(reflectorSpec reflector.ReflectorSpec) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before configuring reflector. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
+			return fmt.Errorf("alphabet must be set before configuring reflector. Try: enigma.WithAlphabet(enigoma.AlphabetLatinUpper)")
 		}
 
 		refl, err := reflector.CreateFromSpec(reflectorSpec, e.alphabet)
@@ -189,7 +189,7 @@ func WithReflectorConfiguration(reflectorSpec reflector.ReflectorSpec) Option {
 func WithPlugboardConfiguration(pairs map[rune]rune) Option {
 	return func(e *Enigma) error {
 		if e.alphabet == nil {
-			return fmt.Errorf("alphabet must be set before configuring plugboard. Try: enigma.WithAlphabet(eniGOma.AlphabetLatinUpper)")
+			return fmt.Errorf("alphabet must be set before configuring plugboard. Try: enigma.WithAlphabet(enigoma.AlphabetLatinUpper)")
 		}
 
 		pb, err := plugboard.New(e.alphabet)

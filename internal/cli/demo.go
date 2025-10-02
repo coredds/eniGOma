@@ -1,4 +1,4 @@
-// Package cli provides the demo command for the eniGOma CLI.
+// Package cli provides the demo command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -8,15 +8,15 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/coredds/eniGOma"
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma"
+	"github.com/coredds/enigoma/pkg/enigma"
 	"github.com/spf13/cobra"
 )
 
 var demoCmd = &cobra.Command{
 	Use:   "demo",
-	Short: "Interactive demonstration of eniGOma features",
-	Long: `Interactive demonstration showing eniGOma's key features and capabilities.
+	Short: "Interactive demonstration of enigoma features",
+	Long: `Interactive demonstration showing enigoma's key features and capabilities.
 
 This command runs a series of demonstrations to help you understand:
 • Basic encryption and decryption
@@ -25,16 +25,16 @@ This command runs a series of demonstrations to help you understand:
 • Auto-detection capabilities
 • Configuration management
 
-Perfect for new users to see eniGOma in action!
+Perfect for new users to see enigoma in action!
 
 Example:
-  eniGOma demo`,
+  enigoma demo`,
 	RunE: runDemo,
 }
 
 func runDemo(cmd *cobra.Command, args []string) error {
-	fmt.Printf("🎯 Welcome to the eniGOma Interactive Demo!\n")
-	fmt.Printf("Version: %s\n\n", eniGOma.GetVersion())
+	fmt.Printf("🎯 Welcome to the enigoma Interactive Demo!\n")
+	fmt.Printf("Version: %s\n\n", enigoma.GetVersion())
 
 	// Demo 1: Basic Encryption
 	fmt.Println("📝 Demo 1: Basic Encryption & Decryption")
@@ -110,7 +110,7 @@ func runDemo(cmd *cobra.Command, args []string) error {
 		fmt.Printf("%s Security:\n", levelNames[i])
 
 		secMachine, err := enigma.New(
-			enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+			enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 			enigma.WithRandomSettings(level),
 		)
 		if err != nil {
@@ -165,9 +165,9 @@ func runDemo(cmd *cobra.Command, args []string) error {
 	fmt.Println("• ✅ Zero-config convenience functions")
 	fmt.Println()
 	fmt.Println("Next steps:")
-	fmt.Println("• Try: eniGOma wizard (interactive setup)")
-	fmt.Println("• Try: eniGOma examples (copy-paste ready examples)")
-	fmt.Println("• Try: eniGOma encrypt --text \"Your text\" --auto-config key.json")
+	fmt.Println("• Try: enigoma wizard (interactive setup)")
+	fmt.Println("• Try: enigoma examples (copy-paste ready examples)")
+	fmt.Println("• Try: enigoma encrypt --text \"Your text\" --auto-config key.json")
 	fmt.Println()
 	fmt.Println("Happy encrypting! 🔐")
 

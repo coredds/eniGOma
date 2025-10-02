@@ -1,6 +1,6 @@
 # Security Level Examples
 
-This directory contains example configurations demonstrating different security levels available in eniGOma.
+This directory contains example configurations demonstrating different security levels available in enigoma.
 
 ## Available Examples
 
@@ -13,7 +13,7 @@ This directory contains example configurations demonstrating different security 
 
 ```bash
 # Example usage
-eniGOma encrypt --text "HELLO WORLD" --config examples/security-levels/classic-low-security.json
+enigoma encrypt --text "HELLO WORLD" --config examples/security-levels/classic-low-security.json
 ```
 
 ### 🔒 `simple-medium-security.json` - Balanced Security
@@ -25,7 +25,7 @@ eniGOma encrypt --text "HELLO WORLD" --config examples/security-levels/classic-l
 
 ```bash
 # Example usage
-eniGOma encrypt --file document.txt --config examples/security-levels/simple-medium-security.json
+enigoma encrypt --file document.txt --config examples/security-levels/simple-medium-security.json
 ```
 
 ### 🔒🔒 `high-security.json` - Strong Protection
@@ -37,7 +37,7 @@ eniGOma encrypt --file document.txt --config examples/security-levels/simple-med
 
 ```bash
 # Example usage
-eniGOma encrypt --text "CONFIDENTIAL DATA" --config examples/security-levels/high-security.json
+enigoma encrypt --text "CONFIDENTIAL DATA" --config examples/security-levels/high-security.json
 ```
 
 ### 🔒🔒🔒 `extreme-key.json` - Maximum Complexity
@@ -49,7 +49,7 @@ eniGOma encrypt --text "CONFIDENTIAL DATA" --config examples/security-levels/hig
 
 ```bash
 # Example usage
-eniGOma encrypt --text "TOP SECRET" --config examples/security-levels/extreme-key.json
+enigoma encrypt --text "TOP SECRET" --config examples/security-levels/extreme-key.json
 ```
 
 ## Security Level Comparison
@@ -67,10 +67,10 @@ You can generate configurations at different security levels:
 
 ```bash
 # Generate a custom high-security configuration
-eniGOma keygen --security high --output my-high-security.json
+enigoma keygen --security high --output my-high-security.json
 
 # Generate with specific parameters
-eniGOma keygen --rotors 6 --plugboard-pairs 10 --output custom-config.json
+enigoma keygen --rotors 6 --plugboard-pairs 10 --output custom-config.json
 ```
 
 ## Validation and Testing
@@ -79,13 +79,13 @@ Always validate your configurations:
 
 ```bash
 # Validate configuration
-eniGOma config --validate examples/security-levels/high-security.json
+enigoma config --validate examples/security-levels/high-security.json
 
 # Test with sample text
-eniGOma config --test examples/security-levels/high-security.json --text "TEST MESSAGE"
+enigoma config --test examples/security-levels/high-security.json --text "TEST MESSAGE"
 
 # Show detailed configuration info
-eniGOma config --show examples/security-levels/extreme-key.json --detailed
+enigoma config --show examples/security-levels/extreme-key.json --detailed
 ```
 
 ## Historical Context

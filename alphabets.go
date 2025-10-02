@@ -1,12 +1,12 @@
-// Package eniGOma provides predefined alphabets for common use cases.
+// Package enigoma provides predefined alphabets for common use cases.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
-package eniGOma
+package enigoma
 
-import "github.com/coredds/eniGOma/internal/alphabet"
+import "github.com/coredds/enigoma/internal/alphabet"
 
-// Common predefined alphabets that can be used with eniGOma.
+// Common predefined alphabets that can be used with enigoma.
 var (
 	// AlphabetLatinUpper contains uppercase Latin letters A-Z
 	AlphabetLatinUpper = []rune{

@@ -1,4 +1,4 @@
-// Package main demonstrates the usage of the eniGOma Enigma machine library.
+// Package main demonstrates the usage of the enigoma Enigma machine library.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/coredds/eniGOma"
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma"
+	"github.com/coredds/enigoma/pkg/enigma"
 )
 
 func main() {
-	fmt.Printf("=== eniGOma Enigma Machine Demo (v%s) ===\n\n", eniGOma.GetVersion())
+	fmt.Printf("=== enigoma Enigma Machine Demo (v%s) ===\n\n", enigoma.GetVersion())
 
 	// Demo 1: Classic Enigma (similar to historical M3)
 	fmt.Println("1. Classic Enigma Demo:")
@@ -70,7 +70,7 @@ func demoClassicEnigma() {
 
 func demoUnicodeEnigma() {
 	// Create an Enigma with Greek alphabet
-	machine, err := enigma.NewEnigmaSimple(eniGOma.AlphabetGreek)
+	machine, err := enigma.NewEnigmaSimple(enigoma.AlphabetGreek)
 	if err != nil {
 		log.Fatalf("Failed to create Unicode Enigma: %v", err)
 	}
@@ -111,7 +111,7 @@ func demoSecurityLevels() {
 		fmt.Printf("Security Level: %s\n", levelToString(level))
 
 		machine, err := enigma.New(
-			enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+			enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 			enigma.WithRandomSettings(level),
 		)
 		if err != nil {
@@ -136,7 +136,7 @@ func demoSecurityLevels() {
 func demoSettingsSerialization() {
 	// Create an Enigma with specific settings
 	machine, err := enigma.New(
-		enigma.WithAlphabet(eniGOma.AlphabetLatinUpper),
+		enigma.WithAlphabet(enigoma.AlphabetLatinUpper),
 		enigma.WithRandomSettings(enigma.Medium),
 	)
 	if err != nil {
@@ -180,7 +180,7 @@ func demoCustomComponents() {
 	// (though for simplicity, we'll use the option-based approach)
 
 	machine, err := enigma.New(
-		enigma.WithAlphabet(eniGOma.AlphabetASCIIPrintable),
+		enigma.WithAlphabet(enigoma.AlphabetASCIIPrintable),
 		enigma.WithRandomSettings(enigma.Low),
 		enigma.WithPlugboardConfiguration(map[rune]rune{
 			'A': 'Z',

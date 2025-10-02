@@ -1,21 +1,21 @@
-# eniGOma Usage Guide
+# enigoma Usage Guide
 
 ## Auto-Detection (since v0.3.0)
 
-The easiest way to use eniGOma: just encrypt any text in any language.
+The easiest way to use enigoma: just encrypt any text in any language.
 
 ```bash
 # Works automatically with any language!
-eniGOma encrypt --text "Olá mundo! Como você está?"
-eniGOma encrypt --text "Mixed: Hello! Привет! 日本語!"
-eniGOma encrypt --text "Symbols: αβγ δεζ 🙂 test!"
+enigoma encrypt --text "Olá mundo! Como você está?"
+enigoma encrypt --text "Mixed: Hello! Привет! 日本語!"
+enigoma encrypt --text "Symbols: αβγ δεζ 🙂 test!"
 ```
 
-Note: The default alphabet is auto-detected (equivalent to --alphabet=auto). No need to specify alphabets; eniGOma automatically detects the optimal character set from your text.
+Note: The default alphabet is auto-detected (equivalent to --alphabet=auto). No need to specify alphabets; enigoma automatically detects the optimal character set from your text.
 
 ## Brazilian Portuguese Support
 
-eniGOma includes **built-in support for Brazilian Portuguese** with both auto-detection and the `AlphabetPortuguese` predefined alphabet.
+enigoma includes **built-in support for Brazilian Portuguese** with both auto-detection and the `AlphabetPortuguese` predefined alphabet.
 
 ### Quick Start with Portuguese
 
@@ -25,13 +25,13 @@ package main
 import (
     "fmt"
     "log"
-    "github.com/coredds/eniGOma"
-    "github.com/coredds/eniGOma/pkg/enigma"
+    "github.com/coredds/enigoma"
+    "github.com/coredds/enigoma/pkg/enigma"
 )
 
 func main() {
     // Create Enigma machine with Portuguese alphabet
-    machine, err := enigma.NewEnigmaSimple(eniGOma.AlphabetPortuguese)
+    machine, err := enigma.NewEnigmaSimple(enigoma.AlphabetPortuguese)
     if err != nil {
         log.Fatal(err)
     }
@@ -93,7 +93,7 @@ phrases := []string{
 
 ### Greek Example
 ```go
-machine, err := enigma.NewEnigmaSimple(eniGOma.AlphabetGreek)
+machine, err := enigma.NewEnigmaSimple(enigoma.AlphabetGreek)
 message := "Αβγδε ζητα" // Greek text
 ```
 
@@ -114,7 +114,7 @@ machine, err := enigma.New(enigma.WithAlphabet(customAlphabet))
 ### Security Levels with Portuguese
 ```go
 machine, err := enigma.New(
-    enigma.WithAlphabet(eniGOma.AlphabetPortuguese),
+    enigma.WithAlphabet(enigoma.AlphabetPortuguese),
     enigma.WithRandomSettings(enigma.High), // High security
 )
 ```
@@ -135,53 +135,53 @@ The [`examples/`](./examples/) directory contains ready-to-use configuration fil
 ### Portuguese Examples
 ```bash
 # Use the Portuguese configuration example
-eniGOma encrypt --text "Bom dia, Brasil!" --auto-config pt-key.json
-eniGOma decrypt --text "ENCRYPTED" --config pt-key.json
+enigoma encrypt --text "Bom dia, Brasil!" --auto-config pt-key.json
+enigoma decrypt --text "ENCRYPTED" --config pt-key.json
 
 # Generate your own Portuguese configuration
-eniGOma keygen --alphabet portuguese --security medium --output my-portuguese.json
+enigoma keygen --alphabet portuguese --security medium --output my-portuguese.json
 ```
 
 ### Other Language Examples
 ```bash
 # Greek text encryption
-eniGOma encrypt --text "Γεια σας!" --config examples/languages/greek-simple.json
+enigoma encrypt --text "Γεια σας!" --config examples/languages/greek-simple.json
 
 # Mixed character sets
-eniGOma encrypt --text "Password123!" --config examples/languages/mixed-alphabet-extreme.json
+enigoma encrypt --text "Password123!" --config examples/languages/mixed-alphabet-extreme.json
 ```
 
 ### Security Examples
 ```bash
 # Document protection
-eniGOma encrypt --file document.txt --config examples/use-cases/document-protection.json
+enigoma encrypt --file document.txt --config examples/use-cases/document-protection.json
 
 # High security communication
-eniGOma encrypt --text "TOP SECRET" --config examples/security-levels/extreme-key.json
+enigoma encrypt --text "TOP SECRET" --config examples/security-levels/extreme-key.json
 
 # Historical simulation
-eniGOma encrypt --text "ENIGMA MACHINE" --config examples/use-cases/historical-simulation.json
+enigoma encrypt --text "ENIGMA MACHINE" --config examples/use-cases/historical-simulation.json
 ```
 
 Browse all examples: [`examples/README.md`](./examples/README.md)
 
 ---
 
-Brazilian Portuguese is now a first-class citizen in eniGOma.
+Brazilian Portuguese is now a first-class citizen in enigoma.
 
 ## CLI: Stdin and Encoding Examples
 
 ```bash
 # Stdin encryption (auto-detected alphabet by default)
-echo "Hello via stdin" | eniGOma encrypt --auto-config my-key.json
+echo "Hello via stdin" | enigoma encrypt --auto-config my-key.json
 
 # Base64 output and decrypt
-eniGOma encrypt --text "Hello" --auto-config my-key.json --format base64
-eniGOma decrypt --text "SGVsbG8=" --config my-key.json --format base64
+enigoma encrypt --text "Hello" --auto-config my-key.json --format base64
+enigoma decrypt --text "SGVsbG8=" --config my-key.json --format base64
 
 # Hex output and decrypt
-eniGOma encrypt --text "Hello" --auto-config my-key.json --format hex
-eniGOma decrypt --text "48656c6c6f" --config my-key.json --format hex
+enigoma encrypt --text "Hello" --auto-config my-key.json --format hex
+enigoma decrypt --text "48656c6c6f" --config my-key.json --format hex
 
 ## Presets and decryptability
 
@@ -189,10 +189,10 @@ Presets (e.g., `classic`, `high`, `extreme`) generate a random configuration on 
 
 ```bash
 # Save configuration during encryption
-eniGOma encrypt --text "TOP SECRET" --preset high --save-config my-key.json
+enigoma encrypt --text "TOP SECRET" --preset high --save-config my-key.json
 
 # Later, decrypt with the same saved configuration
-eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 ```
 
 ## Configuration schema
@@ -201,7 +201,7 @@ Saved configuration files include a `schema_version` field. This allows the proj
 
 ### Configuration Validation (since v0.3.4)
 
-eniGOma provides a configuration validation feature to ensure your configuration files are valid:
+enigoma provides a configuration validation feature to ensure your configuration files are valid:
 
 ```bash
 # Validate a configuration file

@@ -30,10 +30,10 @@ You can create custom configurations using the CLI:
 
 ```bash
 # Generate with specific parameters
-eniGOma keygen --rotors 6 --plugboard-pairs 15 --security high --output custom-advanced.json
+enigoma keygen --rotors 6 --plugboard-pairs 15 --security high --output custom-advanced.json
 
 # Create from preset and modify
-eniGOma preset --export extreme --output base-config.json
+enigoma preset --export extreme --output base-config.json
 # Then manually edit the JSON for custom requirements
 ```
 
@@ -70,7 +70,7 @@ For completely custom setups, you can manually create configuration files follow
 Always validate custom configurations:
 
 ```bash
-eniGOma config --validate your-custom-config.json --detailed
+enigoma config --validate your-custom-config.json --detailed
 ```
 
 ---

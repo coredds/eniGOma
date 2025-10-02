@@ -1,4 +1,4 @@
-// Package main provides the eniGOma command-line interface.
+// Package main provides the enigoma command-line interface.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -7,7 +7,7 @@ package main
 import (
 	"os"
 
-	"github.com/coredds/eniGOma/internal/cli"
+	"github.com/coredds/enigoma/internal/cli"
 )
 
 func main() {

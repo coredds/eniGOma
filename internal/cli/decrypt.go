@@ -1,4 +1,4 @@
-// Package cli provides the decrypt command for the eniGOma CLI.
+// Package cli provides the decrypt command for the enigoma CLI.
 //
 // Copyright (c) 2025 David Duarte
 // Licensed under the MIT License
@@ -24,20 +24,20 @@ IMPORTANT: Always use the same configuration file that was used for encryption!
 
 RECOMMENDED WORKFLOW:
   # Step 1: Encrypt with auto-config
-  eniGOma encrypt --text "Hello World!" --auto-config my-key.json
+  enigoma encrypt --text "Hello World!" --auto-config my-key.json
   
   # Step 2: Decrypt with the same config  
-  eniGOma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
+  enigoma decrypt --text "ENCRYPTED_OUTPUT" --config my-key.json
 
 INPUT METHODS:
-  eniGOma decrypt --text "CIPHER"              # Direct text
-  eniGOma decrypt --file encrypted.txt         # From file
-  echo "CIPHER" | eniGOma decrypt              # From stdin
+  enigoma decrypt --text "CIPHER"              # Direct text
+  enigoma decrypt --file encrypted.txt         # From file
+  echo "CIPHER" | enigoma decrypt              # From stdin
 
 INPUT FORMATS:
-  eniGOma decrypt --text "CIPHER" --config key.json                    # Plain text
-  eniGOma decrypt --text "48656c6c6f" --format hex --config key.json   # Hex input
-  eniGOma decrypt --text "SGVsbG8=" --format base64 --config key.json  # Base64 input
+  enigoma decrypt --text "CIPHER" --config key.json                    # Plain text
+  enigoma decrypt --text "48656c6c6f" --format hex --config key.json   # Hex input
+  enigoma decrypt --text "SGVsbG8=" --format base64 --config key.json  # Base64 input
 
 TROUBLESHOOTING:
   • "Character not found" error? Use the config file from encryption
@@ -45,7 +45,7 @@ TROUBLESHOOTING:
   • Spaces in cipher text? They may not belong - try --remove-spaces
 
 LEGACY MODE (not recommended):
-  eniGOma decrypt --text "CIPHER" --preset classic  # Unreliable - presets are random`,
+  enigoma decrypt --text "CIPHER" --preset classic  # Unreliable - presets are random`,
 	RunE: runDecrypt,
 }
 
@@ -200,7 +200,7 @@ func enhanceDecryptionError(err error, text string, cmd *cobra.Command) error {
 
 		if configFile == "" {
 			suggestions = append(suggestions, "• For decryption, always use the same configuration file used for encryption:")
-			suggestions = append(suggestions, "  eniGOma decrypt --text \"CIPHER\" --config my-key.json")
+			suggestions = append(suggestions, "  enigoma decrypt --text \"CIPHER\" --config my-key.json")
 			suggestions = append(suggestions, "")
 		}
 

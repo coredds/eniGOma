@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/coredds/eniGOma/pkg/enigma"
+	"github.com/coredds/enigoma/pkg/enigma"
 )
 
 // TestGetAvailablePresets tests that all presets are properly defined.

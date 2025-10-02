@@ -1,6 +1,6 @@
-# eniGOma Configuration Examples
+# enigoma Configuration Examples
 
-This directory contains example configurations for the eniGOma Enigma machine implementation, organized by category to help you understand different use cases and configuration options.
+This directory contains example configurations for the enigoma Enigma machine implementation, organized by category to help you understand different use cases and configuration options.
 
 ## Directory Structure
 
@@ -22,10 +22,10 @@ Advanced configuration examples demonstrating custom component settings and comp
 
 ```bash
 # Encrypt with a specific example
-eniGOma encrypt --text "Your message" --config examples/security-levels/high-security.json
+enigoma encrypt --text "Your message" --config examples/security-levels/high-security.json
 
 # Decrypt using the same configuration
-eniGOma decrypt --text "ENCRYPTED_TEXT" --config examples/security-levels/high-security.json
+enigoma decrypt --text "ENCRYPTED_TEXT" --config examples/security-levels/high-security.json
 ```
 
 ### Programmatic Usage
@@ -37,7 +37,7 @@ import (
     "fmt"
     "log"
     "os"
-    "github.com/coredds/eniGOma/pkg/enigma"
+    "github.com/coredds/enigoma/pkg/enigma"
 )
 
 func main() {
@@ -99,10 +99,10 @@ You can use these examples as starting points for your own configurations:
 
 ```bash
 # Validate your custom configuration
-eniGOma config --validate my-custom-config.json --detailed
+enigoma config --validate my-custom-config.json --detailed
 
 # Test with sample text
-eniGOma config --test my-custom-config.json --text "Test message"
+enigoma config --test my-custom-config.json --text "Test message"
 ```
 
 ## Security Recommendations
@@ -124,4 +124,4 @@ When adding new examples:
 
 ---
 
-*These examples demonstrate the flexibility and power of eniGOma while maintaining historical accuracy where appropriate.*
+*These examples demonstrate the flexibility and power of enigoma while maintaining historical accuracy where appropriate.*
