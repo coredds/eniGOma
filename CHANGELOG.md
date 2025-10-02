@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2025-02-02
+
+### Changed
+- **Project renamed from eniGOma to enigoma** for Go naming convention compliance
+- Module path updated from `github.com/coredds/eniGOma` to `github.com/coredds/enigoma`
+- Package name changed from `eniGOma` to `enigoma`
+- All import paths updated across codebase
+- Documentation updated to reflect new naming
+
+### Migration Guide
+Users upgrading from v0.4.0 need to update their imports:
+```go
+// Old:
+import "github.com/coredds/eniGOma"
+import "github.com/coredds/eniGOma/pkg/enigma"
+
+// New:
+import "github.com/coredds/enigoma"
+import "github.com/coredds/enigoma/pkg/enigma"
+```
+
+Update your dependencies:
+```bash
+go get github.com/coredds/enigoma@v0.4.1
+```
+
 ## [0.4.0] - 2025-01-31
 
 ### Major Usability Enhancements Added
