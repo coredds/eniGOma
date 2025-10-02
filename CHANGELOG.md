@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2025-02-02
+
+### Fixed
+- Renamed `cmd/eniGOma` directory to `cmd/enigoma` for consistency
+- Updated GoReleaser configuration to build binaries with `enigoma` name
+- Renamed `eniGOma_prd.md` to `enigoma_prd.md`
+- All file paths and directory names now use lowercase `enigoma`
+
+### Note
+This release will produce correctly named binaries: `enigoma` instead of `eniGOma`.
+
 ## [0.4.1] - 2025-02-02
 
 ### Changed
@@ -28,7 +39,7 @@ import "github.com/coredds/enigoma/pkg/enigma"
 
 Update your dependencies:
 ```bash
-go get github.com/coredds/enigoma@v0.4.1
+go get github.com/coredds/enigoma@latest
 ```
 
 ## [0.4.0] - 2025-01-31
