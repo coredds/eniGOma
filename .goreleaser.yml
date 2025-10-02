@@ -1,10 +1,10 @@
 version: 2
-project_name: eniGOma
+project_name: enigoma
 
 builds:
-  - id: eniGOma-cli
-    main: ./cmd/eniGOma/main.go
-    binary: eniGOma
+  - id: enigoma-cli
+    main: ./cmd/enigoma/main.go
+    binary: enigoma
     goos:
       - linux
       - darwin
@@ -16,9 +16,9 @@ builds:
       - "-s -w"
     # Removed post-hook that was using GOPATH
     # Schema files are already included in archives section
-  - id: eniGOma-example
+  - id: enigoma-example
     main: ./cmd/example/main.go
-    binary: eniGOma-example
+    binary: enigoma-example
     goos:
       - linux
       - darwin
@@ -43,7 +43,7 @@ checksum:
 release:
   github:
     owner: coredds
-    name: eniGOma
+    name: enigoma
   draft: false
   prerelease: false
 
