@@ -39,7 +39,7 @@ enigoma is a Go library that simulates the famous Enigma machine used during Wor
 - Custom alphabet support for specialized use cases
 - Adjustable complexity levels (Low, Medium, High, Extreme)
 
-### New in v0.4.0: Enhanced Usability ✨
+### New in v0.4.0: Enhanced Usability
 - **Zero-Config Functions**: `enigma.EncryptText("Hello!")` - encrypt in one line
 - **Discovery Commands**: `enigoma demo`, `enigoma examples`, `enigoma test`
 - **Interactive Wizard**: `enigoma wizard` for beginner-friendly setup
@@ -68,7 +68,7 @@ go get github.com/coredds/enigoma@latest
 
 ## Quick Start
 
-### 🚀 Zero-Config Usage (New in v0.4.0)
+### Zero-Config Usage (New in v0.4.0)
 
 ```go
 package main
@@ -144,7 +144,7 @@ enigoma includes a powerful CLI with a configuration-first workflow for secure e
 # Install the CLI
 go install github.com/coredds/enigoma/cmd/enigoma@latest
 
-# 🎯 New Discovery Commands (v0.4.0)
+# New Discovery Commands (v0.4.0)
 enigoma demo      # Interactive demonstration
 enigoma examples  # Copy-paste ready examples  
 enigoma test      # Verify installation
@@ -178,10 +178,10 @@ enigoma decrypt --text "48656c6c6f" --config my-key.json --format hex
 - **`keygen`** - Generate random Enigma machine configurations
 - **`preset`** - List and describe available machine presets
 - **`config`** - Manage and validate configuration files
-- **`demo`** ✨ - Interactive demonstration of features
-- **`examples`** ✨ - Copy-paste ready examples for common use cases
-- **`test`** ✨ - Test installation and functionality
-- **`wizard`** ✨ - Interactive beginner-friendly setup
+- **`demo`** - Interactive demonstration of features
+- **`examples`** - Copy-paste ready examples for common use cases
+- **`test`** - Test installation and functionality
+- **`wizard`** - Interactive beginner-friendly setup
 
 #### Available Presets
 
