@@ -9,7 +9,7 @@ before:
 
 builds:
   - id: enigoma
-    main: ./cmd/eniGOma
+    main: ./cmd/enigoma
     binary: enigoma
     env:
       - CGO_ENABLED=0
